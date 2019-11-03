@@ -1,4 +1,4 @@
-MODULES= (fill in)
+MODULES=main authors company event startup
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
@@ -14,6 +14,9 @@ build:
 
 test:
 	$(OCAMLBUILD) -tag debug $(TEST) && ./$(TEST)
+
+play:
+	$(OCAMLBUILD) $(MAIN) && ./$(MAIN)
 
 bisect-test:
 	BISECT_COVERAGE=YES $(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST) -runner sequential
@@ -33,18 +36,18 @@ perf:
 	gnuplot perf.p
 
 zip:
-	zip search_src.zip *.ml* _tags Makefile analysis.pdf
+	zip project.zip *.ml* _tags Makefile
 	
 docs: docs-public docs-private
 	
 docs-public: build
 	mkdir -p doc.public
-	ocamlfind ocamldoc -I _build -package $(PKGS) \
+	ocamlfind ocamldoc -I _build -package ANSITerminal \
 		-html -stars -d doc.public $(MLIS)
 
 docs-private: build
 	mkdir -p doc.private
-	ocamlfind ocamldoc -I _build -package $(PKGS) \
+	ocamlfind ocamldoc -I _build -package ANSITerminal \
 		-html -stars -d doc.private \
 		-inv-merge-ml-mli -m A -hide-warnings $(MLIS) $(MLS)
 
