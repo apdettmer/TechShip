@@ -1,4 +1,4 @@
-MODULES= (fill in)
+MODULES= company event startup main authors
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
