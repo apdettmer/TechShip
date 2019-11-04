@@ -1,3 +1,4 @@
 B _build
 PKG ANSITerminal
 PKG OUnit
+PKG YOJSON
