@@ -1,4 +1,4 @@
-MODULES= founding event growth main authors 
+MODULES= growth event founding main authors
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
