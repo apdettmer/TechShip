@@ -1,4 +1,4 @@
-MODULES= company event startup main authors
+MODULES= founding event growth main authors 
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
@@ -14,7 +14,7 @@ build:
 	$(OCAMLBUILD) $(OBJECTS)
 
 test:
-	$(OCAMLBUILD) -tag debug $(TEST) && ./$(TEST)
+	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST)
 
 play:
 	$(OCAMLBUILD) $(MAIN) && ./$(MAIN)
