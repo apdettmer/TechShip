@@ -1,0 +1,27 @@
+{
+  "investor events": [
+    {
+      "id": 0,
+      "description": "sample",
+      "stats": [
+        "funding",
+        "morale"
+      ],
+      "responses": [
+        {
+          "description": "Yes",
+          "funding": 10,
+          "morale": 5
+        },
+        {
+          "description": "No",
+          "funding": -10,
+          "morale": -5
+        }
+      ]
+    }
+  ],
+  "government events": [],
+  "employee events": [],
+  "other": []
+}
