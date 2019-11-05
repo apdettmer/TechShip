@@ -21,7 +21,33 @@
       ]
     }
   ],
-  "investor": [],
+  "investor": [
+	{
+      "id": 10,
+      "description": "Well known and highly respected investor John Smith publicly endorses your product and wants to purchase stock in your company.",
+      "stats": [
+        "funding",
+		"reputation"
+      ],
+      "responses": [
+        {
+          "description": "Accept his offer and allow him to invest.",
+          "funding": 300000,
+          "reputation": 10 
+        },
+        {
+          "description": "Politely decline his offer. While generous, you already have enough funding",
+          "funding": 0,
+          "reputation": 0
+        },
+		{
+		  "description": "Aggressively reject his offer. Release a public statement denouncing John Smith, claiming that his success was only due to luck and that his morals are corrupt.",
+		  "funding": 0,
+		  "reputation": -8
+		}
+      ]
+    }
+],
   "government": [],
   "employee": [],
   "other": []

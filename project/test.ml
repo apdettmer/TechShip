@@ -6,6 +6,7 @@ open OUnit2
 
 
 let e1 = event_of "sample" 0 
+let e2 = event_of "investor" 10
 
 let make_event_test
     (name : string)
@@ -19,7 +20,11 @@ let event_tests = [
   make_event_test "category of sample" "sample" e1 Event.category;
   make_event_test "description of sample" "sample" e1 Event.description;
   make_event_test "affected stats list size of sample" 
-    2 (Event.affected_stats e1) List.length
+    2 (Event.affected_stats e1) List.length;
+  make_event_test "affected stats list size of investor event e2" 2 
+    (Event.affected_stats e2) List.length;
+  make_event_test "Response list is 3 elements long" 3 
+    (responses e2) List.length;
 ]
 
 let comp1 = new_company "Creative Name"
