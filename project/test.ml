@@ -22,9 +22,23 @@ let event_tests = [
     2 (Event.affected_stats e1) List.length
 ]
 
+let comp1 = new_company "Creative Name"
+
+let founding_tests = [
+  "Test reputation default value is 50" >:: 
+  (fun _ -> assert_equal 50 (reputation comp1));
+  "Test employees default val" >:: 
+  (fun _ -> assert_equal [] (employees comp1));
+  "Test morale default val" >:: 
+  (fun _ -> assert_equal 50 (morale comp1));
+  "Test default investors is the empty list" >:: 
+  (fun _ -> assert_equal [] (investors comp1));
+]
+
 let suite =
   "test suite for A2"  >::: List.flatten [
     event_tests;
+    founding_tests;
     (* add others*)
   ]
 
