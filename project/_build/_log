@@ -1,20 +1,4 @@
 ### Starting build.
-# Target: founding.mli.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:mli, file:founding.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -package ANSITerminal -package yojson -modules founding.mli > founding.mli.depends # cached
-# Target: founding.cmi, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:mli, file:founding.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -package ANSITerminal -package yojson -o founding.cmi founding.mli # cached
-# Target: founding.ml.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:ml, file:founding.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -package ANSITerminal -package yojson -modules founding.ml > founding.ml.depends # cached
-# Target: founding.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:founding.cmo, file:founding.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -package ANSITerminal -package yojson -o founding.cmo founding.ml # cached
-# Target: event.mli.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:mli, file:event.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -package ANSITerminal -package yojson -modules event.mli > event.mli.depends # cached
-# Target: event.cmi, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:mli, file:event.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -package ANSITerminal -package yojson -o event.cmi event.mli # cached
-# Target: event.ml.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:ml, file:event.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -package ANSITerminal -package yojson -modules event.ml > event.ml.depends # cached
-# Target: event.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:event.cmo, file:event.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -package ANSITerminal -package yojson -o event.cmo event.ml # cached
 # Target: growth.mli.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:mli, file:growth.mli, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package oUnit -package ANSITerminal -package yojson -modules growth.mli > growth.mli.depends # cached
 # Target: growth.cmi, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:mli, file:growth.mli, interf, ocaml, quiet, traverse }
@@ -23,20 +7,32 @@ ocamlfind ocamlc -c -package oUnit -package ANSITerminal -package yojson -o grow
 ocamlfind ocamldep -package oUnit -package ANSITerminal -package yojson -modules growth.ml > growth.ml.depends # cached
 # Target: growth.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:growth.cmo, file:growth.ml, implem, ocaml, quiet, traverse }
 ocamlfind ocamlc -c -package oUnit -package ANSITerminal -package yojson -o growth.cmo growth.ml # cached
-# Target: main.mli.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:mli, file:main.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -package ANSITerminal -package yojson -modules main.mli > main.mli.depends # cached
-# Target: main.cmi, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:mli, file:main.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -package ANSITerminal -package yojson -o main.cmi main.mli # cached
-# Target: main.ml.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:ml, file:main.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -package ANSITerminal -package yojson -modules main.ml > main.ml.depends # cached
-# Target: main.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:main.cmo, file:main.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -package ANSITerminal -package yojson -o main.cmo main.ml # cached
-# Target: authors.mli.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:mli, file:authors.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -package ANSITerminal -package yojson -modules authors.mli > authors.mli.depends # cached
-# Target: authors.cmi, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:mli, file:authors.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -package ANSITerminal -package yojson -o authors.cmi authors.mli # cached
-# Target: authors.ml.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:ml, file:authors.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -package ANSITerminal -package yojson -modules authors.ml > authors.ml.depends # cached
-# Target: authors.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:authors.cmo, file:authors.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -package ANSITerminal -package yojson -o authors.cmo authors.ml # cached
-# Compilation successful.
+# Target: event.mli.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:mli, file:event.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -package ANSITerminal -package yojson -modules event.mli > event.mli.depends
+# Target: founding.mli.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:mli, file:founding.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -package ANSITerminal -package yojson -modules founding.mli > founding.mli.depends
+# Target: founding.cmi, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:mli, file:founding.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -package ANSITerminal -package yojson -o founding.cmi founding.mli
+# Target: event.cmi, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:mli, file:event.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -package ANSITerminal -package yojson -o event.cmi event.mli
+# Target: event.ml.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:ml, file:event.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -package ANSITerminal -package yojson -modules event.ml > event.ml.depends
+# Target: event.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:event.cmo, file:event.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -package ANSITerminal -package yojson -o event.cmo event.ml
++ ocamlfind ocamlc -c -package oUnit -package ANSITerminal -package yojson -o event.cmo event.ml
+File "event.ml", line 1:
+Error: The implementation event.ml does not match the interface event.cmi:
+       The value `update_company' is required but not provided
+       File "event.mli", line 23, characters 0-49: Expected declaration
+       The value `event_type' is required but not provided
+       File "event.mli", line 20, characters 0-32: Expected declaration
+       The type `event_type' is required but not provided
+       File "event.mli", line 12, characters 0-122: Expected declaration
+       The type `employee' is required but not provided
+       File "event.mli", line 10, characters 0-13: Expected declaration
+       The type `government' is required but not provided
+       File "event.mli", line 8, characters 0-15: Expected declaration
+       The type `investor' is required but not provided
+       File "event.mli", line 6, characters 0-13: Expected declaration
+Command exited with code 2.
+# Compilation unsuccessful.

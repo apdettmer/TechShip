@@ -1,5 +1,5 @@
 {
-  "investor events": [
+  "sample": [
     {
       "id": 0,
       "description": "sample",
@@ -21,7 +21,8 @@
       ]
     }
   ],
-  "government events": [],
-  "employee events": [],
+  "investor": [],
+  "government": [],
+  "employee": [],
   "other": []
 }
