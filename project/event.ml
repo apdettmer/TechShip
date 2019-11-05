@@ -1,6 +1,9 @@
 open Yojson.Basic.Util
 
-exception InvalidEvent of (string * int) * string
+exception InvalidEventId of int
+
+exception InvalidEventCategory of string
+
 (* the type representing responses*)
 type response = {description : string; effects : (string * int) list}
 
@@ -37,13 +40,14 @@ let rec make_responses = function
     Requires: [lst] is valid list of events, category is a
     category in events.json*)
 let rec match_id category id = function 
-  | [] -> raise (InvalidEvent((category, id), "Invalid id"))
+  | [] -> 
+    raise (InvalidEventId id)
   | h::t -> if h |> member "id" |> to_int = id then h 
     else match_id category id t
 
 let event_of category id = 
   match member category (Yojson.Basic.from_file "events.json") with 
-  | `Null -> raise (InvalidEvent ((category, id), "Invalid category"))
+  | `Null -> raise (InvalidEventCategory category)
   | c -> try let event = match_id category id (c |> to_list) in
       {
         category = category;
@@ -52,7 +56,10 @@ let event_of category id =
                 |> to_list |> get_str_lst [];
         responses = event |> member "responses" |> to_list |> make_responses
       }
-    with InvalidEvent _ -> raise (InvalidEvent ((category, id), "Invalid id"))
+    with InvalidEventId i -> raise (InvalidEventId i)
 
 
+let update_company (event : e) (response : int) 
+    (company : Founding.company) = 
+  company
 
