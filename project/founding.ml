@@ -4,6 +4,7 @@
 type employee = {
   name : string;
   morale : int;
+  reputation : int;
 }
 
 type investor = { 
@@ -27,6 +28,27 @@ type company = {
     include that would impact gameplay, other than a name. -ew424 *)
 let new_product name = 
   name
+
+(** [new_employee] takes a name, perhaps given by the player?, and returns an
+    employee with that name and with random morale values ranging from -10 to 10 
+*)
+let new_employee name = 
+  Random.init (int_of_float (Unix.time ()));
+  {
+    name = name;
+    morale = Random.int 20 - 10;
+    reputation = Random.int 20 - 10;
+  }
+
+let hire_employee name company = let employee = new_employee name in 
+  {
+    product = company.product;
+    funding = company.funding;
+    employees = employee :: company.employees;
+    reputation = company.reputation + employee.reputation;
+    morale = company.morale + employee.morale;
+    investors = company.investors;
+  }
 
 (**[starting_fund start_amount] returns [start_amount] multiplied by a random
    number <10. This creates a different starting funding for every game, making
