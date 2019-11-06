@@ -2,6 +2,11 @@ open Founding
 open Growth
 open Event
 
+(**[play] is the repl loop that takes player input and determines actions
+   in the game. [player_file] is a JSON file that is a save file. *)
+let play file_name = 
+  print_endline "testing play"
+
 let create_new_game () =
   print_endline "> be you";
   print_endline "> recent graduate of Cornell Engineering";
@@ -9,15 +14,10 @@ let create_new_game () =
   print_endline "> your parents lent you $10,000 and said \"get a life\"";
   print_endline "> you have an idea for the Next Big Thing™:";
   print_string "> ";
-  read_line () |> new_company |> print_stats
+  read_line () |> new_company |> save |> play
 
 let load_save_file () =
   print_endline "testing load_save_file"
-
-(**[play] is the repl loop that takes player input and determines actions
-   in the game. [player_file] is a JSON file that is a save file. *)
-let play file_name = 
-  print_endline "testing file_name"
 
 let rec main_menu_helper () =
   print_endline "Invalid entry.";

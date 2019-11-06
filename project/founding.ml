@@ -1,5 +1,7 @@
 (* TODO: Create the module for the company in the growth phase *)
 
+open Printf
+
 type employee = {
   name : string;
   morale : int;
@@ -94,17 +96,32 @@ let investors company =
 let date company =
   company.date
 
+let save_product company =
+  sprintf "\"product\": [\n\t\t{\n\t\t\t\"name\": \"%s\"\n\t\t}\n]\n\t" company.product.name
+
+let save_funding company =
+  sprintf "\"funding\": %i" company.funding
+
+let save company =
+  let file_name = company.product.name in
+  let save_file = String.concat "" [file_name; ".json"] in
+  let out_chn = open_out save_file in
+  let data = String.concat "" [save_product company; ""] in
+  fprintf out_chn "%s" data;
+  (* let in_chn = open_in save_file in
+     print_endline (input_line in_chn) *)
+  save_file
+
 (** I'm not sure if we should display the other stats. Maybe we print the 
     names of investors and amount invested? -ew424 *)
 let print_stats company = 
-  Printf.printf "Funding: %i\n" (funding company);
-  Printf.printf "Reputation: %i\n" (reputation company);
-  Printf.printf "Morale: %i\n" (morale company);
-  Printf.printf "Number of employees: %i\n" (List.length (employees company))
+  printf "Funding: %i\n" (funding company);
+  printf "Reputation: %i\n" (reputation company);
+  printf "Morale: %i\n" (morale company);
+  printf "Number of employees: %i\n" (List.length (employees company))
 
 (** TODO: Input an event or response to an event (for ex. a record with data on
     the stat changed to be made) and apply that response to the company,
     producing a new one *)
 let update_company event company =
   failwith "unimplemented"
-

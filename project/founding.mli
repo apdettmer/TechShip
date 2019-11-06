@@ -38,6 +38,10 @@ val morale : company -> int
 (** [investors] is an [investor] list of investors in the company. *)
 val investors : company -> investor list
 
+(** [save] is a string of the filename and also writes to or creates a JSON file
+    with the save data of the company. *)
+val save : company -> string
+
 (** [print_stats] prints out the current stats of the company to the player. *)
 val print_stats: company -> unit
 
