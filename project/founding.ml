@@ -1,6 +1,5 @@
 (* TODO: Create the module for the company in the growth phase *)
 
-
 type employee = {
   name : string;
   morale : int;

@@ -1,10 +1,10 @@
-MODULES= growth event founding main authors
+MODULES=founding growth event main authors
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
 MAIN=main.byte
 TEST=test.byte
-OCAMLBUILD=ocamlbuild -use-ocamlfind -plugin-tag 'package(bisect_ppx-ocamlbuild)'
+OCAMLBUILD=ocamlbuild -use-ocamlfind
 PKGS=unix,oUnit,str,qcheck,csv
 
 default: build

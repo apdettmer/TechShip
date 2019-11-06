@@ -1,1 +1,1 @@
-Testing
+Change directory to this one and enter "make play" to install and start the game.

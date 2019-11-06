@@ -1,22 +1,46 @@
-exception Empty
+open Founding
+open Growth
+open Event
+
+let create_new_game () =
+  print_endline "testing create_new_game"
+
+let load_save_file () =
+  print_endline "testing load_save_file"
 
 (**[play] is the repl loop that takes player input and determines actions
    in the game. [player_file] is a JSON file that is a save file. *)
-let play player_file = 
-  failwith "."
+let play file_name = 
+  print_endline "testing file_name"
 
-
+let rec main_menu_helper () =
+  print_endline "Invalid entry.";
+  print_endline "";
+  print_endline "[1] Create new game.";
+  print_endline "[2] Load game.";
+  print_endline "[3] Quit.";
+  print_string "> ";
+  match read_line () with
+  | "1" -> print_endline ""; create_new_game ()
+  | "2" -> print_endline ""; load_save_file ()
+  | "3" -> print_endline ""; exit 0
+  | _ -> main_menu_helper ()
 
 (** [main ()] prompts for the game to play, then starts it. *)
-let main () =
-  (* ANSITerminal.(print_string [red]
-                  "\n\nWelcome to TechShip.\n");
-     print_endline "Would you like to start a new game or load a save?\n";
-     print_string  "> ";
-     match read_line () with
-     | exception Empty -> ()
-     | "1" -> play 
-     | _ -> play *)
-  failwith "Unimplemented"
+let main_menu () =
+  print_endline "";
+  print_endline "";
+  print_endline "TECHSHIP";
+  print_endline "";
+  print_endline "[1] Create new game.";
+  print_endline "[2] Load game.";
+  print_endline "[3] Quit.";
+  print_string "> ";
+  match read_line () with
+  | "1" -> print_endline ""; create_new_game ()
+  | "2" -> print_endline ""; load_save_file ()
+  | "3" -> print_endline ""; exit 0
+  | _ -> main_menu_helper ()
 
-(* uncomment when ready *)
+(* Execute the game. *)
+let () = main_menu ()
