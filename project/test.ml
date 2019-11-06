@@ -6,7 +6,10 @@ open OUnit2
 
 
 let e1 = event_of "sample" 0 
-let e2 = event_of "investor" 10
+
+let e2 = event_of "investor" 0 
+(* changed from 10 -- for future reference, I think we need to increment each 
+   time we add an event to make clear bounds for random selection of events *)
 
 let make_event_test
     (name : string)

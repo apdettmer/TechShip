@@ -46,3 +46,7 @@ val update_company : e -> int -> Founding.company -> Founding.company
     Raises: [InvalidEvent] if [category] is not a category of event in
     events.json or if [id] is not the id of an event in [category]*)
 val event_of : string -> int -> e
+
+(** [random_event category] selects a random event from [category].
+    Raises: [InvalidEventCategory] if [category] is not in events.json*)
+val random_event : string -> e

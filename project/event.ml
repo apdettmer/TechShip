@@ -49,6 +49,11 @@ let rec match_id category id = function
   | h::t -> if h |> member "id" |> to_int = id then h 
     else match_id category id t
 
+let get_category category =
+  match member category (Yojson.Basic.from_file "events.json") with
+  | `Null -> raise (InvalidEventCategory category)
+  | c -> to_list c
+
 let event_of category id = 
   match member category (Yojson.Basic.from_file "events.json") with 
   | `Null -> raise (InvalidEventCategory category)
@@ -67,3 +72,9 @@ let update_company (event : e) (response : int)
     (company : Founding.company) = 
   company
 
+let random_event category = 
+  Random.init (int_of_float (Unix.time ()));
+  try let cat_actual = get_category category in
+    let id = Random.int (List.length cat_actual) in 
+    event_of category id 
+  with InvalidEventCategory c ->  raise (InvalidEventCategory category)
