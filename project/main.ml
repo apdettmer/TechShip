@@ -3,7 +3,13 @@ open Growth
 open Event
 
 let create_new_game () =
-  print_endline "testing create_new_game"
+  print_endline "> be you";
+  print_endline "> recent graduate of Cornell Engineering";
+  print_endline "> be broke and jobless";
+  print_endline "> your parents lent you $10,000 and said \"get a life\"";
+  print_endline "> you have an idea for the Next Big Thing™:";
+  print_string "> ";
+  read_line () |> new_company |> print_stats
 
 let load_save_file () =
   print_endline "testing load_save_file"
