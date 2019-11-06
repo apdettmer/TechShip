@@ -15,9 +15,7 @@ type investor = {
   investment : int
 }
 
-type month = January | February | March | April | May | June | July | August | September | November | December
-
-type date = {year : int; mon : month; day : int;}
+type date = {year : int; month : int; day : int;}
 
 type company = {
   product : product;
@@ -66,12 +64,12 @@ let starting_fund start_amount =
 
 let new_company name = {
   product = new_product name;
-  funding = (*starting_fund*) 10000;
+  funding = (*starting_fund*) 5000;
   reputation = 50;
   morale = 50;
   employees = [];
   investors = [];
-  date = {year = 2020; mon = June; day = 2}
+  date = {year = 2020; month = 6; day = 2}
 }
 
 (* Below are the getters for founding. All very simple.  *)
@@ -123,11 +121,14 @@ let save_investors_helper (investor : investor) =
 let save_investors company =
   sprintf "\t\"investors\": [\n%s\n\t]," (List.rev_map save_investors_helper company.investors |> String.concat ",\n")
 
+let save_date company =
+  sprintf "\t\"date\": [\n\t\t{\n\t\t\t\"year\": %i,\n\t\t\t\"month\": %i,\n\t\t\t\"day\": %i\n\t\t}\n\t]" company.date.year company.date.month company.date.day
+
 let save company =
   let file_name = company.product.name in
   let save_file = String.concat "" [file_name; ".json"] in
   let out_chn = open_out save_file in
-  let data = String.concat "\n" ["{"; save_product company; save_funding company; save_reputation company; save_morale company; save_employees company; save_investors company; "}"] in
+  let data = String.concat "\n" ["{"; save_product company; save_funding company; save_reputation company; save_morale company; save_employees company; save_investors company; save_date company; "}"] in
   fprintf out_chn "%s" data;
   save_file
 
