@@ -5,7 +5,7 @@ open Event
 (**[play] is the repl loop that takes player input and determines actions
    in the game. [player_file] is a JSON file that is a save file. *)
 let play file_name = 
-  print_endline "testing play"
+  print_endline "Let the games begin…"
 
 let create_new_game () =
   print_endline "> be you";
@@ -24,7 +24,9 @@ let json_extension file =
   with Not_found -> false
 
 let load_save_file_helper () =
-  Sys.readdir "." |> Array.to_list |> List.filter (fun x -> json_extension x) |> List.sort String.compare |> List.iter print_endline
+  Sys.readdir "." |> Array.to_list |> List.filter (fun x -> json_extension x) |>
+  List.map (fun x -> Str.global_replace (Str.regexp_string ".json") "" x) |>
+  List.sort String.compare |> List.iter print_endline
 
 let load_save_file () =
   print_endline "Select a game:";
