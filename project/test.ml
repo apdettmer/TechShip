@@ -28,6 +28,12 @@ let event_tests = [
     (Event.affected_stats e2) List.length;
   make_event_test "Response list is 3 elements long" 3 
     (responses e2) List.length;
+  make_event_test "Random event sample does not raise exception" ()
+    (Event.random_event "sample") ignore; (* exceptions are not caught by ignore*)
+  make_event_test "Random event investor does not raise exception" ()
+    (Event.random_event "investor") ignore;
+  make_event_test "Random event government does not raise exception" ()
+    (Event.random_event "government") ignore;
 ]
 
 let comp1 = new_company "Creative Name"
