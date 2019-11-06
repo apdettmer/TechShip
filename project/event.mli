@@ -5,7 +5,10 @@ type e
 
 type response
 
+(* subresponse not yet implemented -- meant for events which don't use strict
+   addition/subtraction operations*)
 type subresponse
+
 (* following types unneccesary? Can match categories just by string, and this
    is only useful for getting an event -- not sure what other information we'd
    need to carry other than potentially the name of an investor*)
