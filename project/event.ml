@@ -7,6 +7,10 @@ exception InvalidEventCategory of string
 (* the type representing responses*)
 type response = {description : string; effects : (string * int) list}
 
+type subresponse = 
+  | Elementary of int 
+  | ListFunc of (string -> string list -> string) * string
+
 type e = {category : string; description : string; stats : string list;
           responses : response list } 
 

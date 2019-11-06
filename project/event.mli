@@ -5,7 +5,7 @@ type e
 
 type response
 
-
+type subresponse
 (* following types unneccesary? Can match categories just by string, and this
    is only useful for getting an event -- not sure what other information we'd
    need to carry other than potentially the name of an investor*)
