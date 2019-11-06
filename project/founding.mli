@@ -13,8 +13,6 @@ type investor
     product more descriptive. *)
 val new_company : string -> company
 
-
-
 (** [hire_employee] takes a string of an employee's name and then randomly
     generates values for morale and reputation, adds them to the employee
     list, and produces a new company with updated stats. *)

@@ -3,5 +3,14 @@
 		{
 			"name": "Test"
 		}
-	]
+	],
+	"funding": 10000,
+	"reputation": 50,
+	"morale": 50,
+	"employees": [
+
+	],
+	"investors": [
+
+	],
 }

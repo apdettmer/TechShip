@@ -2,6 +2,8 @@
 
 open Printf
 
+type product = {name : string}
+
 type employee = {
   name : string;
   morale : int;
@@ -10,10 +12,8 @@ type employee = {
 
 type investor = { 
   name : string;
-  funds_invested : int
+  investment : int
 }
-
-type product = {name : string}
 
 type month = January | February | March | April | May | June | July | August | September | November | December
 
@@ -22,9 +22,9 @@ type date = {year : int; mon : month; day : int;}
 type company = {
   product : product;
   funding : int;
-  employees : employee list;
   reputation : int;
   morale : int;
+  employees : employee list;
   investors : investor list;
   date : date;
 }
@@ -49,9 +49,9 @@ let hire_employee name company = let employee = new_employee name in
   {
     product = company.product;
     funding = company.funding;
-    employees = employee :: company.employees;
     reputation = company.reputation + employee.reputation;
     morale = company.morale + employee.morale;
+    employees = employee :: company.employees;
     investors = company.investors;
     date = company.date;
   }
@@ -67,9 +67,9 @@ let starting_fund start_amount =
 let new_company name = {
   product = new_product name;
   funding = (*starting_fund*) 10000;
-  employees = [];
   reputation = 50;
   morale = 50;
+  employees = [];
   investors = [];
   date = {year = 2020; mon = June; day = 2}
 }
@@ -81,14 +81,14 @@ let product company =
 let funding company =
   company.funding
 
-let employees company =
-  company.employees
-
 let reputation company =
   company.reputation
 
 let morale company =
   company.morale
+
+let employees company =
+  company.employees
 
 let investors company =
   company.investors
@@ -97,19 +97,38 @@ let date company =
   company.date
 
 let save_product company =
-  sprintf "\t\"product\": [\n\t\t{\n\t\t\t\"name\": \"%s\"\n\t\t}\n\t]" company.product.name
+  sprintf "\t\"product\": [\n\t\t{\n\t\t\t\"name\": \"%s\"\n\t\t}\n\t]," company.product.name
 
 let save_funding company =
-  sprintf "\"funding\": %i" company.funding
+  sprintf "\t\"funding\": %i," company.funding
+
+let save_reputation company =
+  sprintf "\t\"reputation\": %i," company.reputation
+
+let save_morale company =
+  sprintf "\t\"morale\": %i," company.morale
+
+(* let save_employees_helper_test () =
+   sprintf "\t\t{\n\t\t\t\"name\": \"%s\",\n\t\t\t\"morale\": %i,\n\t\t\t\"reputation\": %i\n\t\t}" "employee.name" 100 100 *)
+
+let save_employees_helper (employee : employee) =
+  sprintf "\t\t{\n\t\t\t\"name\": \"%s\",\n\t\t\t\"morale\": %i,\n\t\t\t\"reputation\": %i\n\t\t}" employee.name employee.morale employee.reputation
+
+let save_employees company =
+  sprintf "\t\"employees\": [\n%s\n\t]," (List.rev_map save_employees_helper company.employees |> String.concat ",\n") (*(String.concat ",\n" [(save_employees_helper_test ());(save_employees_helper_test ())])*)
+
+let save_investors_helper (investor : investor) =
+  sprintf "\t\t{\n\t\t\t\"name\": \"%s\",\n\t\t\t\"investment\": %i\n\t\t}" investor.name investor.investment
+
+let save_investors company =
+  sprintf "\t\"investors\": [\n%s\n\t]," (List.rev_map save_investors_helper company.investors |> String.concat ",\n")
 
 let save company =
   let file_name = company.product.name in
   let save_file = String.concat "" [file_name; ".json"] in
   let out_chn = open_out save_file in
-  let data = String.concat "\n" ["{"; save_product company; "}"] in
+  let data = String.concat "\n" ["{"; save_product company; save_funding company; save_reputation company; save_morale company; save_employees company; save_investors company; "}"] in
   fprintf out_chn "%s" data;
-  (* let in_chn = open_in save_file in
-     print_endline (input_line in_chn) *)
   save_file
 
 (** I'm not sure if we should display the other stats. Maybe we print the 
