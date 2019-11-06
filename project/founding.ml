@@ -97,7 +97,7 @@ let date company =
   company.date
 
 let save_product company =
-  sprintf "\"product\": [\n\t\t{\n\t\t\t\"name\": \"%s\"\n\t\t}\n]\n\t" company.product.name
+  sprintf "\t\"product\": [\n\t\t{\n\t\t\t\"name\": \"%s\"\n\t\t}\n\t]" company.product.name
 
 let save_funding company =
   sprintf "\"funding\": %i" company.funding
@@ -106,7 +106,7 @@ let save company =
   let file_name = company.product.name in
   let save_file = String.concat "" [file_name; ".json"] in
   let out_chn = open_out save_file in
-  let data = String.concat "" [save_product company; ""] in
+  let data = String.concat "\n" ["{"; save_product company; "}"] in
   fprintf out_chn "%s" data;
   (* let in_chn = open_in save_file in
      print_endline (input_line in_chn) *)
