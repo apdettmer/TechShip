@@ -16,8 +16,21 @@ let create_new_game () =
   print_string "> ";
   read_line () |> new_company |> save |> play
 
+let json_extension file =
+  let re = Str.regexp_string ".json" in
+  try 
+    ignore (Str.search_forward re file 0);
+    true
+  with Not_found -> false
+
+let load_save_file_helper () =
+  Sys.readdir "." |> Array.to_list |> List.filter (fun x -> json_extension x) |> List.sort String.compare |> List.iter print_endline
+
 let load_save_file () =
-  print_endline "testing load_save_file"
+  print_endline "Select a game:";
+  load_save_file_helper ();
+  print_string "> ";
+  String.concat "" [read_line (); ".json"] |> play
 
 let rec main_menu_helper () =
   print_endline "Invalid entry.";

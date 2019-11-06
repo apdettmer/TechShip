@@ -4,7 +4,7 @@ MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
 MAIN=main.byte
 TEST=test.byte
-OCAMLBUILD=ocamlbuild -use-ocamlfind
+OCAMLBUILD=ocamlbuild -use-ocamlfind -package Str
 PKGS=unix,oUnit,str,qcheck,csv
 
 default: build
