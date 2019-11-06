@@ -91,7 +91,7 @@
     },
     {
       "id": 1,
-      "description": "It's everyone's favorite: Tax Day! Looks like you'll be paying a hefty sum of $15000, unfortunately",
+      "description": "It's everyone's favorite: Tax Day! Looks like you'll be paying a hefty sum of $5000, unfortunately",
       "stats": [
         "funding",
         "reputation"
@@ -99,7 +99,7 @@
       "responses": [
         {
           "description": "Pay them what you owe",
-          "funding": -15000,
+          "funding": -5000,
           "reputation": 0
         },
         {
@@ -108,8 +108,8 @@
           "reputation": -100000
         },
         {
-          "description": "Fudge the numbers a bit. They won't notice you kept $5000, right? Just say it went to charity",
-          "funding": -10000,
+          "description": "Fudge the numbers a bit. They won't notice you kept $2500, right? Just say it went to charity",
+          "funding": -2500,
           "reputation": -20
         }
       ]
