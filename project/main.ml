@@ -4,7 +4,7 @@ open Event
 
 (**[play] is the repl loop that takes player input and determines actions
    in the game. [player_file] is a JSON file that is a save file. *)
-let play file_name = 
+let rec play file_name = 
   print_endline "Let the games begin…"
 
 let create_new_game () =
