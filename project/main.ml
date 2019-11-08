@@ -1,12 +1,19 @@
+open Yojson.Basic.Util
+
 open Founding
 open Growth
 open Event
 
 (**[play] is the repl loop that takes player input and determines actions
    in the game. [player_file] is a JSON file that is a save file. *)
-let rec play file_name = 
-  print_endline file_name;
-  print_endline "Let the games begin…"
+let rec play company =
+  ()
+
+let load_file file_name =
+  Yojson.Basic.from_file file_name |> play
+
+let start file_name =
+  play file_name
 
 let create_new_game () =
   ANSITerminal.(print_string [green] ">be you\n");
@@ -15,7 +22,10 @@ let create_new_game () =
   ANSITerminal.(print_string [green] ">your parents lent you $5,000 and said \"get a life\"\n");
   ANSITerminal.(print_string [green] ">you have an idea for the Next Big Thing™:\n");
   ANSITerminal.(print_string [green] ">");
-  read_line () |> new_company |> save |> play
+  let company = new_company (read_line ()) in
+  ANSITerminal.(print_string [green] ">herewego.jpg\n");
+  save company;
+  play company
 
 let json_extension file =
   let extension = Str.regexp_string ".json" in
@@ -24,24 +34,24 @@ let json_extension file =
     true
   with Not_found -> false
 
-let load_save_file_helper () =
+let list_files () =
   Sys.readdir "." |> Array.to_list |> List.filter (fun x -> json_extension x) |> List.map (fun x -> Str.global_replace (Str.regexp_string ".json") "" x) |> List.sort String.compare
 
-let rec file_finder save_files input =
+let rec find_file save_files input =
   if List.mem input save_files
   then String.concat "" [input; ".json"] |> play
-  else print_endline "Invalid entry.";
-  print_endline "";
-  load_save_file ()
+  else (print_endline "Invalid entry.";
+        print_endline "";
+        load_save_file ())
 
 and
 
   load_save_file () =
   print_endline "Select a game:";
-  let save_files = load_save_file_helper () in
+  let save_files = list_files () in
   List.iter print_endline save_files;
   print_string ">";
-  read_line () |> file_finder save_files
+  read_line () |> find_file save_files
 
 let rec main_menu_helper () =
   print_endline "Invalid entry.";
