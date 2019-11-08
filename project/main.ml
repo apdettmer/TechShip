@@ -17,9 +17,9 @@ let create_new_game () =
   read_line () |> new_company |> save |> play
 
 let json_extension file =
-  let re = Str.regexp_string ".json" in
+  let extension = Str.regexp_string ".json" in
   try 
-    ignore (Str.search_forward re file 0);
+    ignore (Str.search_forward extension file 0);
     true
   with Not_found -> false
 

@@ -42,6 +42,3 @@ val save : company -> string
 
 (** [print_stats] prints out the current stats of the company to the player. *)
 val print_stats: company -> unit
-
-
-
