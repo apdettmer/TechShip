@@ -138,15 +138,46 @@ let save company =
   let data = String.concat "\n" ["{"; save_product company; save_funding company; save_reputation company; save_morale company; save_employees company; save_investors company; save_date company; "}"] in
   fprintf out_chn "%s" data
 
-(* let load_product =
+let load_product json_product = {
+  name = json_product |> member "name" |> to_string
+}
 
-   let load json = {
-    product = json |> member "product" 
-   } *)
+let load_employee json_employee = {
+  name = json_employee |> member "name" |> to_string;
+  morale = json_employee |> member "morale" |> to_int;
+  reputation = json_employee |> member "reputation" |> to_int;
+}
+
+let load_investor json_investor = {
+  name = json_investor |> member "name" |> to_string;
+  investment = json_investor |> member "investment" |> to_int;
+}
+
+let load_date json_date = {
+  tm_sec = json_date |> member "second" |> to_int;
+  tm_min = json_date |> member "minute" |> to_int;
+  tm_hour = json_date |> member "hour" |> to_int;
+  tm_mday = json_date |> member "month day" |> to_int;
+  tm_mon = json_date |> member "month" |> to_int;
+  tm_year = json_date |> member "year" |> to_int;
+  tm_wday = json_date |> member "week day" |> to_int;
+  tm_yday = json_date |> member "year day" |> to_int;
+  tm_isdst = json_date |> member "daylight saving" |> to_bool;
+}
+
+let load json = {
+  product = json |> member "product" |> load_product;
+  funding = json |> member "funding" |> to_int;
+  reputation = json |> member "reputation" |> to_int;
+  morale = json |> member "morale" |> to_int;
+  employees = json |> member "employees" |> to_list |> List.map load_employee;
+  investors = json |> member "investors" |> to_list |> List.map load_investor;
+  date = json |> member "date" |> load_date;
+}
 
 (** I'm not sure if we should display the other stats. Maybe we print the 
     names of investors and amount invested? -ew424 *)
-let print_stats company = 
+let display_status company = 
   printf "Funding: %i\n" (funding company);
   printf "Reputation: %i\n" (reputation company);
   printf "Morale: %i\n" (morale company);

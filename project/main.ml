@@ -7,13 +7,10 @@ open Event
 (**[play] is the repl loop that takes player input and determines actions
    in the game. [player_file] is a JSON file that is a save file. *)
 let rec play company =
-  ()
+  display_status company
 
 let load_file file_name =
-  Yojson.Basic.from_file file_name |> play
-
-let start file_name =
-  play file_name
+  Yojson.Basic.from_file file_name |> load |> play
 
 let create_new_game () =
   ANSITerminal.(print_string [green] ">be you\n");
@@ -39,7 +36,7 @@ let list_files () =
 
 let rec find_file save_files input =
   if List.mem input save_files
-  then String.concat "" [input; ".json"] |> play
+  then String.concat "" [input; ".json"] |> load_file
   else (print_endline "Invalid entry.";
         print_endline "";
         load_save_file ())

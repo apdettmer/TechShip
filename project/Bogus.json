@@ -1,9 +1,7 @@
 {
-	"product": [
-		{
-			"name": "Bogus"
-		}
-	],
+	"product":{
+		"name": "Bogus"
+	},
 	"funding": 5000,
 	"reputation": 50,
 	"morale": 50,
@@ -13,11 +11,15 @@
 	"investors": [
 
 	],
-	"date": [
-		{
-			"year": 2020,
-			"month": 6,
-			"day": 2
-		}
-	]
+	"date": {
+		"second": 45,
+		"minute": 23,
+		"hour": 1,
+		"month day": 2,
+		"month": 6,
+		"year": 2020,
+		"week day": 2,
+		"year day": 154,
+		"daylight saving": true
+	}
 }
