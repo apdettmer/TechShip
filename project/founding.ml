@@ -1,8 +1,10 @@
-(* TODO: Create the module for the company in the growth phase *)
-
 open Printf
+open Unix
+open Yojson.Basic.Util
 
-type product = {name : string}
+type product = {
+  name : string
+}
 
 type employee = {
   name : string;
@@ -15,8 +17,6 @@ type investor = {
   investment : int
 }
 
-type date = {year : int; month : int; day : int;}
-
 type company = {
   product : product;
   funding : int;
@@ -24,7 +24,7 @@ type company = {
   morale : int;
   employees : employee list;
   investors : investor list;
-  date : date;
+  date : tm;
 }
 
 (** TODO: Make a type for a product. I'm not sure what kinds of fields to 
@@ -69,7 +69,17 @@ let new_company name = {
   morale = 50;
   employees = [];
   investors = [];
-  date = {year = 2020; month = 6; day = 2}
+  date = {
+    tm_sec = 45;
+    tm_min = 23;
+    tm_hour = 1;
+    tm_mday = 2;
+    tm_mon = 6;
+    tm_year = 2020;
+    tm_wday = 2;
+    tm_yday = 154;
+    tm_isdst = true
+  }
 }
 
 (* Below are the getters for founding. All very simple.  *)
@@ -95,7 +105,7 @@ let date company =
   company.date
 
 let save_product company =
-  sprintf "\t\"product\": [\n\t\t{\n\t\t\t\"name\": \"%s\"\n\t\t}\n\t]," company.product.name
+  sprintf "\t\"product\":{\n\t\t\"name\": \"%s\"\n\t}," company.product.name
 
 let save_funding company =
   sprintf "\t\"funding\": %i," company.funding
@@ -105,9 +115,6 @@ let save_reputation company =
 
 let save_morale company =
   sprintf "\t\"morale\": %i," company.morale
-
-(* let save_employees_helper_test () =
-   sprintf "\t\t{\n\t\t\t\"name\": \"%s\",\n\t\t\t\"morale\": %i,\n\t\t\t\"reputation\": %i\n\t\t}" "employee.name" 100 100 *)
 
 let save_employees_helper (employee : employee) =
   sprintf "\t\t{\n\t\t\t\"name\": \"%s\",\n\t\t\t\"morale\": %i,\n\t\t\t\"reputation\": %i\n\t\t}" employee.name employee.morale employee.reputation
@@ -122,15 +129,20 @@ let save_investors company =
   sprintf "\t\"investors\": [\n%s\n\t]," (List.rev_map save_investors_helper company.investors |> String.concat ",\n")
 
 let save_date company =
-  sprintf "\t\"date\": [\n\t\t{\n\t\t\t\"year\": %i,\n\t\t\t\"month\": %i,\n\t\t\t\"day\": %i\n\t\t}\n\t]" company.date.year company.date.month company.date.day
+  sprintf "\t\"date\": {\n\t\t\"second\": %i,\n\t\t\"minute\": %i,\n\t\t\"hour\": %i,\n\t\t\"month day\": %i,\n\t\t\"month\": %i,\n\t\t\"year\": %i,\n\t\t\"week day\": %i,\n\t\t\"year day\": %i,\n\t\t\"daylight saving\": %b\n\t}" company.date.tm_sec company.date.tm_min company.date.tm_hour company.date.tm_mday company.date.tm_mon company.date.tm_year company.date.tm_wday company.date.tm_yday company.date.tm_isdst
 
 let save company =
   let file_name = company.product.name in
   let save_file = String.concat "" [file_name; ".json"] in
   let out_chn = open_out save_file in
   let data = String.concat "\n" ["{"; save_product company; save_funding company; save_reputation company; save_morale company; save_employees company; save_investors company; save_date company; "}"] in
-  fprintf out_chn "%s" data;
-  save_file
+  fprintf out_chn "%s" data
+
+(* let load_product =
+
+   let load json = {
+    product = json |> member "product" 
+   } *)
 
 (** I'm not sure if we should display the other stats. Maybe we print the 
     names of investors and amount invested? -ew424 *)
