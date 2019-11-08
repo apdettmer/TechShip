@@ -15,7 +15,7 @@ let load_file file_name =
 let create_new_game () =
   ANSITerminal.(print_string [green] ">be you\n");
   ANSITerminal.(print_string [green] ">recent graduate of Cornell Engineering\n");
-  ANSITerminal.(print_string [green] ">be broke and jobless\n");
+  ANSITerminal.(print_string [green] ">broke and jobless\n");
   ANSITerminal.(print_string [green] ">your parents lent you $5,000 and said \"get a life\"\n");
   ANSITerminal.(print_string [green] ">you have an idea for the Next Big Thing™:\n");
   ANSITerminal.(print_string [green] ">");
