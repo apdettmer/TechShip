@@ -5,15 +5,16 @@ open Event
 (**[play] is the repl loop that takes player input and determines actions
    in the game. [player_file] is a JSON file that is a save file. *)
 let rec play file_name = 
+  print_endline file_name;
   print_endline "Let the games begin…"
 
 let create_new_game () =
-  print_endline "> be you";
-  print_endline "> recent graduate of Cornell Engineering";
-  print_endline "> be broke and jobless";
-  print_endline "> your parents lent you $5,000 and said \"get a life\"";
-  print_endline "> you have an idea for the Next Big Thing™:";
-  print_string "> ";
+  ANSITerminal.(print_string [green] ">be you\n");
+  ANSITerminal.(print_string [green] ">recent graduate of Cornell Engineering\n");
+  ANSITerminal.(print_string [green] ">be broke and jobless\n");
+  ANSITerminal.(print_string [green] ">your parents lent you $5,000 and said \"get a life\"\n");
+  ANSITerminal.(print_string [green] ">you have an idea for the Next Big Thing™:\n");
+  ANSITerminal.(print_string [green] ">");
   read_line () |> new_company |> save |> play
 
 let json_extension file =
@@ -24,15 +25,23 @@ let json_extension file =
   with Not_found -> false
 
 let load_save_file_helper () =
-  Sys.readdir "." |> Array.to_list |> List.filter (fun x -> json_extension x) |>
-  List.map (fun x -> Str.global_replace (Str.regexp_string ".json") "" x) |>
-  List.sort String.compare |> List.iter print_endline
+  Sys.readdir "." |> Array.to_list |> List.filter (fun x -> json_extension x) |> List.map (fun x -> Str.global_replace (Str.regexp_string ".json") "" x) |> List.sort String.compare
 
-let load_save_file () =
+let rec file_finder save_files input =
+  if List.mem input save_files
+  then String.concat "" [input; ".json"] |> play
+  else print_endline "Invalid entry.";
+  print_endline "";
+  load_save_file ()
+
+and
+
+  load_save_file () =
   print_endline "Select a game:";
-  load_save_file_helper ();
-  print_string "> ";
-  String.concat "" [read_line (); ".json"] |> play
+  let save_files = load_save_file_helper () in
+  List.iter print_endline save_files;
+  print_string ">";
+  read_line () |> file_finder save_files
 
 let rec main_menu_helper () =
   print_endline "Invalid entry.";
@@ -40,7 +49,7 @@ let rec main_menu_helper () =
   print_endline "[1] Create new game.";
   print_endline "[2] Load game.";
   print_endline "[3] Quit.";
-  print_string "> ";
+  print_string ">";
   match read_line () with
   | "1" -> print_endline ""; create_new_game ()
   | "2" -> print_endline ""; load_save_file ()
@@ -51,12 +60,12 @@ let rec main_menu_helper () =
 let main_menu () =
   print_endline "";
   print_endline "";
-  print_endline "TECHSHIP";
+  print_endline "T E C H S H I P";
   print_endline "";
   print_endline "[1] Create new game.";
   print_endline "[2] Load game.";
   print_endline "[3] Quit.";
-  print_string "> ";
+  print_string ">";
   match read_line () with
   | "1" -> print_endline ""; create_new_game ()
   | "2" -> print_endline ""; load_save_file ()
