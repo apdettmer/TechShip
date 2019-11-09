@@ -36,9 +36,12 @@ val morale : company -> int
 (** [investors] is an [investor] list of investors in the company. *)
 val investors : company -> investor list
 
-(** [save] is a string of the filename and also writes to or creates a JSON file
-    with the save data of the company. *)
+(** [save] writes to or creates a JSON file with the save data of the 
+    company. *)
 val save : company -> unit
 
+(** [load json] is the company represented in json. *)
+val load : Yojson.Basic.t -> company
+
 (** [print_stats] prints out the current stats of the company to the player. *)
-val print_stats: company -> unit
+val display_status : company -> unit
