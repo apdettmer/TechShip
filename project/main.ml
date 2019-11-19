@@ -4,10 +4,28 @@ open Founding
 open Growth
 open Event
 
+
+let rec display_responses count = function
+  | [] -> ()
+  | h :: t -> Stdlib.print_string ("[" ^ (string_of_int count) ^ "] ");
+    Stdlib.print_endline (response_description h); display_responses (count + 1) t
+
+(**[display_event company] generates a random event of type [e], prints out
+   its description and returns it. *)
+let display_event company = 
+  let e = company |> Event.random_category |> Event.random_event in 
+  Stdlib.print_endline (description e); Stdlib.print_endline "";
+  e
+
 (**[play] is the repl loop that takes player input and determines actions
    in the game. [player_file] is a JSON file that is a save file. *)
 let rec play company =
-  display_status company
+  display_status company;
+  let event = display_event company in display_responses 0 (responses event);
+  Stdlib.print_endline "\nHow will you respond? "
+
+
+
 
 let create_new_save () =
   ANSITerminal.(print_string [green] ">be you\n");
@@ -86,6 +104,7 @@ let main_menu () =
   | "2" -> print_endline ""; save_file Delete
   | "3" -> print_endline ""; exit 0
   | _ -> main_menu_helper ()
+
 
 (* Execute the game. *)
 let () = main_menu ()

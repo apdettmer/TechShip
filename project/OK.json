@@ -1,0 +1,23 @@
+{
+	"product": [
+		{
+			"name": "OK"
+		}
+	],
+	"funding": 5000,
+	"reputation": 50,
+	"morale": 50,
+	"employees": [
+
+	],
+	"investors": [
+
+	],
+	"date": [
+		{
+			"year": 2020,
+			"month": 6,
+			"day": 2
+		}
+	]
+}

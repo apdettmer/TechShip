@@ -38,6 +38,8 @@ val affected_stats : e -> string list
 
 val responses : e -> response list
 
+val response_description : response -> string
+
 (* * 
    val event_type : e -> event_type *)
 
@@ -53,3 +55,8 @@ val event_of : string -> int -> e
 (** [random_event category] selects a random event from [category].
     Raises: [InvalidEventCategory] if [category] is not in events.json*)
 val random_event : string -> e
+
+(** [random_category company] selects at random a category in {"investor", "other", 
+    "employee", "government"}. As of 11/19, the implementation does not factor in 
+    the company's stats for the randomness.  *)
+val random_category : Founding.company -> string

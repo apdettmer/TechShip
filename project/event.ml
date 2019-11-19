@@ -7,6 +7,8 @@ exception InvalidEventCategory of string
 (* the type representing responses*)
 type response = {description : string; effects : (string * int) list}
 
+let response_description response = response.description
+
 type subresponse = 
   | Elementary of int 
   | ListFunc of (string -> string list -> string) * string
@@ -78,3 +80,13 @@ let random_event category =
     let id = Random.int (List.length cat_actual) in 
     event_of category id 
   with InvalidEventCategory c ->  raise (InvalidEventCategory category)
+
+(**[]  *)
+let random_category (company : Founding.company) = 
+  Random.init (int_of_float (Unix.time ()));
+  match (Random.int 100) mod 4 with
+  | 0 -> "investor"
+  | 1 -> "employee"
+  | 2 -> "government"
+  | 3 -> "other"
+  | _ -> "other"
