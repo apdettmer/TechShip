@@ -5,6 +5,26 @@ open Growth
 open Event
 
 
+let rec apply_response responses num company = 
+  match (responses, num) with
+  | (h :: t, 0) -> update_company h company
+  | (h :: t, _) -> apply_response t (num - 1) company 
+  | (_, _) -> failwith "That number is greater than the number of responses"
+
+let rec get_response num = 
+  try
+    match read_line () with
+    | "0" -> 0
+    | "1" -> 1
+    | "2" -> if num >= 2 then 2 else get_response num
+    | "3" -> if num >= 3 then 3 else get_response num
+    | _ -> Stdlib.print_endline "That is not a valid response number. Try again.";
+      get_response num
+  with Failure c ->  
+    get_response num
+
+(**[display_responses count responses] prints out the numbered list of [responses]
+   to the player.   *)
 let rec display_responses count = function
   | [] -> ()
   | h :: t -> Stdlib.print_string ("[" ^ (string_of_int count) ^ "] ");
@@ -21,9 +41,11 @@ let display_event company =
    in the game. [player_file] is a JSON file that is a save file. *)
 let rec play company =
   display_status company;
-  let event = display_event company in display_responses 0 (responses event);
-  Stdlib.print_endline "\nHow will you respond? "
-
+  let event = display_event company in let rresponses = responses event in 
+  display_responses 0 (rresponses);
+  Stdlib.print_endline "\nHow will you respond? ";
+  let num = get_response (List.length rresponses) in 
+  company |> apply_response rresponses num |> play
 
 
 

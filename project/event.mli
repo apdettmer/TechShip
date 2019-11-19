@@ -44,7 +44,7 @@ val response_description : response -> string
    val event_type : e -> event_type *)
 
 (**  *)
-val update_company : e -> int -> Founding.company -> Founding.company
+val update_company : response -> Founding.company -> Founding.company
 
 (** [event_of category id] gives the event with [id] in [category] from
     events.json

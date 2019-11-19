@@ -70,7 +70,7 @@ let event_of category id =
     with InvalidEventId i -> raise (InvalidEventId i)
 
 
-let update_company (event : e) (response : int) 
+let update_company (response : response) 
     (company : Founding.company) = 
   company
 
