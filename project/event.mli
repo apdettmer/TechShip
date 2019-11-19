@@ -35,10 +35,13 @@ val description : e -> string
     by [event]*)
 val affected_stats : e -> string list
 
-
+(**[responses event] is the list of possible [responses] to that event *)
 val responses : e -> response list
 
+(**[response_description response] is the description of [response]*)
 val response_description : response -> string
+
+val effects : response -> (string * int) list
 
 (* * 
    val event_type : e -> event_type *)

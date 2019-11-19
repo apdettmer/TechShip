@@ -207,6 +207,7 @@ let load json = {
 (** I'm not sure if we should display the other stats. Maybe we print the 
     names of investors and amount invested? -ew424 *)
 let display_status company =
+  printf "\n";
   printf "Funding: %i\n" (funding company);
   printf "Reputation: %i\n" (reputation company);
   printf "Morale: %i\n" (morale company);
