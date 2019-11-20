@@ -2,12 +2,16 @@ open Event
 open Founding
 open Growth
 open OUnit2
+open Yojson.Basic.Util
 
 let e1 = event_of "sample" 0 
 
 let e2 = event_of "investor" 0 
 (* changed from 10 -- for future reference, I think we need to increment each 
    time we add an event to make clear bounds for random selection of events *)
+
+let fun_prog = List.nth( Yojson.Basic.from_file "data/samplewords.json"
+                         |> member "words" |> to_list) 1 |> to_string
 
 let make_event_test
     (name : string)
@@ -19,7 +23,8 @@ let make_event_test
 
 let event_tests = [
   make_event_test "category of sample" "sample" e1 Event.category;
-  make_event_test "description of sample" "sample" e1 Event.description;
+  make_event_test 
+    "description of sample" "sample string_val int_val" e1 Event.description;
   make_event_test "affected stats list size of sample" 
     2 (Event.affected_stats e1) List.length;
   make_event_test "affected stats list size of investor event e2" 2 
@@ -32,6 +37,11 @@ let event_tests = [
     (Event.random_event "investor") ignore;
   make_event_test "Random event government does not raise exception" ()
     (Event.random_event "government") ignore;
+  make_event_test "Inserting into sample description" "sample hello 0"
+    (Event.fill_event_description e1 "hello" 0) (Event.description);
+  make_event_test 
+    "Inserting into sample description 2" "sample Functional Programming 0"
+    (Event.fill_event_description e1 fun_prog 0) (Event.description)
 ]
 
 let comp1 = new_company "Creative Name"

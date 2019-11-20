@@ -97,7 +97,7 @@ let random_event category =
   try let cat_actual = get_category category in
     let id = Random.int (List.length cat_actual) in 
     event_of category id 
-  with InvalidEventCategory c ->  raise (InvalidEventCategory category)
+  with InvalidEventCategory _ ->  raise (InvalidEventCategory category)
 
 let rec sum_func lst company =
   match lst with
@@ -129,3 +129,13 @@ let random_category (company : Founding.company) =
 let update_company (response : response) (company : Founding.company) = 
   company
 (* apply_effects company (effects response) *)
+
+let fill_event_description event replace i = 
+  match event with | {category; description = d; stats; responses} ->
+    {category;
+     description = 
+       (Str.replace_first (Str.regexp "string_val") replace d)
+       |> (Str.replace_first (Str.regexp "int_val") (string_of_int i));
+     stats;
+     responses
+    }

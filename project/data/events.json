@@ -2,7 +2,7 @@
   "sample": [
     {
       "id": 0,
-      "description": "sample",
+      "description": "sample string_val int_val",
       "stats": [
         "funding",
         "morale"
