@@ -1,10 +1,10 @@
 {
 	"product":{
-           		"name": "Test"
+           		"name": "Techship"
            	},
-	"funding": 5000,
-	"reputation": 50,
-	"morale": 50,
+	"funding": 5500,
+	"reputation": 20,
+	"morale": 60,
 	"employees": [
            
            	],

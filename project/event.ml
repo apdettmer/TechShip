@@ -11,12 +11,12 @@ type response = {
   effects : (string * int option) list;
 }
 
-let response_description response = response.description
+let res_desc response = response.description
 
 let effects response = response.effects
 
-type e = {category : string; description : string; stats : string list;
-          responses : response list } 
+type event = {category : string; description : string; stats : string list;
+              responses : response list } 
 
 let category event = 
   event.category

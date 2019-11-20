@@ -208,20 +208,11 @@ let load json = {
   date = json |> member "date" |> load_date;
 }
 
-(** I'm not sure if we should display the other stats. Maybe we print the 
-    names of investors and amount invested? -ew424 *)
 let display_status company =
-  printf "\n";
   printf "Funding: %i\n" (funding company);
   printf "Reputation: %i\n" (reputation company);
   printf "Morale: %i\n" (morale company);
-  printf "Number of employees: %i\n" (List.length (employees company))
-
-(* (** TODO: Input an event or response to an event (for ex. a record with data on
-    the stat changed to be made) and apply that response to the company,
-    producing a new one *)
-   let update_company event company =
-   failwith "unimplemented" *)
+  printf "Number of employees: %i\n\n" (List.length (employees company))
 
 let update_category company cat v = 
   match cat with 

@@ -1,7 +1,7 @@
 (* mli for an event *)
 
 
-type e
+type event
 
 type response
 
@@ -23,20 +23,20 @@ exception InvalidEventId of int
 exception InvalidEventCategory of string
 
 (** [category event] gives the category of [event]*)
-val category : e -> string
+val category : event -> string
 
 (** [description event] gives the description of [event]*)
-val description : e -> string
+val description : event -> string
 
 (** [affected_stats event] gives all the company stats potentially affected
     by [event]*)
-val affected_stats : e -> string list
+val affected_stats : event -> string list
 
 (**[responses event] is the list of possible [responses] to that event *)
-val responses : e -> response list
+val responses : event -> response list
 
 (**[response_description response] is the description of [response]*)
-val response_description : response -> string
+val res_desc : response -> string
 
 val effects : response -> (string * int option) list
 
@@ -50,11 +50,11 @@ val update_company : response -> Founding.company -> Founding.company
     events.json
     Raises: [InvalidEvent] if [category] is not a category of event in
     events.json or if [id] is not the id of an event in [category]*)
-val event_of : string -> int -> e
+val event_of : string -> int -> event
 
 (** [random_event category] selects a random event from [category].
     Raises: [InvalidEventCategory] if [category] is not in events.json*)
-val random_event : string -> e
+val random_event : string -> event
 
 (** [random_category company] selects at random a category in {"investor", "other", 
     "employee", "government"}. As of 11/19, the implementation does not factor in 
@@ -64,6 +64,6 @@ val random_category : Founding.company -> string
 (** [fill_event_description event replace i] gives the description of
     [event] with all instances of 'string_val' and 'int_val' replaced with 
     [replace] and [i] respectively*)
-val fill_event_description : e -> string -> int -> e
+val fill_event_description : event -> string -> int -> event
 
 val select_some_word : unit -> string
