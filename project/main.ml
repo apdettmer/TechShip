@@ -6,7 +6,7 @@ open Event
 
 type load_or_delete = Load | Delete
 
-type alternative = Response of response | Status | Save | Menu
+type alternative = Response of response | Status | Save | Menu 
 
 let alternative_description alt =
   match alt with
@@ -18,11 +18,13 @@ let alternative_description alt =
 let rec present_alternatives company altlst =
   List.iter (fun (i, a) -> print_endline ("[" ^ (string_of_int i) ^ "] " ^ (alternative_description a))) altlst;
   print_string ">";
-  match (List.assoc (read_int ()) altlst) with
-  | Response res -> update_company res company |> play
-  | Status -> display_status company; present_alternatives company altlst
-  | Save -> save company; present_alternatives company altlst
-  | Menu -> (* main_menu () *) present_alternatives company altlst
+  try(
+    match (List.assoc (read_int ()) altlst) with
+    | Response res -> update_company res company |> play
+    | Status -> display_status company; present_alternatives company altlst
+    | Save -> save company; present_alternatives company altlst
+    | Menu -> main_menu () (*present_alternatives company altlst*))
+  with | _ -> print_endline "Invalid entry."; present_alternatives company altlst
 
 and
 
@@ -91,23 +93,22 @@ and
   list_files () =
   Sys.readdir "." |> Array.to_list |> List.filter (fun x -> json_extension x) |> List.map (fun x -> Str.global_replace (Str.regexp_string ".json") "" x) |> List.sort String.compare
 
-and
-
-  find_file load_or_delete save_files input=
-  if List.mem input save_files
-  then String.concat "" [input; ".json"] |> handle_save_file_helper load_or_delete
-  else (print_endline "Invalid entry.";
-        print_endline "";
-        handle_save_file load_or_delete)
 
 and
 
   handle_save_file load_or_delete =
   print_endline "Select a save:";
   let save_files = list_files () in
-  List.iter print_endline save_files;
+  let nums = create_ilst [] (List.length save_files) in 
+  let vals = List.combine nums save_files in 
+  List.iter (fun (i,f) -> 
+      print_endline ("[" ^ (string_of_int i) ^ "] " ^ f)) vals;
   print_string ">";
-  read_line () |> find_file load_or_delete save_files
+  try (String.concat "" [(List.assoc (read_int ()) vals); ".json"] |> handle_save_file_helper load_or_delete)
+  with _ -> print_endline "Invalid entry."; 
+    print_endline "";
+    handle_save_file load_or_delete
+
 
 and
 
