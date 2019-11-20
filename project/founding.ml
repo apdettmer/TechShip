@@ -217,8 +217,24 @@ let display_status company =
   printf "Morale: %i\n" (morale company);
   printf "Number of employees: %i\n" (List.length (employees company))
 
-(** TODO: Input an event or response to an event (for ex. a record with data on
+(* (** TODO: Input an event or response to an event (for ex. a record with data on
     the stat changed to be made) and apply that response to the company,
     producing a new one *)
-let update_company event company =
-  failwith "unimplemented"
+   let update_company event company =
+   failwith "unimplemented" *)
+
+let update_category company cat v = 
+  match cat with 
+  | "funding" -> {product = company.product; funding = company.funding + v;
+                  reputation = company.reputation;  morale = company.morale; 
+                  employees = company.employees;investors = company.investors; 
+                  date = company.date}
+  | "reputation" -> {product = company.product; funding = company.funding;
+                     reputation = company.reputation + v; 
+                     morale = company.morale; employees = company.employees;
+                     investors = company.investors; date = company.date}
+  | "morale" -> {product = company.product; funding = company.funding;
+                 reputation = company.reputation; morale = company.morale + v; 
+                 employees = company.employees;
+                 investors = company.investors; date = company.date}
+  | _ -> failwith "Unimplemented"

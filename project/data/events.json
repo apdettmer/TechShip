@@ -3,6 +3,9 @@
     {
       "id": 0,
       "description": "Congratulations. You've just been awarded $500 for your use of string_val in the workplace.",
+      "stats": [
+        "funding"
+      ],
       "responses": [
         {
           "description": "Graciously accept the gift.",
@@ -13,6 +16,11 @@
     {
       "id": 1,
       "description": "Some local investors are growing wary with your use of string_val in the workplace, even going so far as to request your discontinuing of it.",
+      "stats": [
+        "funding",
+        "reputation",
+        "morale"
+      ],
       "responses": [
         {
           "description": "Stop your use at once, no matter the immediate financial cost.",
@@ -30,6 +38,10 @@
     {
       "id": 2,
       "description": "Licensing fees. You have to pay to continue using string_val for your company.",
+      "stats": [
+        "funding",
+        "morale"
+      ],
       "responses": [
         {
           "description": "Pay the fees.",

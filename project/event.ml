@@ -8,17 +8,12 @@ exception InvalidEventCategory of string
 (* the type representing responses*)
 type response = {
   description : string; 
-  effects : (string * int) list;
-  effect_functions : (Founding.company -> Founding.company) list
+  effects : (string * int option) list;
 }
 
 let response_description response = response.description
 
 let effects response = response.effects
-
-type subresponse = 
-  | Elementary of int 
-  | ListFunc of (string -> string list -> string) * string
 
 type e = {category : string; description : string; stats : string list;
           responses : response list } 
@@ -43,14 +38,22 @@ let rec get_str_lst acc = function
   | h::t -> let stat = h |> to_string in
     get_str_lst (stat::acc) t
 
+(** [get_effect category response] gives [None] if there is no effect 
+    associated with [category] under [response] or the value otherwise*)
+let get_effect category response = 
+  match member category response with
+  | `Null -> None
+  | v -> Some (to_int v)
+
 (** [make_responses lst] gives a list of responses from [lst].
     Requires: [lst] is a valid list of responses as documented in events.json*)
 let rec make_responses = function 
   | [] -> []
   | h::t -> 
     {description = h |> member "description" |> to_string;
-     effects = [];
-     effect_functions = []} :: make_responses t
+     effects = ("funding", get_effect "funding" h) :: 
+               ("reputation", get_effect "reputation" h) ::
+               ("morale", get_effect "morale" h) :: []} :: make_responses t
 
 (** [match_id category id lst] gives the json event that matches
     [id].
@@ -118,10 +121,21 @@ let random_category (company : Founding.company) =
    | ("reputation", i) :: t -> company 
    | ("employees", i) :: t-> company
    | (_ , i)  :: t -> apply_effects company t
-   | [] -> company
-*)
+   | [] -> company *)
+
+let rec apply_effects company = function 
+  | [] -> company
+  | (category,opt)::t -> begin
+      match opt with 
+      | None -> apply_effects company t
+      | Some v -> apply_effects (Founding.update_category company category v) t
+    end
+
+
 let update_company (response : response) (company : Founding.company) = 
-  company
+  let updates = effects response in 
+  apply_effects company updates
+
 (* apply_effects company (effects response) *)
 
 let fill_event_description event replace i = 
@@ -135,3 +149,9 @@ let fill_event_description event replace i =
       stats;
       responses
     }
+
+let select_some_word () =
+  Random.init (int_of_float (Unix.time ()));
+  let file = Yojson.Basic.from_file "data/samplewords.json" in
+  let lst = member "words" file |> to_list in 
+  List.nth lst (Random.int (List.length lst)) |> to_string

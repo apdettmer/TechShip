@@ -5,9 +5,6 @@ type e
 
 type response
 
-(* subresponse not yet implemented -- meant for events which don't use strict
-   addition/subtraction operations*)
-type subresponse
 
 (* following types unneccesary? Can match categories just by string, and this
    is only useful for getting an event -- not sure what other information we'd
@@ -41,7 +38,7 @@ val responses : e -> response list
 (**[response_description response] is the description of [response]*)
 val response_description : response -> string
 
-val effects : response -> (string * int) list
+val effects : response -> (string * int option) list
 
 (* * 
    val event_type : e -> event_type *)
@@ -68,3 +65,5 @@ val random_category : Founding.company -> string
     [event] with all instances of 'string_val' and 'int_val' replaced with 
     [replace] and [i] respectively*)
 val fill_event_description : e -> string -> int -> e
+
+val select_some_word : unit -> string

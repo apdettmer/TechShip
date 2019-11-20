@@ -44,8 +44,10 @@ and
   (**[display_event company] generates a random event of type [e], prints out
      its description and returns it. *)
   display_event company = 
-  let e = (*company |> Event.random_category*) "demo" |> Event.random_event in
-  Stdlib.print_endline (description e); Stdlib.print_endline "";
+  let e = (*company |> Event.random_category*) 
+    fill_event_description ("demo" |> Event.random_event) 
+      (select_some_word ()) 20
+  in  Stdlib.print_endline (description e); Stdlib.print_endline "";
   e
 
 and
