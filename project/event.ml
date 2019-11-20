@@ -11,6 +11,13 @@ type response = {
   effect_functions : (Founding.company -> Founding.company) list
 }
 
+let response_description response = response.description
+
+let effects response = response.effects
+
+type subresponse = 
+  | Elementary of int 
+  | ListFunc of (string -> string list -> string) * string
 
 type e = {category : string; description : string; stats : string list;
           responses : response list } 
@@ -26,6 +33,7 @@ let affected_stats event =
 
 let responses event = 
   event.responses
+
 
 (** [get_str_lst acc lst] converts [lst] of type Yojson.Basic.t list to
     a string list and appends to [acc].
@@ -94,4 +102,30 @@ let random_event category =
 let rec sum_func lst company =
   match lst with
   | [] -> company
-  | (cat, amount)::t -> 
+  | (cat, amount)::t -> failwith "Unimplemented"
+
+(**[]  *)
+let random_category (company : Founding.company) = 
+  Random.init (int_of_float (Unix.time ()));
+  match (Random.int 100) mod 4 with
+  | 0 -> "investor"
+  | 1 -> "employee"
+  | 2 -> "government"
+  | 3 -> "other"
+  | _ -> "other"
+
+(* let rec apply_effects company = function
+   | ("funding", i) :: t -> { product = product (company); 
+                             funding = funding (company) + i; reputation = reputation(company); 
+                             morale = morale (company); employees = employees (company); 
+                             investors = investors (company); date = date (company)
+                           }
+   | ("morale", i) :: t-> company
+   | ("reputation", i) :: t -> company 
+   | ("employees", i) :: t-> company
+   | (_ , i)  :: t -> apply_effects company t
+   | [] -> company
+*)
+let update_company (response : response) (company : Founding.company) = 
+  company
+(* apply_effects company (effects response) *)

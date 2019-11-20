@@ -4,10 +4,50 @@ open Founding
 open Growth
 open Event
 
+
+let rec apply_response responses num company = 
+  match (responses, num) with
+  | (h :: t, 0) -> update_company h company
+  | (h :: t, _) -> apply_response t (num - 1) company 
+  | (_, _) -> failwith "That number is greater than the number of responses"
+
+let rec get_response num = 
+  try
+    match read_line () with
+    | "0" -> 0
+    | "1" -> 1
+    | "2" -> if num >= 2 then 2 else get_response num
+    | "3" -> if num >= 3 then 3 else get_response num
+    | _ -> Stdlib.print_endline "That is not a valid response number. Try again.";
+      get_response num
+  with Failure c ->  
+    get_response num
+
+(**[display_responses count responses] prints out the numbered list of [responses]
+   to the player.   *)
+let rec display_responses count = function
+  | [] -> ()
+  | h :: t -> Stdlib.print_string ("[" ^ (string_of_int count) ^ "] ");
+    Stdlib.print_endline (response_description h); display_responses (count + 1) t
+
+(**[display_event company] generates a random event of type [e], prints out
+   its description and returns it. *)
+let display_event company = 
+  let e = company |> Event.random_category |> Event.random_event in 
+  Stdlib.print_endline (description e); Stdlib.print_endline "";
+  e
+
 (**[play] is the repl loop that takes player input and determines actions
    in the game. [player_file] is a JSON file that is a save file. *)
 let rec play company =
-  display_status company
+  display_status company;
+  let event = display_event company in let rresponses = responses event in 
+  display_responses 0 (rresponses);
+  Stdlib.print_endline "\nHow will you respond? ";
+  let num = get_response (List.length rresponses) in 
+  company |> apply_response rresponses num |> play
+
+
 
 let create_new_save () =
   ANSITerminal.(print_string [green] ">be you\n");
@@ -86,6 +126,7 @@ let main_menu () =
   | "2" -> print_endline ""; save_file Delete
   | "3" -> print_endline ""; exit 0
   | _ -> main_menu_helper ()
+
 
 (* Execute the game. *)
 let () = main_menu ()

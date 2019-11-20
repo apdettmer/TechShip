@@ -33,6 +33,9 @@ val reputation : company -> int
 (** [morale] is the morale of the company. *)
 val morale : company -> int
 
+(** [date] is the current date. *)
+val date : company -> Unix.tm
+
 (** [investors] is an [investor] list of investors in the company. *)
 val investors : company -> investor list
 
