@@ -40,11 +40,11 @@ let display_event company =
    in the game. [player_file] is a JSON file that is a save file. *)
 let rec play company =
   display_status company;
-  let event = display_event company in let rresponses = responses event in 
-  display_responses 0 (rresponses);
+  let event = display_event company in let responses = responses event in 
+  display_responses 0 (responses);
   Stdlib.print_endline "\nHow will you respond? ";
-  let num = get_response (List.length rresponses) in 
-  company |> apply_response rresponses num |> play
+  let num = get_response (List.length responses) in 
+  company |> apply_response responses num |> play
 
 let create_new_save () =
   ANSITerminal.(print_string [green] ">be you\n");
@@ -57,6 +57,7 @@ let create_new_save () =
   ANSITerminal.(print_string [green] ">herewego.jpg\n");
   save company;
   play company
+(* print_endline "mark" *)
 
 let json_extension file =
   let extension = Str.regexp_string ".json" in
