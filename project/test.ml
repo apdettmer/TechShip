@@ -1,7 +1,7 @@
 open Event
 open Founding
 open Growth
-open Main
+(* open Main *)
 open OUnit2
 
 
@@ -21,7 +21,8 @@ let make_event_test
 
 let event_tests = [
   make_event_test "category of sample" "sample" e1 Event.category;
-  make_event_test "description of sample" "sample" e1 Event.description;
+  make_event_test 
+    "description of sample" "sample string_val int_val" e1 Event.description;
   make_event_test "affected stats list size of sample" 
     2 (Event.affected_stats e1) List.length;
   make_event_test "affected stats list size of investor event e2" 2 
@@ -34,6 +35,8 @@ let event_tests = [
     (Event.random_event "investor") ignore;
   make_event_test "Random event government does not raise exception" ()
     (Event.random_event "government") ignore;
+  make_event_test "Inserting into sample description" "sample hello 0"
+    (Event.fill_event_description e1 "hello" 0) (Event.description)
 ]
 
 let comp1 = new_company "Creative Name"
