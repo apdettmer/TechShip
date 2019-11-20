@@ -2,3 +2,4 @@ B _build
 PKG ANSITerminal
 PKG oUnit
 PKG yojson
+PKG Str

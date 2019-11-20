@@ -5,22 +5,27 @@ exception InvalidEventId of int
 exception InvalidEventCategory of string
 
 (* the type representing responses*)
-type response = {description : string; effects : (string * int) list}
+type response = {
+  description : string; 
+  effects : (string * int) list;
+  effect_functions : (Founding.company -> Founding.company) list
+}
 
-type subresponse = 
-  | Elementary of int 
-  | ListFunc of (string -> string list -> string) * string
 
 type e = {category : string; description : string; stats : string list;
           responses : response list } 
 
-let category event = event.category
+let category event = 
+  event.category
 
-let description event = event.description
+let description event = 
+  event.description
 
-let affected_stats event = event.stats
+let affected_stats event = 
+  event.stats
 
-let responses event = event.responses
+let responses event = 
+  event.responses
 
 (** [get_str_lst acc lst] converts [lst] of type Yojson.Basic.t list to
     a string list and appends to [acc].
@@ -36,7 +41,8 @@ let rec make_responses = function
   | [] -> []
   | h::t -> 
     {description = h |> member "description" |> to_string;
-     effects = []} :: make_responses t
+     effects = [];
+     effect_functions = []} :: make_responses t
 
 (** [match_id category id lst] gives the json event that matches
     [id].
@@ -50,12 +56,12 @@ let rec match_id category id = function
     else match_id category id t
 
 let get_category category =
-  match member category (Yojson.Basic.from_file "events.json") with
+  match member category (Yojson.Basic.from_file "/data/events.json") with
   | `Null -> raise (InvalidEventCategory category)
   | c -> to_list c
 
 let event_of category id = 
-  match member category (Yojson.Basic.from_file "events.json") with 
+  match member category (Yojson.Basic.from_file "/data/events.json") with 
   | `Null -> raise (InvalidEventCategory category)
   | c -> try let event = match_id category id (c |> to_list) in
       {
@@ -84,3 +90,8 @@ let random_event category =
     let id = Random.int (List.length cat_actual) in 
     event_of category id 
   with InvalidEventCategory c ->  raise (InvalidEventCategory category)
+
+let rec sum_func lst company =
+  match lst with
+  | [] -> company
+  | (cat, amount)::t -> 

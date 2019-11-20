@@ -71,7 +71,7 @@
   "government": [
     {
       "id": 0,
-      "description": "The government has passed a new regulation: a fine for all OCaml users, to be paid immediately. It's gonna cost you $500",
+      "description": "The government has passed a new regulation: a fine regarding %s, to be paid immediately. It's gonna cost you $%d",
       "stats": [
         "funding",
         "reputation"
