@@ -4,7 +4,6 @@ open Founding
 open Growth
 open Event
 
-
 let rec apply_response responses num company = 
   match (responses, num) with
   | (h :: t, 0) -> update_company h company
@@ -47,8 +46,6 @@ let rec play company =
   let num = get_response (List.length rresponses) in 
   company |> apply_response rresponses num |> play
 
-
-
 let create_new_save () =
   ANSITerminal.(print_string [green] ">be you\n");
   ANSITerminal.(print_string [green] ">recent graduate of Cornell Engineering\n");
@@ -70,7 +67,7 @@ let json_extension file =
 
 type load_or_delete = Load | Delete
 
-let save_file_helper load_or_delete file_name =
+let handle_save_file_helper load_or_delete file_name =
   match load_or_delete with
   | Load -> Yojson.Basic.from_file file_name |> load |> play
   | Delete -> Sys.remove file_name
@@ -80,14 +77,14 @@ let list_files () =
 
 let rec find_file load_or_delete save_files input=
   if List.mem input save_files
-  then String.concat "" [input; ".json"] |> save_file_helper load_or_delete
+  then String.concat "" [input; ".json"] |> handle_save_file_helper load_or_delete
   else (print_endline "Invalid entry.";
         print_endline "";
-        save_file load_or_delete)
+        handle_save_file load_or_delete)
 
 and
 
-  save_file load_or_delete =
+  handle_save_file load_or_delete =
   print_endline "Select a save:";
   let save_files = list_files () in
   List.iter print_endline save_files;
@@ -104,8 +101,8 @@ let rec main_menu_helper () =
   print_string ">";
   match read_line () with
   | "0" -> print_endline ""; create_new_save ()
-  | "1" -> print_endline ""; save_file Load
-  | "2" -> print_endline ""; save_file Delete
+  | "1" -> print_endline ""; handle_save_file Load
+  | "2" -> print_endline ""; handle_save_file Delete
   | "3" -> print_endline ""; exit 0
   | _ -> main_menu_helper ()
 
@@ -122,11 +119,10 @@ let main_menu () =
   print_string ">";
   match read_line () with
   | "0" -> print_endline ""; create_new_save ()
-  | "1" -> print_endline ""; save_file Load
-  | "2" -> print_endline ""; save_file Delete
+  | "1" -> print_endline ""; handle_save_file Load
+  | "2" -> print_endline ""; handle_save_file Delete
   | "3" -> print_endline ""; exit 0
   | _ -> main_menu_helper ()
-
 
 (* Execute the game. *)
 let () = main_menu ()

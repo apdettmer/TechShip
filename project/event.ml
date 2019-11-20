@@ -64,12 +64,12 @@ let rec match_id category id = function
     else match_id category id t
 
 let get_category category =
-  match member category (Yojson.Basic.from_file "events.json") with
+  match member category (Yojson.Basic.from_file "data/events.json") with
   | `Null -> raise (InvalidEventCategory category)
   | c -> to_list c
 
 let event_of category id = 
-  match member category (Yojson.Basic.from_file "events.json") with 
+  match member category (Yojson.Basic.from_file "data/events.json") with 
   | `Null -> raise (InvalidEventCategory category)
   | c -> try let event = match_id category id (c |> to_list) in
       {

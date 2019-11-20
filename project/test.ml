@@ -1,15 +1,17 @@
 open Event
 open Founding
 open Growth
-(* open Main *)
 open OUnit2
-
+open Yojson.Basic.Util
 
 let e1 = event_of "sample" 0 
 
 let e2 = event_of "investor" 0 
 (* changed from 10 -- for future reference, I think we need to increment each 
    time we add an event to make clear bounds for random selection of events *)
+
+let fun_prog = List.nth( Yojson.Basic.from_file "data/samplewords.json"
+                         |> member "words" |> to_list) 1 |> to_string
 
 let make_event_test
     (name : string)
@@ -36,7 +38,10 @@ let event_tests = [
   make_event_test "Random event government does not raise exception" ()
     (Event.random_event "government") ignore;
   make_event_test "Inserting into sample description" "sample hello 0"
-    (Event.fill_event_description e1 "hello" 0) (Event.description)
+    (Event.fill_event_description e1 "hello" 0) (Event.description);
+  make_event_test 
+    "Inserting into sample description 2" "sample Functional Programming 0"
+    (Event.fill_event_description e1 fun_prog 0) (Event.description)
 ]
 
 let comp1 = new_company "Creative Name"
@@ -58,11 +63,10 @@ let founding_tests = [
      will change the morale. However idk how to do assert_not_equal in OCAML -ew424
      "Testing adding an employee increases employee list size" >:: 
      (fun _ -> assert_equal 50 (comp1 |> hire_employee "Paul" |> morale)); *)
-
 ]
 
 let suite =
-  "test suite for A2"  >::: List.flatten [
+  "test suite for project"  >::: List.flatten [
     event_tests;
     founding_tests;
     (* add others*)

@@ -70,7 +70,7 @@ let starting_fund start_amount =
 
 let new_company name = {
   product = new_product name;
-  funding = (*starting_fund*) 5000;
+  funding = 5000;
   reputation = 50;
   morale = 50;
   employees = [];
