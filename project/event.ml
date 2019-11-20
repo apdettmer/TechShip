@@ -1,4 +1,5 @@
 open Yojson.Basic.Util
+open Printf
 
 exception InvalidEventId of int
 
@@ -33,7 +34,6 @@ let affected_stats event =
 
 let responses event = 
   event.responses
-
 
 (** [get_str_lst acc lst] converts [lst] of type Yojson.Basic.t list to
     a string list and appends to [acc].
@@ -91,7 +91,6 @@ let update_company (event : e) (response : int)
    | "government" -> failwith ""(*{product = product company; }*)
    | _ -> failwith "" *)
 
-
 let random_event category = 
   Random.init (int_of_float (Unix.time ()));
   try let cat_actual = get_category category in
@@ -132,10 +131,12 @@ let update_company (response : response) (company : Founding.company) =
 
 let fill_event_description event replace i = 
   match event with | {category; description = d; stats; responses} ->
-    {category;
-     description = 
-       (Str.global_replace (Str.regexp "string_val") replace d)
-       |> (Str.global_replace (Str.regexp "int_val") (string_of_int i));
-     stats;
-     responses
+    {
+      category;
+      description =
+
+        (Str.global_replace (Str.regexp "string_val") replace d)
+        |> (Str.global_replace (Str.regexp "int_val") (string_of_int i));
+      stats;
+      responses
     }
