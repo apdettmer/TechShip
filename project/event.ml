@@ -85,11 +85,6 @@ let event_of category id =
    | [] -> company
    | (c,v) :: t -> add_effects  *)
 
-let update_company (event : e) (response : int) 
-    (company : Founding.company) = company
-(* match category event with
-   | "government" -> failwith ""(*{product = product company; }*)
-   | _ -> failwith "" *)
 
 let random_event category = 
   Random.init (int_of_float (Unix.time ()));

@@ -48,3 +48,4 @@ val load : Yojson.Basic.t -> company
 
 (** [print_stats] prints out the current stats of the company to the player. *)
 val display_status : company -> unit
+

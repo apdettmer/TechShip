@@ -1,4 +1,47 @@
 {
+  "demo": [
+    {
+      "id": 0,
+      "description": "Congratulations. You've just been awarded $500 for your use of string_val in the workplace.",
+      "responses": [
+        {
+          "description": "Graciously accept the gift.",
+          "funding": 500
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "description": "Some local investors are growing wary with your use of string_val in the workplace, even going so far as to request your discontinuing of it.",
+      "responses": [
+        {
+          "description": "Stop your use at once, no matter the immediate financial cost.",
+          "funding": -500,
+          "reputation": 10,
+          "morale": -5
+        },
+        {
+          "description": "Continue as you were. This is integral to how your company operates, and the investors should see that.",
+          "reputation": -15,
+          "morale": 5
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "description": "Licensing fees. You have to pay to continue using string_val for your company.",
+      "responses": [
+        {
+          "description": "Pay the fees.",
+          "funding": -500
+        },
+        {
+          "description": "Don't pay the fees.",
+          "morale": -20
+        }
+      ]
+    }
+  ],
   "sample": [
     {
       "id": 0,
