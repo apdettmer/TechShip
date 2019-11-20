@@ -167,7 +167,8 @@ let save company =
   (* print_endline "mark1"; *)
   let data = String.concat "\n" ["{"; save_product company; save_funding company; save_reputation company; save_morale company; save_employees company; save_investors company; save_date company; "}"] in
   (* print_endline "mark2"; *)
-  fprintf out_chn "%s" data
+  fprintf out_chn "%s" data;
+  flush out_chn
 (* print_endline "mark" *)
 
 let load_product json_product = {
