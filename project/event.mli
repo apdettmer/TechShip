@@ -65,6 +65,6 @@ val random_event : string -> e
 val random_category : Founding.company -> string
 
 (** [fill_event_description event replace i] gives the description of
-    [event] with string_val and int_val replaced with [replace] and [i] 
-    respectively*)
+    [event] with all instances of 'string_val' and 'int_val' replaced with 
+    [replace] and [i] respectively*)
 val fill_event_description : e -> string -> int -> e

@@ -134,8 +134,8 @@ let fill_event_description event replace i =
   match event with | {category; description = d; stats; responses} ->
     {category;
      description = 
-       (Str.replace_first (Str.regexp "string_val") replace d)
-       |> (Str.replace_first (Str.regexp "int_val") (string_of_int i));
+       (Str.global_replace (Str.regexp "string_val") replace d)
+       |> (Str.global_replace (Str.regexp "int_val") (string_of_int i));
      stats;
      responses
     }

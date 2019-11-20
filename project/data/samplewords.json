@@ -5,5 +5,24 @@
     "Tech Startups",
     "Company registration",
     "Linux use"
+  ],
+  "first names": [
+    "Adam",
+    "Eric",
+    "Andrew"
+  ],
+  "last names": [
+    "Wang",
+    "Whitehead",
+    "Dettmer"
+  ],
+  "companies": [
+    "Microsoft",
+    "Amazon",
+    "Google"
+  ],
+  "politics": [
+    "scandal",
+    "impeachment"
   ]
 }

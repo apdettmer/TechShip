@@ -71,7 +71,7 @@
   "government": [
     {
       "id": 0,
-      "description": "The government has passed a new regulation: a fine regarding %s, to be paid immediately. It's gonna cost you $%d",
+      "description": "The government has passed a new regulation: a fine regarding string_val, to be paid immediately. It's gonna cost you int_val",
       "stats": [
         "funding",
         "reputation"
@@ -91,7 +91,7 @@
     },
     {
       "id": 1,
-      "description": "It's everyone's favorite: Tax Day! Looks like you'll be paying a hefty sum of $5000, unfortunately",
+      "description": "It's everyone's favorite: Tax Day! Looks like you'll be paying a sum of $5000, unfortunately",
       "stats": [
         "funding",
         "reputation"
