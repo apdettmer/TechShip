@@ -4,7 +4,6 @@ open Founding
 open Growth
 open Event
 
-
 let rec apply_response responses num company = 
   match (responses, num) with
   | (h :: t, 0) -> update_company h company
@@ -46,8 +45,6 @@ let rec play company =
   Stdlib.print_endline "\nHow will you respond? ";
   let num = get_response (List.length rresponses) in 
   company |> apply_response rresponses num |> play
-
-
 
 let create_new_save () =
   ANSITerminal.(print_string [green] ">be you\n");
@@ -126,7 +123,6 @@ let main_menu () =
   | "2" -> print_endline ""; save_file Delete
   | "3" -> print_endline ""; exit 0
   | _ -> main_menu_helper ()
-
 
 (* Execute the game. *)
 let () = main_menu ()

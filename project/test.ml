@@ -1,9 +1,7 @@
 open Event
 open Founding
 open Growth
-open Main
 open OUnit2
-
 
 let e1 = event_of "sample" 0 
 
@@ -55,11 +53,10 @@ let founding_tests = [
      will change the morale. However idk how to do assert_not_equal in OCAML -ew424
      "Testing adding an employee increases employee list size" >:: 
      (fun _ -> assert_equal 50 (comp1 |> hire_employee "Paul" |> morale)); *)
-
 ]
 
 let suite =
-  "test suite for A2"  >::: List.flatten [
+  "test suite for project"  >::: List.flatten [
     event_tests;
     founding_tests;
     (* add others*)
