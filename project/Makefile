@@ -26,7 +26,7 @@ bisect: clean bisect-test
 	bisect-ppx-report -I _build -html report bisect0001.out
 
 zip:
-	zip project.zip *.ml* *.md* _tags Makefile
+	zip project.zip *.ml* *.md* _tags data/events.json data/samplewords.json Makefile
 	
 docs: docs-public docs-private
 	
