@@ -31,12 +31,12 @@ type company = {
   employees : employee list;
   investors : investor list;
   date : tm;
+  event: int;
 }
 
-(** TODO: Make a type for a product. I'm not sure what kinds of fields to 
-    include that would impact gameplay, other than a name. -ew424 *)
-let new_product name = 
-  {name = name}
+let new_product name = {
+  name = name
+}
 
 (** [new_employee] takes a name, perhaps given by the player?, and returns an
     employee with that name and with random morale values ranging from -10 to 10 
@@ -58,15 +58,16 @@ let hire_employee name company = let employee = new_employee name in
     employees = employee :: company.employees;
     investors = company.investors;
     date = company.date;
+    event = company.event;
   }
 
-(**[starting_fund start_amount] returns [start_amount] multiplied by a random
-   number <10. This creates a different starting funding for every game, making
-   the playthrough experience variable. 
-   Requires: [start_amount] is > 0, and preferably a large number. *) 
-let starting_fund start_amount = 
-  Random.init (int_of_float (Unix.time ()));
-  start_amount * Random.int 10
+(** [starting_fund start_amount] returns [start_amount] multiplied by a random
+    number <10. This creates a different starting funding for every game, making
+    the playthrough experience variable. 
+    Requires: [start_amount] is > 0, and preferably a large number. *) 
+(* let starting_fund start_amount = 
+   Random.init (int_of_float (Unix.time ()));
+   start_amount * Random.int 10 *)
 
 let new_company name = {
   product = new_product name;
@@ -85,7 +86,8 @@ let new_company name = {
     tm_wday = 2;
     tm_yday = 154;
     tm_isdst = true
-  }
+  };
+  event = 0;
 }
 
 (* Below are the getters for founding. All very simple.  *)
@@ -109,6 +111,9 @@ let investors company =
 
 let date company =
   company.date
+
+let event company =
+  company.event
 
 let save_product company =
   sprintf "\t\"product\":{
@@ -158,18 +163,18 @@ let save_date company =
 \t\t\"week day\": %i,
 \t\t\"year day\": %i,
 \t\t\"daylight saving\": %b
-\t}" company.date.tm_sec company.date.tm_min company.date.tm_hour company.date.tm_mday company.date.tm_mon company.date.tm_year company.date.tm_wday company.date.tm_yday company.date.tm_isdst
+\t}," company.date.tm_sec company.date.tm_min company.date.tm_hour company.date.tm_mday company.date.tm_mon company.date.tm_year company.date.tm_wday company.date.tm_yday company.date.tm_isdst
+
+let save_event company =
+  sprintf "\t\"event\": %i" company.event
 
 let save company =
   let file_name = company.product.name in
   let save_file = String.concat "" [file_name; ".json"] in
   let out_chn = open_out save_file in
-  (* print_endline "mark1"; *)
-  let data = String.concat "\n" ["{"; save_product company; save_funding company; save_reputation company; save_morale company; save_employees company; save_investors company; save_date company; "}"] in
-  (* print_endline "mark2"; *)
+  let data = String.concat "\n" ["{"; save_product company; save_funding company; save_reputation company; save_morale company; save_employees company; save_investors company; save_date company; save_event company; "}"] in
   fprintf out_chn "%s" data;
   flush out_chn
-(* print_endline "mark" *)
 
 let load_product json_product = {
   name = json_product |> member "name" |> to_string
@@ -206,6 +211,7 @@ let load json = {
   employees = json |> member "employees" |> to_list |> List.map load_employee;
   investors = json |> member "investors" |> to_list |> List.map load_investor;
   date = json |> member "date" |> load_date;
+  event = json |> member "event" |> to_int;
 }
 
 let display_status company =
@@ -216,16 +222,34 @@ let display_status company =
 
 let update_category company cat v = 
   match cat with 
-  | "funding" -> {product = company.product; funding = company.funding + v;
-                  reputation = company.reputation;  morale = company.morale; 
-                  employees = company.employees;investors = company.investors; 
-                  date = company.date}
-  | "reputation" -> {product = company.product; funding = company.funding;
-                     reputation = company.reputation + v; 
-                     morale = company.morale; employees = company.employees;
-                     investors = company.investors; date = company.date}
-  | "morale" -> {product = company.product; funding = company.funding;
-                 reputation = company.reputation; morale = company.morale + v; 
-                 employees = company.employees;
-                 investors = company.investors; date = company.date}
+  | "funding" -> {
+      product = company.product;
+      funding = company.funding + v;
+      reputation = company.reputation;
+      morale = company.morale; 
+      employees = company.employees;
+      investors = company.investors;
+      date = company.date;
+      event = company.event
+    }
+  | "reputation" -> {
+      product = company.product;
+      funding = company.funding;
+      reputation = company.reputation + v;
+      morale = company.morale;
+      employees = company.employees;
+      investors = company.investors;
+      date = company.date;
+      event = company.event
+    }
+  | "morale" -> {
+      product = company.product;
+      funding = company.funding;
+      reputation = company.reputation;
+      morale = company.morale + v;
+      employees = company.employees;
+      investors = company.investors;
+      date = company.date;
+      event = company.event
+    }
   | _ -> failwith "Unimplemented"

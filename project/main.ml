@@ -36,7 +36,7 @@ and
 
 and
 
-  alternatives company reslst =
+  alts company reslst =
   let l = List.length reslst in
   (l, Status) :: (l + 1, Save) :: (l + 2, Menu) :: (List.combine (create_intlst [] l) (List.map (fun r -> Response r) reslst)) |> List.sort (fun (i1, a1) (i2, a2) -> i1 - i2) |> present_alts company
 
@@ -55,8 +55,8 @@ and
      in the game. [player_file] is a JSON file that is a save file. *)
   play company =
   let event = display_event company in
-  let responses = responses event in 
-  alternatives company responses
+  let responses = responses event in
+  alts company responses
 
 and
 
@@ -98,8 +98,12 @@ and
 and
 
   handle_save_file load_or_delete =
-  print_endline "Select a save:";
   let save_files = list_files () in
+  if save_files = [] then (
+    print_string "No saves found.\n\n";
+    main_menu ()
+  )
+  else print_endline "Select a save:";
   let nums = create_intlst [] (List.length save_files) in 
   let vals = List.combine nums save_files in 
   List.iter (fun (i, f) -> 

@@ -1,5 +1,6 @@
-open Yojson.Basic.Util
 open Printf
+open Yojson.Basic.Util
+
 
 exception InvalidEventId of int
 
@@ -87,11 +88,6 @@ let event_of category id =
       }
     with InvalidEventId i -> raise (InvalidEventId i)
 
-(* let rec add_effects company = function
-   | [] -> company
-   | (c,v) :: t -> add_effects  *)
-
-
 let random_event category = 
   Random.init (int_of_float (Unix.time ()));
   try let cat_actual = get_category category in
@@ -104,7 +100,6 @@ let rec sum_func lst company =
   | [] -> company
   | (cat, amount)::t -> failwith "Unimplemented"
 
-(**[]  *)
 let random_category (company : Founding.company) = 
   Random.init (int_of_float (Unix.time ()));
   match (Random.int 100) mod 4 with
@@ -134,12 +129,9 @@ let rec apply_effects company = function
       | Some v -> apply_effects (Founding.update_category company category v) t
     end
 
-
 let update_company (response : response) (company : Founding.company) = 
   let updates = effects response in 
   apply_effects company updates
-
-(* apply_effects company (effects response) *)
 
 let fill_event_description event replace i = 
   match event with | {category; description = d; stats; responses} ->
