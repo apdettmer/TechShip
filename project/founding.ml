@@ -112,8 +112,8 @@ let date company =
 
 let save_product company =
   sprintf "\t\"product\":{
-           \t\t\"name\": \"%s\"
-           \t}," company.product.name
+\t\t\"name\": \"%s\"
+\t}," company.product.name
 
 let save_funding company =
   sprintf "\t\"funding\": %i," company.funding
@@ -126,39 +126,39 @@ let save_morale company =
 
 let save_employees_helper (employee : employee) =
   sprintf "\t\t{
-           \t\t\t\"name\": \"%s\",
-           \t\t\t\"morale\": %i,
-           \t\t\t\"reputation\": %i
-           \t\t}" employee.name employee.morale employee.reputation
+\t\t\t\"name\": \"%s\",
+\t\t\t\"morale\": %i,
+\t\t\t\"reputation\": %i
+\t\t}" employee.name employee.morale employee.reputation
 
 let save_employees company =
   sprintf "\t\"employees\": [
-           %s
-           \t]," (List.rev_map save_employees_helper company.employees |> String.concat ",\n")
+%s
+\t]," (List.rev_map save_employees_helper company.employees |> String.concat ",\n")
 
 let save_investors_helper (investor : investor) =
   sprintf "\t\t{
-           \t\t\t\"name\": \"%s\",
-           \t\t\t\"investment\": %i
-           \t\t}" investor.name investor.investment
+\t\t\t\"name\": \"%s\",
+\t\t\t\"investment\": %i
+\t\t}" investor.name investor.investment
 
 let save_investors company =
   sprintf "\t\"investors\": [
-           %s
-           \t]," (List.rev_map save_investors_helper company.investors |> String.concat ",\n")
+%s
+\t]," (List.rev_map save_investors_helper company.investors |> String.concat ",\n")
 
 let save_date company =
   sprintf "\t\"date\": {
-           \t\t\"second\": %i,
-           \t\t\"minute\": %i,
-           \t\t\"hour\": %i,
-           \t\t\"month day\": %i,
-           \t\t\"month\": %i,
-           \t\t\"year\": %i,
-           \t\t\"week day\": %i,
-           \t\t\"year day\": %i,
-           \t\t\"daylight saving\": %b
-           \t}" company.date.tm_sec company.date.tm_min company.date.tm_hour company.date.tm_mday company.date.tm_mon company.date.tm_year company.date.tm_wday company.date.tm_yday company.date.tm_isdst
+\t\t\"second\": %i,
+\t\t\"minute\": %i,
+\t\t\"hour\": %i,
+\t\t\"month day\": %i,
+\t\t\"month\": %i,
+\t\t\"year\": %i,
+\t\t\"week day\": %i,
+\t\t\"year day\": %i,
+\t\t\"daylight saving\": %b
+\t}" company.date.tm_sec company.date.tm_min company.date.tm_hour company.date.tm_mday company.date.tm_mon company.date.tm_year company.date.tm_wday company.date.tm_yday company.date.tm_isdst
 
 let save company =
   let file_name = company.product.name in

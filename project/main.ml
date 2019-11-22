@@ -102,31 +102,12 @@ and
   let save_files = list_files () in
   let nums = create_intlst [] (List.length save_files) in 
   let vals = List.combine nums save_files in 
-  List.iter (fun (i,f) -> 
+  List.iter (fun (i, f) -> 
       print_endline ("[" ^ (string_of_int i) ^ "] " ^ f)) vals;
   print_string ">";
   try (String.concat "" [(List.assoc (read_int ()) vals); ".json"] |> handle_save_file_helper load_or_delete)
   with _ -> print_string "Invalid entry.\n\n";
     handle_save_file load_or_delete
-
-and
-
-  main_menu_helper () =
-  print_string "Invalid entry.
-
-T E C H S H I P
-
-[0] Create new save.
-[1] Load save.
-[2] Delete save.
-[3] Quit.
->";
-  match read_line () with
-  | "0" -> print_endline ""; create_new_save ()
-  | "1" -> print_endline ""; handle_save_file Load
-  | "2" -> print_endline ""; handle_save_file Delete
-  | "3" -> print_endline ""; exit 0
-  | _ -> main_menu_helper ()
 
 and
 
@@ -146,7 +127,7 @@ T E C H S H I P
   | "1" -> print_endline ""; handle_save_file Load
   | "2" -> print_endline ""; handle_save_file Delete
   | "3" -> print_endline ""; exit 0
-  | _ -> main_menu_helper ()
+  | _ -> print_string "Invalid entry.\n"; main_menu ()
 
 (* Execute the game. *)
 let () = main_menu ()

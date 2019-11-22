@@ -15,8 +15,11 @@ let res_desc response = response.description
 
 let effects response = response.effects
 
-type event = {category : string; description : string; stats : string list;
-              responses : response list } 
+type event = {
+  category : string;
+  description : string; stats : string list;
+  responses : response list
+} 
 
 let category event = 
   event.category
