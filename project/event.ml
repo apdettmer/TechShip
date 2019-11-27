@@ -1,6 +1,7 @@
 open Printf
 open Yojson.Basic.Util
 
+open Founding
 
 exception InvalidEventId of int
 
@@ -123,11 +124,11 @@ let random_category (company : Founding.company) =
 
 let rec apply_effects company = function 
   | [] -> company
-  | (category,opt)::t -> begin
+  | (category,opt)::t -> (
       match opt with 
       | None -> apply_effects company t
-      | Some v -> apply_effects (Founding.update_category company category v) t
-    end
+      | Some v -> apply_effects (update_category company category v) t
+    )
 
 let update_company (response : response) (company : Founding.company) = 
   let updates = effects response in 

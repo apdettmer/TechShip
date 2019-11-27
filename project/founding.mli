@@ -1,11 +1,11 @@
 (* design the company in the growth phase *)
-type company
-
 type employee
 
 type product
 
 type investor
+
+type company
 
 (** [new_blank_company] creates a new company with the default starting values,
     which are currently hardcoded in but can be changed if needed. Additionally
