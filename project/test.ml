@@ -10,7 +10,7 @@ let e2 = event_of "investor" 0
 (* changed from 10 -- for future reference, I think we need to increment each 
    time we add an event to make clear bounds for random selection of events *)
 
-let fun_prog = List.nth( Yojson.Basic.from_file "data/samplewords.json"
+let fun_prog = List.nth( Yojson.Basic.from_file "data/wordbank.json"
                          |> member "words" |> to_list) 1 |> to_string
 
 let make_event_test

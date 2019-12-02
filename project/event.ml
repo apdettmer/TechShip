@@ -148,6 +148,6 @@ let fill_event_description event replace i =
 
 let select_some_word () =
   Random.init (int_of_float (Unix.time ()));
-  let file = Yojson.Basic.from_file "data/samplewords.json" in
+  let file = Yojson.Basic.from_file "data/wordbank.json" in
   let lst = member "words" file |> to_list in 
   List.nth lst (Random.int (List.length lst)) |> to_string

@@ -20,19 +20,12 @@ let rec present_alts company altlst =
   print_string ">";
   try (
     match (List.assoc (read_int ()) altlst) with
-    | Response res -> print_endline ""; update_company res company |> play
-    | Status -> print_endline ""; display_status company; present_alts company altlst
-    | Save -> print_endline ""; save company; present_alts company altlst
-    | Menu -> print_endline ""; main_menu ()
+    | Response res -> print_newline (); update_company res company |> play
+    | Status -> print_newline (); display_status company; present_alts company altlst
+    | Save -> print_newline (); save company; present_alts company altlst
+    | Menu -> print_newline (); main_menu ()
   )
   with _ -> print_string "Invalid entry.\n\n"; present_alts company altlst
-
-and
-
-  create_intlst acc l =
-  match l - 1 with
-  | 0 -> 0 :: acc
-  | n -> create_intlst (n :: acc) (l - 1)
 
 and
 
@@ -76,6 +69,20 @@ and
 
 and
 
+  handle_save_file load_or_delete file_name =
+  match load_or_delete with
+  | Load -> print_newline (); Yojson.Basic.from_file file_name |> load |> play
+  | Delete -> print_newline (); Sys.remove file_name; main_menu ()
+
+and
+
+  create_intlst acc i =
+  match i - 1 with
+  | 0 -> 0 :: acc
+  | j -> create_intlst (j :: acc) (i - 1)
+
+and
+
   json_extension file =
   let extension = Str.regexp_string ".json" in
   try 
@@ -85,37 +92,31 @@ and
 
 and
 
-  handle_save_file_helper load_or_delete file_name =
-  match load_or_delete with
-  | Load -> print_endline ""; Yojson.Basic.from_file file_name |> load |> play
-  | Delete -> print_endline ""; Sys.remove file_name; main_menu ()
-
-and
-
   list_files () =
   Sys.readdir "." |> Array.to_list |> List.filter (fun x -> json_extension x) |> List.map (fun x -> Str.global_replace (Str.regexp_string ".json") "" x) |> List.sort String.compare
 
 and
 
-  handle_save_file load_or_delete =
+  (** [display_save_file load_or_delete] lists the available save files, allows the player to select one, and manipulates it depending on [load_or_delete]. *)
+  display_save_files load_or_delete =
   let save_files = list_files () in
   if save_files = [] then (
     print_string "No saves found.\n\n";
     main_menu ()
   )
   else print_endline "Select a save:";
-  let nums = create_intlst [] (List.length save_files) in 
-  let vals = List.combine nums save_files in 
-  List.iter (fun (i, f) -> 
-      print_endline ("[" ^ (string_of_int i) ^ "] " ^ f)) vals;
+  let nums = create_intlst [] (List.length save_files) in
+  let opts = List.combine nums save_files in
+  List.iter (fun (i, f) -> print_endline ("[" ^ (string_of_int i) ^ "] " ^ f)) opts;
   print_string ">";
-  try (String.concat "" [(List.assoc (read_int ()) vals); ".json"] |> handle_save_file_helper load_or_delete)
+  try
+    String.concat "" [(List.assoc (read_int ()) opts); ".json"] |> handle_save_file load_or_delete
   with _ -> print_string "Invalid entry.\n\n";
-    handle_save_file load_or_delete
+    display_save_files load_or_delete
 
 and
 
-  (** [main ()] prompts for the game to play, then starts it. *)
+  (** [main_menu ()] prompts for the game to play, and then starts it and displays the main menu. The main menu allows players to create a new save, load a previous save, delete a previous save, or quit the game. *)
   main_menu () =
   print_string "
 
@@ -127,11 +128,11 @@ T E C H S H I P
 [3] Quit.
 >";
   match read_line () with
-  | "0" -> print_endline ""; create_new_save ()
-  | "1" -> print_endline ""; handle_save_file Load
-  | "2" -> print_endline ""; handle_save_file Delete
-  | "3" -> print_endline ""; exit 0
-  | _ -> print_string "Invalid entry.\n"; main_menu ()
+  | "0" -> print_newline (); create_new_save ()
+  | "1" -> print_newline (); display_save_files Load
+  | "2" -> print_newline (); display_save_files Delete
+  | "3" -> print_newline (); exit 0
+  | _ -> print_endline "Invalid entry."; main_menu ()
 
 (* Execute the game. *)
 let () = main_menu ()
