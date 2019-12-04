@@ -66,4 +66,10 @@ val random_category : Founding.company -> string
     [replace] and [i] respectively*)
 val fill_event_description : event -> string -> int -> event
 
+(** [select_some_word ()] gives a word from the 'words' category in 
+    wordbank.json*)
 val select_some_word : unit -> string
+
+(** [make_name ()] constructs a two-part name from first and last names in
+    wordbank.json*)
+val make_name : unit -> string

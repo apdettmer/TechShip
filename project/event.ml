@@ -151,3 +151,16 @@ let select_some_word () =
   let file = Yojson.Basic.from_file "data/wordbank.json" in
   let lst = member "words" file |> to_list in 
   List.nth lst (Random.int (List.length lst)) |> to_string
+
+
+let make_name () =
+  Random.init (int_of_float (Unix.time ()));
+  let file = Yojson.Basic.from_file "data/wordbank.json" in
+  let fst_name_lst = member "first names" file |> to_list in
+  let fst_name = 
+    List.nth fst_name_lst (Random.int (List.length fst_name_lst))
+    |> to_string in 
+  let last_name_lst = member "last names" file |> to_list in
+  let last_name =
+    List.nth last_name_lst (Random.int (List.length last_name_lst))
+    |> to_string in fst_name ^ " " ^ last_name

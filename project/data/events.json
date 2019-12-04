@@ -56,7 +56,7 @@
   ],
   "sample": [
     {
-      "id": 3,
+      "id": 0,
       "description": "sample string_val int_val",
       "stats": [
         "funding",
@@ -78,7 +78,7 @@
   ],
   "investor": [
     {
-      "id": 4,
+      "id": 0,
       "description": "Well known and highly respected investor John Smith publicly endorses your product and wants to purchase stock in your company.",
       "stats": [
         "funding",
@@ -103,7 +103,7 @@
       ]
     },
     {
-      "id": 5,
+      "id": 1,
       "description": "Former convicted felon turned millionaire Bane Crobber wants to invest in your company. He's a controversial figure, so support from him may hurt reputation.",
       "stats": [
         "funding",
@@ -125,7 +125,7 @@
   ],
   "government": [
     {
-      "id": 6,
+      "id": 0,
       "description": "The government has passed a new regulation: a fine regarding string_val, to be paid immediately. It's gonna cost you int_val",
       "stats": [
         "funding",
@@ -145,7 +145,7 @@
       ]
     },
     {
-      "id": 7,
+      "id": 1,
       "description": "It's everyone's favorite: Tax Day! Looks like you'll be paying a sum of $5000, unfortunately",
       "stats": [
         "funding",
@@ -172,7 +172,7 @@
   ],
   "employee": [
     {
-      "id": 8,
+      "id": 0,
       "description": "Following the escape at the local zoo, the cougars, lions and tigers have roamed into the office. And they look hungry.",
       "stats": [
         "reputation",
@@ -199,7 +199,7 @@
   ],
   "other": [
     {
-      "id": 9,
+      "id": 0,
       "description": "A massive tsunami wave hit your city and flooded the first floor of the office building. Repairs could be costly.",
       "stats": [
         "funding",
