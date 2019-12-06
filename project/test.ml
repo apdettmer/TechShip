@@ -45,6 +45,7 @@ let event_tests = [
 ]
 
 let comp1 = new_company "Creative Name"
+let john = new_employee "John"
 
 (* Can't really test some of the values like funding, which are randomly 
    generated each time *)
@@ -60,7 +61,7 @@ let founding_tests = [
   "Test default investors is the empty list" >:: 
   (fun _ -> assert_equal [] (investors comp1));
   "Testing adding an employee increases employee list size" >:: 
-  (fun _ -> assert_equal 1 (comp1 |> hire_employee "Paul" |> employees |> List.length));
+  (fun _ -> assert_equal 1 (comp1 |> hire_employee "Paul" 1 |> employees |> List.length));
   (* The test below should fail - the default value is 50, so adding an employee
      will change the morale. However idk how to do assert_not_equal in OCAML -ew424
      "Testing adding an employee increases employee list size" >:: 
@@ -82,6 +83,17 @@ let founding_tests = [
 
   "Testing if morale can be negative" >:: 
   (fun _ -> assert_equal (-1) (morale (update_category comp1 "morale" (-51))));
+
+  "Testing update_category handles employee hiring" >:: 
+  (fun _ -> assert_equal 1 
+      (List.length (employees (update_category comp1 "employee" 1))));
+
+  "Testing update_category handles multiple employee hiring " >:: 
+  (fun _ -> assert_equal 7
+      (List.length (employees (update_category comp1 "employee" 7))));
+
+  "Testing employee_list generates a list of 3 employees with name John" >:: 
+  (fun _ -> assert_equal 4 (List.length (employee_list "John" 3 [john]))); 
 
 ]
 

@@ -12,15 +12,17 @@ type product = {
   name : string
 }
 
-type employee = {
-  name : string;
-  morale : int;
-  reputation : int;
-}
+
 
 type investor = { 
   name : string;
   investment : int
+}
+
+type employee = {
+  name : string;
+  morale : int;
+  reputation : int;
 }
 
 type company = {
@@ -49,17 +51,25 @@ let new_employee name =
     reputation = Random.int 20 - 10;
   }
 
-let hire_employee name company = let employee = new_employee name in 
+let rec employee_list name n acc = 
+  match n with 
+  | 0 -> acc
+  | _ -> employee_list name (n-1) (new_employee name :: acc)
+
+let hire_employee name n company = (* let employees = employee_list name n [] in *)
   {
     product = company.product;
     funding = company.funding;
-    reputation = company.reputation + employee.reputation;
-    morale = company.morale + employee.morale;
-    employees = employee :: company.employees;
+    reputation = company.reputation; (* + employee.reputation; *)
+    morale = company.morale; (* + employee.morale; *)
+    employees = employee_list name n company.employees;
     investors = company.investors;
     date = company.date;
     event = company.event;
   }
+
+let employee_name emp = 
+  emp.name
 
 (** [starting_fund start_amount] returns [start_amount] multiplied by a random
     number <10. This creates a different starting funding for every game, making
@@ -252,4 +262,6 @@ let update_category company cat v =
       date = company.date;
       event = company.event
     }
+  | "employee" -> hire_employee "John" v company
+
   | _ -> failwith "Unimplemented"
