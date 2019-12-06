@@ -50,30 +50,30 @@ let new_employee name =
   }
 
 
-(**[employee_list name n acc] is the updated list of employees with [n] new 
-   employees with name [n] added to it. *)
+let custom_employee name morale rep = {
+  name = name;
+  morale = morale;
+  reputation = rep;
+}
+
+
 let rec employee_list name n acc = 
   match n with 
   | 0 -> acc
   | _ ->  if n > 0 then employee_list name (n-1) (new_employee name :: acc)
     else []
 
-
-(**[rep_employees emp_list] is the total change in reputation caused by the 
-   list of employees [empy_list]*)
 let rec rep_employees ( emp_list : employee list ) = 
   let rep_e (employee : employee)  = employee.reputation in
   match emp_list with
   | [] -> 0
   | h :: t -> rep_e h + rep_employees t
 
-(**[morale_employees empy_list] is the total change in morale caused by the 
-   hiring of employee list [emp_list]*)
 let rec morale_employees (emp_list : employee list) = 
   let mor_e (employee : employee)  = employee.morale in
   match emp_list with
   | [] -> 0
-  | h :: t -> mor_e h + rep_employees t
+  | h :: t -> mor_e h + morale_employees t
 
 (**[hire_employee name n company] hires [n] new employees for the company. The
    company is updated with a new employee list and new morale and reputation 
@@ -92,6 +92,16 @@ let hire_employee name n company = let employees = employee_list name n [] in
 
 let employee_name emp = 
   emp.name
+
+let print_employee_info emp = 
+  Stdlib.print_string (" { Name: " ^ emp.name ^ " | Morale: " ^ string_of_int emp.morale 
+                       ^ " | Reputation: " ^ string_of_int emp.reputation ^ " } ");
+  Stdlib.print_endline ""; ()  
+
+let rec view_employees emp_list =
+  match emp_list with 
+  | [] -> ()
+  | h :: t -> print_employee_info h; view_employees t
 
 (** [starting_fund start_amount] returns [start_amount] multiplied by a random
     number <10. This creates a different starting funding for every game, making

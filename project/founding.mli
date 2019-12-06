@@ -21,12 +21,25 @@ val hire_employee : string -> int -> company -> company
 (** [employee_name emp] is the name of given employee [emp] *)
 val employee_name : employee -> string
 
-
+(**[employee_list name n acc] is the updated list of employees with [n] new 
+   employees with name [n] added to it. *)
 val employee_list : string -> int -> employee list -> employee list
 
 (**[new_employee name] takes in a name and creates an employee with random
    morale and reputation stats *)
 val new_employee : string -> employee
+
+(**[custom_employee name morale rep] creates an [employee] with the same 
+   attributes as the arguments provided *)
+val custom_employee : string -> int -> int -> employee
+
+(**[morale_employees empy_list] is the total change in morale caused by the 
+   hiring of employee list [emp_list] *)
+val morale_employees : employee list -> int
+
+(**[rep_employees emp_list] is the total change in reputation caused by the 
+   list of employees [empy_list]*)
+val rep_employees : employee list -> int
 
 (** [product company] is the product of the company. *)
 val product : company -> product
