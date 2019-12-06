@@ -67,13 +67,13 @@ let rec rep_employees ( emp_list : employee list ) =
   | [] -> 0
   | h :: t -> rep_e h + rep_employees t
 
+(**[morale_employees empy_list] is the total change in morale caused by the 
+   hiring of employee list [emp_list]*)
 let rec morale_employees (emp_list : employee list) = 
   let mor_e (employee : employee)  = employee.morale in
   match emp_list with
   | [] -> 0
   | h :: t -> mor_e h + rep_employees t
-
-
 
 (**[hire_employee name n company] hires [n] new employees for the company. The
    company is updated with a new employee list and new morale and reputation 

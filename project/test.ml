@@ -95,6 +95,10 @@ let founding_tests = [
   "Testing employee_list generates a list of 3 employees with name John" >:: 
   (fun _ -> assert_equal 4 (List.length (employee_list "John" 3 [john]))); 
 
+  "Testing employee_list generates a list of 3 employees with name John" >:: 
+  (fun _ -> assert_equal 4 (List.length (employee_list "John" 3 [john])));
+
+
 ]
 
 let suite =
