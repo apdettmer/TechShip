@@ -29,6 +29,10 @@ val employee_list : string -> int -> employee list -> employee list
    morale and reputation stats *)
 val new_employee : string -> employee
 
+(**[new_random_employee ()] generates an [employee] with a random name from
+   the name bank and random morale and reputation attributes. *)
+val new_random_employee : unit -> employee
+
 (**[custom_employee name morale rep] creates an [employee] with the same 
    attributes as the arguments provided *)
 val custom_employee : string -> int -> int -> employee

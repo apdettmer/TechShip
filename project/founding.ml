@@ -49,13 +49,32 @@ let new_employee name =
     reputation = Random.int 20 - 10;
   }
 
+let rand_name = function
+  | 0 -> "Jeff"
+  | 1 -> "Ron"
+  | 2 -> "Steve"
+  | 3 -> "Bill"
+  | 4 -> "Tim"
+  | 5 -> "Dick" 
+  | 6 -> "Ken"
+  | 7 -> "Ben"
+  | 8 -> "James"
+  | 9 -> "Arthur"
+  | _ -> "Naming Error"
+
+let new_random_employee () = 
+  Random.init (int_of_float (Unix.time ()));
+  {
+    name = rand_name (Random.int 10);
+    morale = Random.int 20 - 10;
+    reputation = Random.int 20 - 10;
+  }
 
 let custom_employee name morale rep = {
   name = name;
   morale = morale;
   reputation = rep;
 }
-
 
 let rec employee_list name n acc = 
   match n with 
