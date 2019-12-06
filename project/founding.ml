@@ -12,8 +12,6 @@ type product = {
   name : string
 }
 
-
-
 type investor = { 
   name : string;
   investment : int
@@ -51,18 +49,42 @@ let new_employee name =
     reputation = Random.int 20 - 10;
   }
 
+
+(**[employee_list name n acc] is the updated list of employees with [n] new 
+   employees with name [n] added to it. *)
 let rec employee_list name n acc = 
   match n with 
   | 0 -> acc
-  | _ -> employee_list name (n-1) (new_employee name :: acc)
+  | _ ->  if n > 0 then employee_list name (n-1) (new_employee name :: acc)
+    else []
 
-let hire_employee name n company = (* let employees = employee_list name n [] in *)
+
+(**[rep_employees emp_list] is the total change in reputation caused by the 
+   list of employees [empy_list]*)
+let rec rep_employees ( emp_list : employee list ) = 
+  let rep_e (employee : employee)  = employee.reputation in
+  match emp_list with
+  | [] -> 0
+  | h :: t -> rep_e h + rep_employees t
+
+let rec morale_employees (emp_list : employee list) = 
+  let mor_e (employee : employee)  = employee.morale in
+  match emp_list with
+  | [] -> 0
+  | h :: t -> mor_e h + rep_employees t
+
+
+
+(**[hire_employee name n company] hires [n] new employees for the company. The
+   company is updated with a new employee list and new morale and reputation 
+   depending on the reputation of the employees hired. *)
+let hire_employee name n company = let employees = employee_list name n [] in 
   {
     product = company.product;
     funding = company.funding;
-    reputation = company.reputation; (* + employee.reputation; *)
-    morale = company.morale; (* + employee.morale; *)
-    employees = employee_list name n company.employees;
+    reputation = company.reputation + rep_employees employees;
+    morale = company.morale + morale_employees employees;
+    employees = employees @ company.employees;
     investors = company.investors;
     date = company.date;
     event = company.event;
