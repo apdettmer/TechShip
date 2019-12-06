@@ -48,6 +48,8 @@ let comp1 = new_company "Creative Name"
 
 (* Can't really test some of the values like funding, which are randomly 
    generated each time *)
+
+
 let founding_tests = [
   "Test reputation default value is 50" >:: 
   (fun _ -> assert_equal 50 (reputation comp1));
@@ -63,6 +65,24 @@ let founding_tests = [
      will change the morale. However idk how to do assert_not_equal in OCAML -ew424
      "Testing adding an employee increases employee list size" >:: 
      (fun _ -> assert_equal 50 (comp1 |> hire_employee "Paul" |> morale)); *)
+  "Testing increasing funding produces correct funding value of new company" >:: 
+  (fun _ -> assert_equal 5010 (funding (update_category comp1 "funding" 10)));
+
+  "Testing increasing funding works with a negative value" >:: 
+  (fun _ -> assert_equal 4990 (funding (update_category comp1 "funding" (-10))));
+
+  "Testing increasing reputation produces correct reputation" >:: 
+  (fun _ -> assert_equal 55 (reputation (update_category comp1 "reputation" 5)));
+
+  "Testing increasing morale produces correct morale value" >:: 
+  (fun _ -> assert_equal 60 (morale (update_category comp1 "morale" 10)));
+
+  "Testing if reputation can be negative" >:: 
+  (fun _ -> assert_equal (-50) (reputation (update_category comp1 "reputation" (-100))));
+
+  "Testing if morale can be negative" >:: 
+  (fun _ -> assert_equal (-1) (morale (update_category comp1 "morale" (-51))));
+
 ]
 
 let suite =
