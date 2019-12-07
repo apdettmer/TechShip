@@ -12,8 +12,6 @@ type product = {
   name : string
 }
 
-
-
 type investor = { 
   name : string;
   investment : int
@@ -51,18 +49,61 @@ let new_employee name =
     reputation = Random.int 20 - 10;
   }
 
+let rand_name = function
+  | 0 -> "Jeff"
+  | 1 -> "Ron"
+  | 2 -> "Steve"
+  | 3 -> "Bill"
+  | 4 -> "Tim"
+  | 5 -> "Dick" 
+  | 6 -> "Ken"
+  | 7 -> "Ben"
+  | 8 -> "James"
+  | 9 -> "Arthur"
+  | _ -> "Naming Error"
+
+let new_random_employee () = 
+  Random.init (int_of_float (Unix.time ()));
+  {
+    name = rand_name (Random.int 10);
+    morale = Random.int 20 - 10;
+    reputation = Random.int 20 - 10;
+  }
+
+let custom_employee name morale rep = {
+  name = name;
+  morale = morale;
+  reputation = rep;
+}
+
 let rec employee_list name n acc = 
   match n with 
   | 0 -> acc
-  | _ -> employee_list name (n-1) (new_employee name :: acc)
+  | _ ->  if n > 0 then employee_list name (n-1) (new_random_employee () :: acc)
+    else []
 
-let hire_employee name n company = (* let employees = employee_list name n [] in *)
+let rec rep_employees ( emp_list : employee list ) = 
+  let rep_e (employee : employee)  = employee.reputation in
+  match emp_list with
+  | [] -> 0
+  | h :: t -> rep_e h + rep_employees t
+
+let rec morale_employees (emp_list : employee list) = 
+  let mor_e (employee : employee)  = employee.morale in
+  match emp_list with
+  | [] -> 0
+  | h :: t -> mor_e h + morale_employees t
+
+(**[hire_employee name n company] hires [n] new employees for the company. The
+   company is updated with a new employee list and new morale and reputation 
+   depending on the reputation of the employees hired. *)
+let hire_employee name n company = let employees = employee_list name n [] in 
   {
     product = company.product;
     funding = company.funding;
-    reputation = company.reputation; (* + employee.reputation; *)
-    morale = company.morale; (* + employee.morale; *)
-    employees = employee_list name n company.employees;
+    reputation = company.reputation + rep_employees employees;
+    morale = company.morale + morale_employees employees;
+    employees = company.employees @ employees;
     investors = company.investors;
     date = company.date;
     event = company.event;
@@ -70,6 +111,16 @@ let hire_employee name n company = (* let employees = employee_list name n [] in
 
 let employee_name emp = 
   emp.name
+
+let print_employee_info emp = 
+  Stdlib.print_string (" { Name: " ^ emp.name ^ " | Morale: " ^ string_of_int emp.morale 
+                       ^ " | Reputation: " ^ string_of_int emp.reputation ^ " } ");
+  Stdlib.print_endline ""; ()  
+
+let rec view_employees emp_list =
+  match emp_list with 
+  | [] -> ()
+  | h :: t -> print_employee_info h; view_employees t
 
 (** [starting_fund start_amount] returns [start_amount] multiplied by a random
     number <10. This creates a different starting funding for every game, making
