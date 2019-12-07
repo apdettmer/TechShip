@@ -38,7 +38,7 @@ and
   (**[display_event company] generates a random event of type [e], prints out
      its description and returns it. *)
   display_event company =
-  let event = fill_event_description ("demo" |> Event.random_event) (select_some_word ()) 20 in
+  let event = fill_event_description ((*company |> random_category*) "demo" |> Event.random_event) (select_some_word ()) 20 in
   print_endline (description event);
   event
 

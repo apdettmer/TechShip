@@ -79,7 +79,7 @@ let custom_employee name morale rep = {
 let rec employee_list name n acc = 
   match n with 
   | 0 -> acc
-  | _ ->  if n > 0 then employee_list name (n-1) (new_employee name :: acc)
+  | _ ->  if n > 0 then employee_list name (n-1) (new_random_employee () :: acc)
     else []
 
 let rec rep_employees ( emp_list : employee list ) = 
@@ -103,7 +103,7 @@ let hire_employee name n company = let employees = employee_list name n [] in
     funding = company.funding;
     reputation = company.reputation + rep_employees employees;
     morale = company.morale + morale_employees employees;
-    employees = employees @ company.employees;
+    employees = company.employees @ employees;
     investors = company.investors;
     date = company.date;
     event = company.event;

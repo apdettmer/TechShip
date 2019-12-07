@@ -40,8 +40,7 @@ val res_desc : response -> string
 
 val effects : response -> (string * int option) list
 
-(* * 
-   val event_type : e -> event_type *)
+
 
 (**  *)
 val update_company : response -> Founding.company -> Founding.company

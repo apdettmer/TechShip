@@ -52,7 +52,26 @@
           "morale": -20
         }
       ]
+    },
+	{
+      "id": 3,
+      "description": "The SEC recently investigated and shut down your rival company for money laundering in the Caymen Islands. Now some of their top employees are looking for new work.",
+      "stats": [
+        "reputation",
+        "employee"
+      ],
+      "responses": [
+        {
+          "description": "Hire those brainy criminals",
+          "employee": 5
+        },
+        {
+          "description": "Don't hire them; your current team is great as is.",
+          "reputation": 3
+        }
+      ]
     }
+	
   ],
   "sample": [
     {
@@ -140,7 +159,7 @@
         {
           "description": "Don't pay the fine. What's the worst the government could do, sue you?",
           "funding": 0,
-          "reputation": -100000
+          "reputation": -4
         }
       ]
     },
@@ -160,7 +179,7 @@
         {
           "description": "Don't pay your taxes",
           "funding": 0,
-          "reputation": -100000
+          "reputation": -5
         },
         {
           "description": "Fudge the numbers a bit. They won't notice you kept $2500, right? Just say it went to charity",
