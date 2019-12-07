@@ -19,7 +19,8 @@ let effects response = response.effects
 
 type event = {
   category : string;
-  description : string; stats : string list;
+  description : string; 
+  stats : string list;
   responses : response list
 } 
 
