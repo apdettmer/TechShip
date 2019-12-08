@@ -16,14 +16,21 @@ let alt_desc alt =
   | Menu -> "Quit to main menu."
 
 let rec present_alts company altlst =
-  List.iter (fun (i, a) -> print_endline ("[" ^ (string_of_int i) ^ "] " ^ (alt_desc a))) altlst;
+  List.iter (fun (i, a) -> 
+      print_endline ("[" ^ (string_of_int i) ^ "] " ^ (alt_desc a))) altlst;
   print_string ">";
   try (
     match (List.assoc (read_int ()) altlst) with
-    | Response res -> print_newline (); update_company res company |> play
-    | Status -> print_newline (); display_status company; present_alts company altlst
-    | Save -> print_newline (); save company; present_alts company altlst
-    | Menu -> print_newline (); main_menu ()
+    | Response res -> print_newline (); 
+      update_company res company |> play
+    | Status -> print_newline (); 
+      display_status company; 
+      present_alts company altlst
+    | Save -> print_newline (); 
+      save company; 
+      present_alts company altlst
+    | Menu -> print_newline (); 
+      main_menu ()
   )
   with _ -> print_string "Invalid entry.\n\n"; present_alts company altlst
 
@@ -31,14 +38,20 @@ and
 
   alts company reslst =
   let l = List.length reslst in
-  (l, Status) :: (l + 1, Save) :: (l + 2, Menu) :: (List.combine (create_intlst [] l) (List.map (fun r -> Response r) reslst)) |> List.sort (fun (i1, a1) (i2, a2) -> i1 - i2) |> present_alts company
+  (l, Status) :: 
+  (l + 1, Save) :: 
+  (l + 2, Menu) :: 
+  (List.combine (create_intlst [] l) (List.map (fun r -> Response r) reslst)) 
+  |> List.sort (fun (i1, a1) (i2, a2) -> i1 - i2) |> present_alts company
 
 and
 
   (**[display_event company] generates a random event of type [e], prints out
      its description and returns it. *)
   display_event company =
-  let event = fill_event_description ((*company |> random_category*) "demo" |> Event.random_event) (select_some_word ()) 20 in
+  let event = fill_event_description 
+      ((*company |> random_category*) "demo" |> Event.random_event) 
+      (select_some_word ()) 20 in
   print_endline (description event);
   event
 
@@ -93,11 +106,16 @@ and
 and
 
   list_files () =
-  Sys.readdir "." |> Array.to_list |> List.filter (fun x -> json_extension x) |> List.map (fun x -> Str.global_replace (Str.regexp_string ".json") "" x) |> List.sort String.compare
+  Sys.readdir "." |> Array.to_list 
+  |> List.filter (fun x -> json_extension x) 
+  |> List.map (fun x -> Str.global_replace (Str.regexp_string ".json") "" x) 
+  |> List.sort String.compare
 
 and
 
-  (** [display_save_file load_or_delete] lists the available save files, allows the player to select one, and manipulates it depending on [load_or_delete]. *)
+  (** [display_save_file load_or_delete] lists the available save files, allows 
+      the player to select one, and manipulates it depending on 
+      [load_or_delete]. *)
   display_save_files load_or_delete =
   let save_files = list_files () in
   if save_files = [] then (
@@ -107,16 +125,20 @@ and
   else print_endline "Select a save:";
   let nums = create_intlst [] (List.length save_files) in
   let opts = List.combine nums save_files in
-  List.iter (fun (i, f) -> print_endline ("[" ^ (string_of_int i) ^ "] " ^ f)) opts;
+  List.iter (fun (i, f) -> 
+      print_endline ("[" ^ (string_of_int i) ^ "] " ^ f)) opts;
   print_string ">";
   try
-    String.concat "" [(List.assoc (read_int ()) opts); ".json"] |> handle_save_file load_or_delete
+    String.concat "" [(List.assoc (read_int ()) opts); ".json"] 
+    |> handle_save_file load_or_delete
   with _ -> print_string "Invalid entry.\n\n";
     display_save_files load_or_delete
 
 and
 
-  (** [main_menu ()] prompts for the game to play, and then starts it and displays the main menu. The main menu allows players to create a new save, load a previous save, delete a previous save, or quit the game. *)
+  (** [main_menu ()] prompts for the game to play, and then starts it and 
+      displays the main menu. The main menu allows players to create a new save, 
+      load a previous save, delete a previous save, or quit the game. *)
   main_menu () =
   print_string "
 
