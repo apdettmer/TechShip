@@ -59,7 +59,8 @@ let rec make_responses = function
     {description = h |> member "description" |> to_string;
      effects = ("funding", get_effect "funding" h) :: 
                ("reputation", get_effect "reputation" h) ::
-               ("morale", get_effect "morale" h) :: []} :: make_responses t
+               ("morale", get_effect "morale" h) :: 
+               ("employee", get_effect "employee" h) :: []} :: make_responses t
 
 (** [match_id category id lst] gives the json event that matches
     [id].
