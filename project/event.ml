@@ -165,3 +165,20 @@ let make_name () =
   let last_name =
     List.nth last_name_lst (Random.int (List.length last_name_lst))
     |> to_string in fst_name ^ " " ^ last_name
+
+let rnd_employee () = 
+  Founding.new_employee (make_name ()) 
+
+let make_employee_event () =
+  let e_name = make_name () in 
+  let file = Yojson.Basic.from_file "data/events.json" in 
+  let emp_lst = file |> member "constructor" |> member "employee" |> to_list in
+  let ev = List.nth emp_lst (Random.int (List.length emp_lst)) in 
+  {
+    category = "employee";
+    description = 
+      (Str.global_replace (Str.regexp "emp_name") e_name 
+         (member "description" ev |> to_string));
+    stats = [];
+    responses = make_responses (member "responses" ev |> to_list)
+  }, Founding.new_employee e_name

@@ -7,8 +7,7 @@ open Yojson.Basic.Util
 let e1 = event_of "sample" 0 
 
 let e2 = event_of "investor" 0 
-(* changed from 10 -- for future reference, I think we need to increment each 
-   time we add an event to make clear bounds for random selection of events *)
+
 
 let fun_prog = List.nth( Yojson.Basic.from_file "data/wordbank.json"
                          |> member "words" |> to_list) 1 |> to_string
@@ -41,7 +40,9 @@ let event_tests = [
     (Event.fill_event_description e1 "hello" 0) (Event.description);
   make_event_test 
     "Inserting into sample description 2" "sample Functional Programming 0"
-    (Event.fill_event_description e1 fun_prog 0) (Event.description)
+    (Event.fill_event_description e1 fun_prog 0) (Event.description);
+  make_event_test "make_name gives a nonempty string" () 
+    (Event.make_name ()) ignore;
 ]
 
 let comp1 = new_company "Creative Name"

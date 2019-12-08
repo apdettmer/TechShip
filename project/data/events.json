@@ -238,7 +238,23 @@
     }
   ],
   "constructor": {
-    "employee": [],
+    "employee": [
+      {
+        "id": -1,
+        "description": "emp_name has submitted an application to your team. A recent computer science grad from Cornell University's College of Engineering, it seems they would make a fine addition to your company.",
+        "stats": [],
+        "responses": [
+          {
+            "description": "Accept the application."
+          },
+          {
+            "description": "Reject the application."
+          }
+        ],
+        "morale": 10,
+        "reputation": 10
+      }
+    ],
     "investor": []
   }
 }

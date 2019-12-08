@@ -72,3 +72,7 @@ val select_some_word : unit -> string
 (** [make_name ()] constructs a two-part name from first and last names in
     wordbank.json*)
 val make_name : unit -> string
+
+(** [rnd_employee ()] gives an employee with a randomly generated name using 
+    names from wordbank.json*)
+val rnd_employee : unit -> Founding.employee
