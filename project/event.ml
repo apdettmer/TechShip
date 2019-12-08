@@ -112,17 +112,16 @@ let random_category (company : Founding.company) =
   | 3 -> "other"
   | _ -> "other"
 
-(* let rec apply_effects company = function
-   | ("funding", i) :: t -> { product = product (company); 
-                             funding = funding (company) + i; reputation = reputation(company); 
-                             morale = morale (company); employees = employees (company); 
-                             investors = investors (company); date = date (company)
-                           }
-   | ("morale", i) :: t-> company
-   | ("reputation", i) :: t -> company 
-   | ("employees", i) :: t-> company
-   | (_ , i)  :: t -> apply_effects company t
-   | [] -> company *)
+let rec print_changes effects = 
+  match effects with 
+  | [] -> ()
+  | (name, Some (v)) :: t -> 
+    Stdlib.print_string ("(" ^ name ^ "): ");
+    if v >= 0 then ANSITerminal.(print_string [green] ("+" ^ string_of_int v))
+    else ANSITerminal.(print_string [red] (string_of_int v));
+    Stdlib.print_endline "";
+    print_changes t
+  | _ -> ()
 
 let rec apply_effects company = function 
   | [] -> company
@@ -134,6 +133,9 @@ let rec apply_effects company = function
 
 let update_company (response : response) (company : Founding.company) = 
   let updates = effects response in 
+  print_changes updates;
+  Stdlib.print_endline "";
+  Unix.sleep 1;
   apply_effects company updates
 
 let fill_event_description event replace i = 

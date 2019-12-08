@@ -39,14 +39,14 @@ let new_product name = {
 }
 
 (** [new_employee] takes a name, perhaps given by the player?, and returns an
-    employee with that name and with random morale values ranging from -10 to 10 
+    employee with that name and with random morale values ranging from -5 to 5 
 *)
 let new_employee name = 
   Random.init (int_of_float (Unix.time ()));
   {
     name = name;
-    morale = Random.int 20 - 10;
-    reputation = Random.int 20 - 10;
+    morale = Random.int 10 - 5;
+    reputation = Random.int 10 - 5;
   }
 
 let rand_name = function
