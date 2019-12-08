@@ -6,8 +6,14 @@ open Yojson.Basic.Util
 
 let e1 = event_of "sample" 0 
 
+let r1 = match responses e1 with 
+  | h::t -> h 
+  | _ -> failwith "Sample esponse not found"
+
 let e2 = event_of "investor" 0 
 
+let comp_sample = new_company "sample comp"
+let up_comp_sample = update_company r1 comp_sample
 
 let fun_prog = List.nth( Yojson.Basic.from_file "data/wordbank.json"
                          |> member "words" |> to_list) 1 |> to_string
@@ -29,8 +35,8 @@ let check_nonempty str =
 
 let event_tests = [
   make_event_test "category of sample" "sample" e1 Event.category;
-  make_event_test 
-    "description of sample" "sample string_val int_val" e1 Event.description;
+  make_event_test "description of sample" "sample string_val int_val" 
+    e1 Event.description;
   make_event_test "affected stats list size of sample" 
     2 (Event.affected_stats e1) List.length;
   make_event_test "affected stats list size of investor event e2" 2 
@@ -50,13 +56,18 @@ let event_tests = [
     (Event.fill_event_description e1 fun_prog 0) (Event.description);
   make_event_test "make_name gives a nonempty string" true 
     (Event.make_name ()) check_nonempty;
+  make_event_test "updating sample company increases funding" 5010
+    (up_comp_sample) (funding);
+  make_event_test "updating sample company increases morale" 55
+    (up_comp_sample) (morale);
 ]
 
 let comp1 = new_company "Creative Name"
 let john = new_employee "John"
 let sample_emp_list = [(custom_employee "Joe" 3 10); (custom_employee "Paul" 5 6);
                        (custom_employee "Kerber" 9 8)]
-let neg_sample_emp_list = [(custom_employee "Bill" (-5) 7); (custom_employee "Brumsted" 2 (-4)); 
+let neg_sample_emp_list = [(custom_employee "Bill" (-5) 7); 
+                           (custom_employee "Brumsted" 2 (-4)); 
                            (custom_employee "Marty" (-3) (-6))]
 
 (* Can't really test some of the values like funding, which are randomly 
@@ -73,7 +84,8 @@ let founding_tests = [
   "Test default investors is the empty list" >:: 
   (fun _ -> assert_equal [] (investors comp1));
   "Testing adding an employee increases employee list size" >:: 
-  (fun _ -> assert_equal 1 (comp1 |> hire_employee "Paul" 1 |> employees |> List.length));
+  (fun _ -> assert_equal 1 (comp1 |> hire_employee "Paul" 1 
+                            |> employees |> List.length));
   (* The test below should fail - the default value is 50, so adding an employee
      will change the morale. However idk how to do assert_not_equal in OCAML -ew424
      "Testing adding an employee increases employee list size" >:: 

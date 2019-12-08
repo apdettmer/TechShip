@@ -56,11 +56,14 @@ let get_effect category response =
 let rec make_responses = function 
   | [] -> []
   | h::t -> 
-    {description = h |> member "description" |> to_string;
-     effects = ("funding", get_effect "funding" h) :: 
-               ("reputation", get_effect "reputation" h) ::
-               ("morale", get_effect "morale" h) :: 
-               ("employee", get_effect "employee" h) :: []} :: make_responses t
+    {
+      description = h |> member "description" |> to_string;
+      effects = ("funding", get_effect "funding" h) 
+                :: ("reputation", get_effect "reputation" h) 
+                :: ("morale", get_effect "morale" h) 
+                :: ("employee", get_effect "employee" h) 
+                :: []
+    } :: make_responses t
 
 (** [match_id category id lst] gives the json event that matches
     [id].
@@ -97,11 +100,6 @@ let random_event category =
     let id = Random.int (List.length cat_actual) in 
     event_of category id 
   with InvalidEventCategory _ ->  raise (InvalidEventCategory category)
-
-let rec sum_func lst company =
-  match lst with
-  | [] -> company
-  | (cat, amount)::t -> failwith "Unimplemented"
 
 let random_category (company : Founding.company) = 
   Random.init (int_of_float (Unix.time ()));

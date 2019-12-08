@@ -38,11 +38,14 @@ val responses : event -> response list
 (**[response_description response] is the description of [response]*)
 val res_desc : response -> string
 
+(** [effects event] is the list of integer effects on the company from 
+    [event]*)
 val effects : response -> (string * int option) list
 
 
 
-(**  *)
+(**  [update_company response company] gives the company with the effects
+     of [response] applied to [company]*)
 val update_company : response -> Founding.company -> Founding.company
 
 (** [event_of category id] gives the event with [id] in [category] from
