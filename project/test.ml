@@ -59,7 +59,7 @@ let event_tests = [
   make_event_test "updating sample company increases funding" 5010
     (up_comp_sample) (funding);
   make_event_test "updating sample company increases morale" 55
-    (up_comp_sample) (morale);
+    (up_comp_sample) (Founding.morale);
 ]
 
 let comp1 = new_company "Creative Name"
@@ -76,13 +76,13 @@ let neg_sample_emp_list = [(custom_employee "Bill" (-5) 7);
 
 let founding_tests = [
   "Test reputation default value is 50" >:: 
-  (fun _ -> assert_equal 50 (reputation comp1));
+  (fun _ -> assert_equal 50 (Founding.reputation comp1));
   "Test employees default val" >:: 
   (fun _ -> assert_equal [] (employees comp1));
   "Test morale default val" >:: 
-  (fun _ -> assert_equal 50 (morale comp1));
+  (fun _ -> assert_equal 50 (Founding.morale comp1));
   "Test default investors is the empty list" >:: 
-  (fun _ -> assert_equal [] (investors comp1));
+  (fun _ -> assert_equal [] (Founding.investors comp1));
   "Testing adding an employee increases employee list size" >:: 
   (fun _ -> assert_equal 1 (comp1 |> hire_employee "Paul" 1 
                             |> employees |> List.length));
@@ -97,16 +97,16 @@ let founding_tests = [
   (fun _ -> assert_equal 4990 (funding (update_category comp1 "funding" (-10))));
 
   "Testing increasing reputation produces correct reputation" >:: 
-  (fun _ -> assert_equal 55 (reputation (update_category comp1 "reputation" 5)));
+  (fun _ -> assert_equal 55 (Founding.reputation (update_category comp1 "reputation" 5)));
 
   "Testing increasing morale produces correct morale value" >:: 
-  (fun _ -> assert_equal 60 (morale (update_category comp1 "morale" 10)));
+  (fun _ -> assert_equal 60 (Founding.morale (update_category comp1 "morale" 10)));
 
   "Testing if reputation can be negative" >:: 
-  (fun _ -> assert_equal (-50) (reputation (update_category comp1 "reputation" (-100))));
+  (fun _ -> assert_equal (-50) (Founding.reputation (update_category comp1 "reputation" (-100))));
 
   "Testing if morale can be negative" >:: 
-  (fun _ -> assert_equal (-1) (morale (update_category comp1 "morale" (-51))));
+  (fun _ -> assert_equal (-1) (Founding.morale (update_category comp1 "morale" (-51))));
 
   "Testing update_category handles employee hiring" >:: 
   (fun _ -> assert_equal 1 
