@@ -150,11 +150,16 @@ T E C H S H I P
 [3] Quit.
 >";
   match read_line () with
-  | "0" -> print_newline (); create_new_save ()
-  | "1" -> print_newline (); display_save_files Load
-  | "2" -> print_newline (); display_save_files Delete
-  | "3" -> print_newline (); exit 0
-  | _ -> print_endline "Invalid entry."; main_menu ()
+  | "0" -> print_newline (); 
+    create_new_save ()
+  | "1" -> print_newline (); 
+    display_save_files Load
+  | "2" -> print_newline (); 
+    display_save_files Delete
+  | "3" -> print_newline (); 
+    exit 0
+  | _ -> print_endline "Invalid entry."; 
+    main_menu ()
 
 (* Execute the game. *)
 let () = main_menu ()

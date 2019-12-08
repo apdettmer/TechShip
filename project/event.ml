@@ -183,3 +183,17 @@ let make_employee_event () =
     stats = [];
     responses = make_responses (member "responses" ev |> to_list)
   }, Founding.new_employee e_name
+
+(* let make_investor_event () = 
+   let i_name = make_name () in 
+   let file = Yojson.Basic.from_file "data/events.json" in 
+   let inv_lst = file |> member "constructor" |> member "investor" |> to_list in
+   let ev = List.nth inv_lst (Random.int (List.length inv_lst)) in 
+   {
+    category = "investor";
+    description = 
+      (Str.global_replace (Str.regexp "emp_name") i_name 
+         (member "description" ev |> to_string));
+    stats = [];
+    responses = make_responses (member "responses" ev |> to_list)
+   }, Founding.new_employee i_name *)

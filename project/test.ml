@@ -20,6 +20,13 @@ let make_event_test
   name >:: (fun _ ->
       assert_equal expected_output (f input))
 
+let random_event_tester category = 
+  try ignore(random_event category); true 
+  with InvalidEventCategory _ -> false
+
+let check_nonempty str =
+  str <> ""
+
 let event_tests = [
   make_event_test "category of sample" "sample" e1 Event.category;
   make_event_test 
@@ -30,19 +37,19 @@ let event_tests = [
     (Event.affected_stats e2) List.length;
   make_event_test "Response list is 3 elements long" 3 
     (responses e2) List.length;
-  make_event_test "Random event sample does not raise exception" ()
-    (Event.random_event "sample") ignore; (* exceptions are not caught by ignore*)
-  make_event_test "Random event investor does not raise exception" ()
-    (Event.random_event "investor") ignore;
-  make_event_test "Random event government does not raise exception" ()
-    (Event.random_event "government") ignore;
+  make_event_test "Random event sample does not raise exception" true
+    ("sample") random_event_tester; (* exceptions are not caught by ignore*)
+  make_event_test "Random event does raises exception" false
+    ("hello") random_event_tester;
+  make_event_test "Random event government does not raise exception" true
+    ("government") random_event_tester;
   make_event_test "Inserting into sample description" "sample hello 0"
     (Event.fill_event_description e1 "hello" 0) (Event.description);
   make_event_test 
     "Inserting into sample description 2" "sample Functional Programming 0"
     (Event.fill_event_description e1 fun_prog 0) (Event.description);
-  make_event_test "make_name gives a nonempty string" () 
-    (Event.make_name ()) ignore;
+  make_event_test "make_name gives a nonempty string" true 
+    (Event.make_name ()) check_nonempty;
 ]
 
 let comp1 = new_company "Creative Name"
