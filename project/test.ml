@@ -67,11 +67,14 @@ let event_tests = [
 
 let comp1 = new_company "Creative Name"
 let john = new_employee "John"
-let sample_emp_list = [(custom_employee "Joe" 3 10); (custom_employee "Paul" 5 6);
-                       (custom_employee "Kerber" 9 8)]
-let neg_sample_emp_list = [(custom_employee "Bill" (-5) 7); 
-                           (custom_employee "Brumsted" 2 (-4)); 
-                           (custom_employee "Marty" (-3) (-6))]
+let sample_emp_list = 
+  [(custom_employee "Joe" 3 10); 
+   (custom_employee "Paul" 5 6);
+   (custom_employee "Kerber" 9 8)]
+let neg_sample_emp_list = 
+  [(custom_employee "Bill" (-5) 7); 
+   (custom_employee "Brumsted" 2 (-4)); 
+   (custom_employee "Marty" (-3) (-6))]
 
 (* Can't really test some of the values like funding, which are randomly 
    generated each time *)
