@@ -161,5 +161,12 @@ T E C H S H I P
   | _ -> print_endline "Invalid entry."; 
     main_menu ()
 
+(* and  *)
+
+(* * [play_phase_2 founded]  is the repl for the second phase of the game
+   play_phase_2 founded
+   let g_event =  *)
+
+
 (* Execute the game. *)
 let () = main_menu ()

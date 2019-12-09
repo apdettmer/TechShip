@@ -58,13 +58,13 @@
       "description": "The SEC recently investigated and shut down your rival company for money laundering in the Caymen Islands. Now some of their top employees are looking for new work.",
       "stats": [
         "reputation",
-	"morale",
+        "morale",
         "employee"
       ],
       "responses": [
         {
           "description": "Hire those brainy criminals",
-	  "morale": 1,
+          "morale": 1,
           "employee": 5
         },
         {
@@ -123,7 +123,7 @@
       ]
     },
     {
-      "id": 1,
+      "id": 0,
       "description": "Former convicted felon turned millionaire Bane Crobber wants to invest in your company. He's a controversial figure, so support from him may hurt reputation.",
       "stats": [
         "funding",
@@ -146,7 +146,7 @@
   "government": [
     {
       "id": 0,
-      "description": "The government has passed a new regulation: a fine regarding string_val, to be paid immediately. It's gonna cost you int_val",
+      "description": "The government has passed a new regulation: a fine regarding string_val, to be paid immediately. It's gonna cost you $500",
       "stats": [
         "funding",
         "reputation"
@@ -165,7 +165,7 @@
       ]
     },
     {
-      "id": 1,
+      "id": 0,
       "description": "It's everyone's favorite: Tax Day! Looks like you'll be paying a sum of $5000, unfortunately",
       "stats": [
         "funding",
@@ -242,7 +242,7 @@
   "constructor": {
     "employee": [
       {
-        "id": -1,
+        "id": 0,
         "description": "emp_name has submitted an application to your team. A recent computer science grad from Cornell University's College of Engineering, it seems they would make a fine addition to your company.",
         "responses": [
           {
