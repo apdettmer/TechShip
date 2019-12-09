@@ -104,6 +104,52 @@
           "morale": 0
         }
       ]
+    },
+	{
+      "id": 5,
+      "description": "A video of you doing cocaine on a yacht on a company retreat has surfaced.",
+      "stats": [
+        "reputation",
+        "market_cap"
+      ],
+      "responses": [
+        {
+          "description": "Apologize publicly and donate to rehab clinics in your area.",
+          "reputation": 3,
+		  "market_cap": -1000
+        },
+        {
+          "description": "Try to sweep it under the rug.",
+          "reputation": -5,
+		  "market_cap": 0
+        },
+        {
+          "description": "Launch a legalize cocaine campaign in response and move the company's HQ to Colombia",
+          "reputation": -10,
+          "market_cap": 0
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "description": "You need to release a new product to keep up with your rivals. What type will you choose?",
+      "stats": [
+        "market_cap"
+      ],
+      "responses": [
+        {
+          "description": "Release a new cell phone",
+          "market_cap": 2000
+        },
+        {
+          "description": "Begin research on self-driving cars and pursue a new model.",
+          "market_cap": -3000
+		},
+        {
+          "description": "Start development on a new super lightweight hyper computer",
+          "market_cap": -1000
+		}
+      ]
     }
   ]
 }
