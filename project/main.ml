@@ -231,15 +231,5 @@ and
 
 
 
-(**[display_event file] generates a random event of type [e] from 
-     JSON file [file], prints out its description and returns it. *)
-(* display_event file =
-   let event = fill_event_description 
-    ((random_category ()) |> Event.random_event file) 
-    (select_some_word ()) 20 in
-   print_endline (description event);
-   event *)
-
-
 (* Execute the game. *)
 let () = main_menu ()
