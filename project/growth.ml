@@ -34,6 +34,17 @@ type f_response = {
   effects : (string * int option) list
 }
 
+let f_effects f_resp = 
+  f_resp.effects
+
+let f_description f_resp =
+  f_resp.description
+
+let new_f_response desc effects = {
+  description = desc;
+  effects = effects
+}
+
 let found company = 
   { 
     product = Founding.product company;
@@ -160,10 +171,11 @@ let update_cat name v company=
       marketing = marketing company;
       management = management company;
     }
-  | _ -> failwith "ERROROR"
+  | _ -> failwith "ERROROR2"
 
 let rec update_founded founded f_resp = 
-  match f_resp with 
+  match f_effects (f_resp) with 
   | [] -> founded
-  | (s, Some(v)) :: t -> update_founded (update_cat s v founded) t
-  | _ -> failwith "ERROROR"
+  | (s, Some(v)) :: t -> 
+    update_founded (update_cat s v founded) (new_f_response (f_description f_resp) t)
+  | _ -> failwith "ERROROR1"

@@ -1,12 +1,12 @@
 (* the type representing the founded company *)
 type founded
 
+(** the type representing a response to an event from this phase *)
+type f_response
+
 (** [found company] gives a new founded company using stats from
     [company] *)
 val found : Founding.company -> founded
-
-(** the type representing a response to an event from this phase *)
-type f_response
 
 (** [found company] gives a new founded company using stats from
     [company] *)
@@ -39,6 +39,16 @@ val marketing : founded -> int
 (**[management founded] is the management field of company [founded]*)
 val management : founded -> int
 
-(* (**[update_founded founded f_resp] takes a [founded] company and applies the 
+(**[f_effects f_resp] is the effects field of given f_response [f_resp] *)
+val f_effects : f_response -> (string * int option) list
+
+(**[f_description f_resp] is the description of given f_response [f_resp]  *)
+val f_description : f_response -> string
+
+(**[new_f_response desc effects] is a new response with the description [desc]
+   and effects field [effects] *)
+val new_f_response : string -> (string * int option) list -> f_response 
+
+(**[update_founded founded f_resp] takes a [founded] company and applies the 
    stat changes provided in [f_resp] and returns a new, updated company *)
-   val update_founded : founded -> f_response -> founded *)
+val update_founded : founded -> f_response -> founded 

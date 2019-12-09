@@ -135,14 +135,42 @@ let founding_tests = [
   (fun _ -> assert_equal (-3) (rep_employees neg_sample_emp_list));
 
 
+]
+
+(*comp1 has stats: funding 5000, reputation 50, morale 50, employees/investores = []*)
+let founded1 = found comp1
+
+let resp1 = new_f_response "test1" [("market_cap", Some (1000))]
+let resp2 = new_f_response "test2" [("morale", Some(5)); ("reputation", Some(6))]
+
+
+let growth_tests = [ 
+
+  "Testing found successfully transfer over correct funding value to market cap" >::
+  (fun _ -> assert_equal 5000 (market_cap founded1)); 
+
+  "Testing found successfully transfer over correct reputation value" >::
+  (fun _ -> assert_equal 5000 (market_cap founded1)); 
+
+  "Testing found successfully transfer over correct morale value" >::
+  (fun _ -> assert_equal 5000 (market_cap founded1)); 
+
+  "Testing update_founding successfully increases market_cap" >::
+  (fun _ -> assert_equal 6000 (market_cap (update_founded founded1 resp1))); 
+
+  "Testing update_founding successfully increases reputation - with multiple effect list" >::
+  (fun _ -> assert_equal 56 (reputation (update_founded founded1 resp2))); 
+
 
 
 ]
+
 
 let suite =
   "test suite for project"  >::: List.flatten [
     event_tests;
     founding_tests;
+    growth_tests;
     (* add others*)
   ]
 
