@@ -233,7 +233,7 @@ let save_date company =
 
 let save_event company =
   sprintf "\t\"event\": {
-  \t\t\"category\": %s,
+  \t\t\"category\": \"%s\",
   \t\t\"id\": %i
   }" (fst(company.event)) (snd(company.event))
 

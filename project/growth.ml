@@ -177,5 +177,6 @@ let rec update_founded founded f_resp =
   match f_effects (f_resp) with 
   | [] -> founded
   | (s, Some(v)) :: t -> 
-    update_founded (update_cat s v founded) (new_f_response (f_description f_resp) t)
+    update_founded (update_cat s v founded) 
+      (new_f_response (f_description f_resp) t)
   | _ -> failwith "ERROROR1"

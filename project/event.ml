@@ -81,8 +81,8 @@ let get_category category =
   | `Null -> raise (InvalidEventCategory category)
   | c -> to_list c
 
-let event_of category id = 
-  match member category (Yojson.Basic.from_file "data/events.json") with 
+let event_of category id file = 
+  match member category (Yojson.Basic.from_file file) with 
   | `Null -> raise (InvalidEventCategory category)
   | c -> try let event = match_id category id (c |> to_list) in
       {
@@ -94,14 +94,14 @@ let event_of category id =
       }
     with InvalidEventId i -> raise (InvalidEventId i)
 
-let random_event category = 
+let random_event file category = 
   Random.init (int_of_float (Unix.time ()));
   try let cat_actual = get_category category in
     let id = Random.int (List.length cat_actual) in 
-    event_of category id 
+    event_of category id file
   with InvalidEventCategory _ ->  raise (InvalidEventCategory category)
 
-let random_category (company : Founding.company) = 
+let random_category () = 
   Random.init (int_of_float (Unix.time ()));
   match (Random.int 100) mod 4 with
   | 0 -> "investor"
@@ -120,6 +120,7 @@ let rec print_changes effects =
     Stdlib.print_endline "";
     print_changes t
   | _ -> ()
+
 
 let rec apply_effects company = function 
   | [] -> company

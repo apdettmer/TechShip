@@ -6,19 +6,32 @@ open Event
 
 type load_or_delete = Load | Delete
 
-type alternative = Response of response | Status | Save | Menu 
+type alternative = Response of response 
+                 |FResponse of f_response
+                 | Status 
+                 | Save 
+                 | Menu 
+                 | Found
+
 
 let alt_desc alt =
   match alt with
   | Response res -> res_desc res
+  | FResponse f_res -> f_description f_res
   | Status -> "Display status."
   | Save -> "Save game."
   | Menu -> "Quit to main menu."
+  | Found -> "Found your company for real: be done with such small affairs."
 
-let rec present_alts company altlst =
+(** [pretty_print_nums altlst] displays the numbers of each alternative 
+    in [altlst] in brackets*)
+let pretty_print_nums altlst = 
   List.iter (fun (i, a) -> 
       print_endline ("[" ^ (string_of_int i) ^ "] " ^ (alt_desc a))) altlst;
-  print_string ">";
+  print_string ">"
+
+let rec present_alts company altlst =
+  pretty_print_nums altlst;
   try (
     match (List.assoc (read_int ()) altlst) with
     | Response res -> print_newline (); 
@@ -31,6 +44,10 @@ let rec present_alts company altlst =
       present_alts company altlst
     | Menu -> print_newline (); 
       main_menu ()
+    | FResponse _ -> print_endline "Hey, that shouldn't have happened!";
+      present_alts company altlst
+    | Found -> ANSITerminal.(print_string [green] ">herewegoround2.jpg");
+      company |> found |> play_phase_2
   )
   with _ -> print_string "Invalid entry.\n\n"; present_alts company altlst
 
@@ -38,19 +55,20 @@ and
 
   alts company reslst =
   let l = List.length reslst in
-  (l, Status) :: 
-  (l + 1, Save) :: 
-  (l + 2, Menu) :: 
+  (l, Found) ::
+  (l + 1, Status) :: 
+  (l + 2, Save) :: 
+  (l + 3, Menu) :: 
   (List.combine (create_intlst [] l) (List.map (fun r -> Response r) reslst)) 
   |> List.sort (fun (i1, a1) (i2, a2) -> i1 - i2) |> present_alts company
 
 and
 
-  (**[display_event company] generates a random event of type [e], prints out
-     its description and returns it. *)
-  display_event company =
+  (**[display_event file] generates a random event of type [e] from 
+     JSON file [file], prints out its description and returns it. *)
+  display_event file =
   let event = fill_event_description 
-      ((*company |> random_category*) "demo" |> Event.random_event) 
+      ((random_category ()) |> Event.random_event file) 
       (select_some_word ()) 20 in
   print_endline (description event);
   event
@@ -60,7 +78,7 @@ and
   (**[play] is the repl loop that takes player input and determines actions
      in the game. [player_file] is a JSON file that is a save file. *)
   play company =
-  let event = display_event company in
+  let event = display_event "data/events.json" in
   let responses = responses event in
   alts company responses
 
@@ -161,11 +179,37 @@ T E C H S H I P
   | _ -> print_endline "Invalid entry."; 
     main_menu ()
 
-(* and  *)
+and 
 
-(* * [play_phase_2 founded]  is the repl for the second phase of the game
-   play_phase_2 founded
-   let g_event =  *)
+  (** [play_phase_2 founded]  is the repl for the second phase of the game *)
+  play_phase_2 founded =
+  let g_event = display_event "data/events_founded.json" in 
+  let responses = responses g_event in 
+  f_alts founded responses
+
+and
+
+  f_alts founded res_lst = 
+  let len = List.length res_lst in 
+  (len, Status) ::
+  (len + 1, Menu) ::
+  (List.combine (create_intlst [] len) (List.map (fun r -> Response r) res_lst))
+  |> List.sort (fun (i1, a1) (i2, a2) -> i1 - i2) |> present_f_alts founded
+
+and present_f_alts founded altlst =
+  pretty_print_nums altlst;
+  try 
+    match List.assoc (read_int ()) altlst with 
+    | FResponse res -> print_newline ();
+      update_founded founded res
+      |> play_phase_2
+    | Menu -> print_newline ();
+      main_menu ()
+    | _ -> failwith "Unimplemented"
+  with _ -> print_string "Invalid entry. \n\n";
+    present_f_alts founded altlst
+
+
 
 
 (* Execute the game. *)

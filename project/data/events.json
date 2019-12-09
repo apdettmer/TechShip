@@ -2,6 +2,16 @@
   "demo": [
     {
       "id": 0,
+      "description": "Easter Egg -- Quitting before starting!",
+      "stats": [],
+      "responses": [
+        {
+          "description": "Carry on your way!"
+        }
+      ]
+    },
+    {
+      "id": 1,
       "description": "Congratulations. You've just been awarded $500 for your use of string_val in the workplace.",
       "stats": [
         "funding"
@@ -14,7 +24,7 @@
       ]
     },
     {
-      "id": 1,
+      "id": 2,
       "description": "Some local investors are growing wary with your use of string_val in the workplace, even going so far as to request your discontinuing of it.",
       "stats": [
         "funding",
@@ -36,7 +46,7 @@
       ]
     },
     {
-      "id": 2,
+      "id": 3,
       "description": "Licensing fees. You have to pay to continue using string_val for your company.",
       "stats": [
         "funding",
@@ -54,7 +64,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": 4,
       "description": "The SEC recently investigated and shut down your rival company for money laundering in the Caymen Islands. Now some of their top employees are looking for new work.",
       "stats": [
         "reputation",

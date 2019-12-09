@@ -48,20 +48,20 @@ val effects : response -> (string * int option) list
      of [response] applied to [company]*)
 val update_company : response -> Founding.company -> Founding.company
 
-(** [event_of category id] gives the event with [id] in [category] from
-    events.json
+(** [event_of category id file] gives the event with [id] in [category] from
+    JSON [file]
     Raises: [InvalidEvent] if [category] is not a category of event in
     events.json or if [id] is not the id of an event in [category]*)
-val event_of : string -> int -> event
+val event_of : string -> int -> string -> event
 
-(** [random_event category] selects a random event from [category].
-    Raises: [InvalidEventCategory] if [category] is not in events.json*)
-val random_event : string -> event
+(** [random_event file category] selects a random event in [category] under
+    JSON [file].
+    Raises: [InvalidEventCategory] if [category] is not in [file]*)
+val random_event : string -> string -> event
 
-(** [random_category company] selects at random a category in {"investor", "other", 
-    "employee", "government"}. As of 11/19, the implementation does not factor in 
-    the company's stats for the randomness.  *)
-val random_category : Founding.company -> string
+(** [random_category ()] selects at random a category in {"investor", "other", 
+    "employee", "government"}. *)
+val random_category : unit -> string
 
 (** [fill_event_description event replace i] gives the description of
     [event] with all instances of 'string_val' and 'int_val' replaced with 
