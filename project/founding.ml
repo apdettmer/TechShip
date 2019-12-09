@@ -242,13 +242,18 @@ let save_event company =
 
 let save company =
   let file_name = company.product.name in
-  let save_file = String.concat "" [file_name; "_phase_1.json"] in
+  let save_file = String.concat "" [file_name; ".json"] in
   let out_chn = open_out save_file in
   let data = String.concat "\n" [
-      "{"; save_product company; 
-      save_funding company; save_reputation company; 
-      save_morale company; save_employees company; 
-      save_investors company; save_date company; save_event company; "}"] in
+      "{"; "\t\"phase\": 1,";
+      save_product company; 
+      save_funding company; 
+      save_reputation company; 
+      save_morale company; 
+      save_employees company; 
+      save_investors company; 
+      save_date company; 
+      save_event company; "}"] in
   fprintf out_chn "%s" data;
   flush out_chn
 
