@@ -84,22 +84,24 @@
     },
     {
       "id": 4,
-      "description": "The company turned a massive profit last quarter, and you're sitting on a lot of cash. You decide to invest it. But how?",
+      "description": "Your company launched a small product, but experienced abysmal sales figures.",
       "stats": [
-        "market_cap"
+        "morale",
+        "marketing",
+        "management"
       ],
       "responses": [
         {
-          "description": "Invest in treasury bonds. There's no need to take a big risk here.",
-          "market_cap": 300
+          "description": "It was clearly a failure of the team responsible for product design. Restructure the team as necessary.",
+          "morale": -10,
+          "marketing": 0,
+          "management": 10
         },
         {
-          "description": "Send it and invest all of it into an unheard of new startup",
-          "market_cap": 2000
-        },
-        {
-          "description": "Buy a boat load of put options the S&P 500, banking on a crash. You've always been paranoid.",
-          "market_cap": -2500
+          "description": "A lack of marketing was the issue. Shift funds to the marketing team.",
+          "marketing": 25,
+          "management": -25,
+          "morale": 0
         }
       ]
     }
