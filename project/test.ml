@@ -4,19 +4,21 @@ open Growth
 open OUnit2
 open Yojson.Basic.Util
 
-let e1 = event_of "sample" 0 
+let e1 = event_of "sample" 0 "data/events.json"
 
 let r1 = match responses e1 with 
   | h::t -> h 
   | _ -> failwith "Sample esponse not found"
 
-let e2 = event_of "investor" 0 
+let e2 = event_of "investor" 0 "data/events.json"
 
 let comp_sample = new_company "sample comp"
 let up_comp_sample = update_company r1 comp_sample
 
-let fun_prog = List.nth( Yojson.Basic.from_file "data/wordbank.json"
-                         |> member "words" |> to_list) 1 |> to_string
+let fun_prog = 
+  List.nth( Yojson.Basic.from_file "data/wordbank.json"
+            |> member "words" 
+            |> to_list) 1 |> to_string
 
 let make_event_test
     (name : string)
@@ -27,7 +29,8 @@ let make_event_test
       assert_equal expected_output (f input))
 
 let random_event_tester category = 
-  try ignore(random_event category); true 
+  try ignore(random_event "data/events.json" category);
+    true
   with InvalidEventCategory _ -> false
 
 let check_nonempty str =
@@ -44,8 +47,8 @@ let event_tests = [
   make_event_test "Response list is 3 elements long" 3 
     (responses e2) List.length;
   make_event_test "Random event sample does not raise exception" true
-    ("sample") random_event_tester; (* exceptions are not caught by ignore*)
-  make_event_test "Random event does raises exception" false
+    ("sample") (random_event_tester); (* exceptions are not caught by ignore*)
+  make_event_test "Random event raises exception" false
     ("hello") random_event_tester;
   make_event_test "Random event government does not raise exception" true
     ("government") random_event_tester;

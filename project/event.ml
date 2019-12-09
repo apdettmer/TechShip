@@ -156,7 +156,8 @@ let event_of category id file =
 
 let random_event file category = 
   Random.init (int_of_float (Unix.time ()));
-  try let cat_actual = get_category category in
+  try 
+    let cat_actual = get_category category in
     let id = Random.int (List.length cat_actual) in 
     event_of category id file
   with InvalidEventCategory _ ->  raise (InvalidEventCategory category)

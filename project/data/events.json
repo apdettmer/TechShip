@@ -104,6 +104,26 @@
           "morale": -5
         }
       ]
+    },
+    {
+      "id": 1,
+      "description": "sample string_val int_val",
+      "stats": [
+        "funding",
+        "morale"
+      ],
+      "responses": [
+        {
+          "description": "Yes",
+          "funding": 10,
+          "morale": 5
+        },
+        {
+          "description": "No",
+          "funding": -10,
+          "morale": -5
+        }
+      ]
     }
   ],
   "investor": [
@@ -133,7 +153,7 @@
       ]
     },
     {
-      "id": 0,
+      "id": 1,
       "description": "Former convicted felon turned millionaire Bane Crobber wants to invest in your company. He's a controversial figure, so support from him may hurt reputation.",
       "stats": [
         "funding",
@@ -175,7 +195,7 @@
       ]
     },
     {
-      "id": 0,
+      "id": 1,
       "description": "It's everyone's favorite: Tax Day! Looks like you'll be paying a sum of $5000, unfortunately",
       "stats": [
         "funding",

@@ -6,12 +6,13 @@ open Event
 
 type load_or_delete = Load | Delete
 
-type alternative = Response of response 
-                 |FResponse of f_response
-                 | Status 
-                 | Save 
-                 | Menu 
-                 | Found
+type alternative = 
+  | Response of response 
+  | FResponse of f_response
+  | Status 
+  | Save 
+  | Menu 
+  | Found
 
 
 let alt_desc alt =
