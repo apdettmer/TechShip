@@ -113,8 +113,9 @@ let employee_name emp =
   emp.name
 
 let print_employee_info emp = 
-  Stdlib.print_string (" { Name: " ^ emp.name ^ " | Morale: " ^ string_of_int emp.morale 
-                       ^ " | Reputation: " ^ string_of_int emp.reputation ^ " } ");
+  Stdlib.print_string 
+    (" { Name: " ^ emp.name ^ " | Morale: " ^ string_of_int emp.morale 
+     ^ " | Reputation: " ^ string_of_int emp.reputation ^ " } ");
   Stdlib.print_endline ""; ()  
 
 let rec view_employees emp_list =
@@ -200,7 +201,8 @@ let save_employees_helper (employee : employee) =
 let save_employees company =
   sprintf "\t\"employees\": [
 %s
-\t]," (List.rev_map save_employees_helper company.employees |> String.concat ",\n")
+\t]," (List.rev_map save_employees_helper company.employees 
+       |> String.concat ",\n")
 
 let save_investors_helper (investor : investor) =
   sprintf "\t\t{
@@ -211,7 +213,8 @@ let save_investors_helper (investor : investor) =
 let save_investors company =
   sprintf "\t\"investors\": [
 %s
-\t]," (List.rev_map save_investors_helper company.investors |> String.concat ",\n")
+\t]," (List.rev_map save_investors_helper company.investors 
+       |> String.concat ",\n")
 
 let save_date company =
   sprintf "\t\"date\": {
@@ -224,7 +227,9 @@ let save_date company =
 \t\t\"week day\": %i,
 \t\t\"year day\": %i,
 \t\t\"daylight saving\": %b
-\t}," company.date.tm_sec company.date.tm_min company.date.tm_hour company.date.tm_mday company.date.tm_mon company.date.tm_year company.date.tm_wday company.date.tm_yday company.date.tm_isdst
+\t}," company.date.tm_sec company.date.tm_min company.date.tm_hour 
+    company.date.tm_mday company.date.tm_mon company.date.tm_year 
+    company.date.tm_wday company.date.tm_yday company.date.tm_isdst
 
 let save_event company =
   sprintf "\t\"event\": %i" company.event
@@ -233,7 +238,11 @@ let save company =
   let file_name = company.product.name in
   let save_file = String.concat "" [file_name; ".json"] in
   let out_chn = open_out save_file in
-  let data = String.concat "\n" ["{"; save_product company; save_funding company; save_reputation company; save_morale company; save_employees company; save_investors company; save_date company; save_event company; "}"] in
+  let data = String.concat "\n" [
+      "{"; save_product company; 
+      save_funding company; save_reputation company; 
+      save_morale company; save_employees company; 
+      save_investors company; save_date company; save_event company; "}"] in
   fprintf out_chn "%s" data;
   flush out_chn
 
