@@ -165,6 +165,7 @@ let rec update_founded founded f_resp =
 
 
 let print_founded founded = 
+  Stdlib.print_endline "";
   Stdlib.print_endline 
     ("Market Capitalization: " ^ string_of_int (market_cap founded));
   Stdlib.print_endline 
@@ -178,24 +179,14 @@ let print_founded founded =
   Stdlib.print_endline 
     ("Marketing : " ^ string_of_int (marketing founded));
   Stdlib.print_endline 
-    ("Management: " ^ string_of_int (management founded))
+    ("Management: " ^ string_of_int (management founded));
+  Stdlib.print_endline ""
 
-(* this is my attempt at making a repl loop for growth
-
-   (**[display_event company] generates a random event of type [e], prints out
-     its description and returns it. *)
-   let display_event company =
-   let event = fill_event_description 
-      ((*company |> random_category*) "demo" |> Event.random_event) 
-      (select_some_word ()) 20 in
-   print_endline (description event);
-   event
-
-
-   let rec growth_play founded = 
-   let event = display_event_founded () in
-   let responses = display_responses event in 
-   let result = handle_response display_responses in
-   let updated_f = update_founded updated_f in
-   growth_play updated_f
-*)
+let print_found_message msg = 
+  Stdlib.print_string "\n Your efforts in the founding phase have paid off. "; 
+  Stdlib.print_string ("Now it is time to take ");
+  ANSITerminal.(print_string [green] msg); 
+  Stdlib.print_string (" to the next level. \n");
+  Stdlib.print_string "You have entered the growth phase. Some stats, such as";
+  Stdlib.print_string " Morale and Reputation are the same, while you gained new ";
+  Stdlib.print_string "stats such as Marketing and Managment. Good luck. \n \n";

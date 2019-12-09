@@ -47,7 +47,10 @@ let rec present_alts company altlst =
       main_menu ()
     | FResponse _ -> print_endline "Hey, that shouldn't have happened!";
       present_alts company altlst
-    | Found -> ANSITerminal.(print_string [green] ">herewegoround2.jpg
+    | Found -> 
+      print_found_message (company |> Founding.product |> string_of_product);
+      Unix.sleep 1;
+      ANSITerminal.(print_string [green] ">herewegoround2.jpg
 
     ");
       try 
@@ -225,6 +228,7 @@ and
       |> play_phase_2
     | Menu -> print_newline ();
       main_menu ()
+    | Status -> print_founded founded; present_f_alts founded altlst
     | _ -> print_endline "Unimplemented"
   with _ -> print_string "Invalid entry. \n\n";
     present_f_alts founded altlst

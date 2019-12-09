@@ -76,6 +76,9 @@ let custom_employee name morale rep = {
   reputation = rep;
 }
 
+let string_of_product (product : product) = 
+  product.name
+
 let rec employee_list name n acc = 
   match n with 
   | 0 -> acc

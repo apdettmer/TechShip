@@ -54,3 +54,5 @@ val new_f_response : string -> (string * int option) list -> f_response
 val update_founded : founded -> f_response -> founded 
 
 val print_founded : founded -> unit
+
+val print_found_message : string -> unit

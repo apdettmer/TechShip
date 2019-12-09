@@ -54,6 +54,9 @@ val funding : company -> int
 (** [employees company] is an [employee] list of the current employees. *)
 val employees : company -> employee list
 
+(** [string_of_product product] is the name of [product]. *)
+val string_of_product : product -> string
+
 (** [reputation company] is the reputation of the company. *)
 val reputation : company -> int
 
