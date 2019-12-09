@@ -64,8 +64,8 @@ val event_of : string -> int -> string -> event
     Raises: [InvalidEventCategory] if [category] is not in [file]*)
 val random_event : string -> string -> event
 
-(** [random_category ()] selects at random a category in {"investor", "other", 
-    "employee", "government"}. *)
+(** [random_category ()] selects at random a category associated with the
+    first phase of the game*)
 val random_category : unit -> string
 
 (** [f_random_category ()] selects at random a category associated with the
