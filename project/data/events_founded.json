@@ -81,6 +81,27 @@
           "market_cap": -2500
         }
       ]
+    },
+    {
+      "id": 4,
+      "description": "The company turned a massive profit last quarter, and you're sitting on a lot of cash. You decide to invest it. But how?",
+      "stats": [
+        "market_cap"
+      ],
+      "responses": [
+        {
+          "description": "Invest in treasury bonds. There's no need to take a big risk here.",
+          "market_cap": 300
+        },
+        {
+          "description": "Send it and invest all of it into an unheard of new startup",
+          "market_cap": 2000
+        },
+        {
+          "description": "Buy a boat load of put options the S&P 500, banking on a crash. You've always been paranoid.",
+          "market_cap": -2500
+        }
+      ]
     }
   ]
 }

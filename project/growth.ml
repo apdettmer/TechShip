@@ -13,20 +13,6 @@ type founded = {
 
 }
 
-let found company = 
-  { 
-    product = Founding.product company;
-    market_cap = Founding.funding company;
-    reputation = Founding.reputation company;
-    morale = Founding.morale company;
-    teams = [];
-    investors = Founding.investors company;
-    date = Founding.date company;
-    marketing = 100;
-    management = 50
-  }
-
-
 (* Currently defined exactly as the one in event - but I feel like its better to
    create a new type for this file / new type of company -ew424 *)
 type f_response = Event.response
