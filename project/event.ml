@@ -111,20 +111,23 @@ let event_of_category_founded category id =
   let file = Yojson.Basic.from_file "data/events_founded.json" in
   match member category file with 
   | `Null -> raise (InvalidEventCategory category)
-  | c -> try let event = match_id category id (c |> to_list) in
+  | c -> try let event = match_id category id (to_list c) in
       {
         category = category;
-        description = event 
-                      |> member "description" 
-                      |> to_string;
-        stats = event 
-                |> member "stats" 
-                |> to_list 
-                |> get_str_lst [];
-        responses = event 
-                    |> member "responses" 
-                    |> to_list 
-                    |> make_responses_founded
+        description = 
+          event 
+          |> member "description" 
+          |> to_string;
+        stats = 
+          event 
+          |> member "stats" 
+          |> to_list 
+          |> get_str_lst [];
+        responses = 
+          event 
+          |> member "responses" 
+          |> to_list 
+          |> make_responses_founded
       }
     with InvalidEventId i -> raise (InvalidEventId i)
 
@@ -134,10 +137,20 @@ let event_of category id file =
   | c -> try let event = match_id category id (c |> to_list) in
       {
         category = category;
-        description = event |> member "description" |> to_string;
-        stats = event |> member "stats" 
-                |> to_list |> get_str_lst [];
-        responses = event |> member "responses" |> to_list |> make_responses
+        description = 
+          event 
+          |> member "description" 
+          |> to_string;
+        stats = 
+          event 
+          |> member "stats" 
+          |> to_list 
+          |> get_str_lst [];
+        responses = 
+          event 
+          |> member "responses" 
+          |> to_list 
+          |> make_responses
       }
     with InvalidEventId i -> raise (InvalidEventId i)
 

@@ -50,7 +50,9 @@ let rec present_alts company altlst =
 
     ");
       try 
-        company |> found |> (play_phase_2)
+        company 
+        |> found 
+        |> (play_phase_2)
       with _ -> print_endline "here's your bug"
   )
   with _ -> print_string "Invalid entry.\n\n"; present_alts company altlst
@@ -64,7 +66,8 @@ and
   (l + 2, Save) :: 
   (l + 3, Menu) :: 
   (List.combine (create_intlst [] l) (List.map (fun r -> Response r) reslst)) 
-  |> List.sort (fun (i1, a1) (i2, a2) -> i1 - i2) |> present_alts company
+  |> List.sort (fun (i1, a1) (i2, a2) -> i1 - i2) 
+  |> present_alts company
 
 and
 
@@ -72,7 +75,8 @@ and
      JSON file [file], prints out its description and returns it. *)
   display_event file =
   let event = fill_event_description 
-      ((random_category ()) |> Event.random_event file) 
+      ((random_category ()) 
+       |> Event.random_event file) 
       (select_some_word ()) 20 in
   print_endline (description event);
   event
@@ -106,8 +110,13 @@ and
 
   handle_save_file load_or_delete file_name =
   match load_or_delete with
-  | Load -> print_newline (); Yojson.Basic.from_file file_name |> load |> play
-  | Delete -> print_newline (); Sys.remove file_name; main_menu ()
+  | Load -> print_newline (); 
+    Yojson.Basic.from_file file_name 
+    |> load 
+    |> play
+  | Delete -> print_newline (); 
+    Sys.remove file_name; 
+    main_menu ()
 
 and
 
@@ -224,7 +233,8 @@ and
       prints its description and returns it*)
   f_display_event file =
   let event = fill_event_description
-      ((f_random_category ()) |> Event.random_event file)
+      ((f_random_category ()) 
+       |> Event.random_event file)
       (select_some_word ()) 20 in
   print_endline (description event);
   event
