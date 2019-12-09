@@ -31,7 +31,7 @@ type company = {
   employees : employee list;
   investors : investor list;
   date : tm;
-  event: int;
+  event: string * int;
 }
 
 let new_product name = {
@@ -149,7 +149,7 @@ let new_company name = {
     tm_yday = 154;
     tm_isdst = true
   };
-  event = 0;
+  event = "demo", 0;
 }
 
 (* Below are the getters for founding. All very simple.  *)
@@ -232,11 +232,14 @@ let save_date company =
     company.date.tm_wday company.date.tm_yday company.date.tm_isdst
 
 let save_event company =
-  sprintf "\t\"event\": %i" company.event
+  sprintf "\t\"event\": {
+  \t\t\"category\": %s,
+  \t\t\"id\": %i
+  }" (fst(company.event)) (snd(company.event))
 
 let save company =
   let file_name = company.product.name in
-  let save_file = String.concat "" [file_name; ".json"] in
+  let save_file = String.concat "" [file_name; "_phase_1.json"] in
   let out_chn = open_out save_file in
   let data = String.concat "\n" [
       "{"; save_product company; 
@@ -281,7 +284,10 @@ let load json = {
   employees = json |> member "employees" |> to_list |> List.map load_employee;
   investors = json |> member "investors" |> to_list |> List.map load_investor;
   date = json |> member "date" |> load_date;
-  event = json |> member "event" |> to_int;
+  event = 
+    let cat = json |> member "event" |> member "category" |> to_string in
+    let id = json |> member "event" |> member "id" |> to_int in 
+    cat, id;
 }
 
 let display_status company =
