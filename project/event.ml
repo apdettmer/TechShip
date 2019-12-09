@@ -157,9 +157,16 @@ let event_of category id file =
 let random_event file category = 
   Random.init (int_of_float (Unix.time ()));
   try 
-    let cat_actual = get_category category in
-    let id = Random.int (List.length cat_actual) in 
-    event_of category id file
+    if file = "data/events.json" then
+      let cat_actual = get_category category in
+      let id = Random.int (List.length cat_actual) in 
+      event_of category id file
+    else if file = "data/events_founded.json" then
+      let cat_actual = get_category_founded category in
+      let id = Random.int (List.length cat_actual) in
+      event_of_category_founded category id
+    else 
+      failwith "Entered an incorrect file name somewhere"
   with InvalidEventCategory _ ->  raise (InvalidEventCategory category)
 
 let random_category () = 
