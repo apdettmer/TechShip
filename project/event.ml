@@ -19,6 +19,7 @@ let effects response = response.effects
 
 type event = {
   category : string;
+  id : int;
   description : string; 
   stats : string list;
   responses : response list
@@ -26,6 +27,9 @@ type event = {
 
 let category event = 
   event.category
+
+let id event = 
+  event.id
 
 let description event = 
   event.description
@@ -114,6 +118,7 @@ let event_of_category_founded category id =
   | c -> try let event = match_id category id (to_list c) in
       {
         category = category;
+        id = id;
         description = 
           event 
           |> member "description" 
@@ -137,6 +142,7 @@ let event_of category id file =
   | c -> try let event = match_id category id (c |> to_list) in
       {
         category = category;
+        id = id;
         description = 
           event 
           |> member "description" 
@@ -202,12 +208,13 @@ let rec apply_effects company = function
       | Some v -> apply_effects (update_category company category v) t
     )
 
-let update_company (response : response) (company : Founding.company) = 
+let update_company (response : response) (company : Founding.company) event = 
   let updates = effects response in 
   print_changes updates;
   Stdlib.print_endline "";
   Unix.sleep 1;
-  apply_effects company updates
+  let new_comp = set_event company (category event) (id event) in 
+  apply_effects new_comp updates
 
 (** [fill_description desc replace i] gives the [desc] with [replace] and
     [i] entered according to regular expression matching*)
@@ -216,9 +223,10 @@ let fill_description desc replace i =
   |> (Str.global_replace (Str.regexp "int_val") (string_of_int i))
 
 let fill_event_description event replace i = 
-  match event with | {category; description = d; stats; responses} ->
+  match event with | {category; id; description = d; stats; responses} ->
     {
       category;
+      id;
       description = fill_description d replace i;
       stats;
       responses
@@ -253,6 +261,7 @@ let make_employee_event () =
   let ev = List.nth emp_lst (Random.int (List.length emp_lst)) in 
   {
     category = "employee";
+    id = ev |> member "id" |> to_int;
     description = 
       (Str.global_replace (Str.regexp "emp_name") e_name 
          (member "description" ev |> to_string));

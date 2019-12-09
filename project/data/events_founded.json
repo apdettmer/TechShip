@@ -1,4 +1,16 @@
 {
+  "easter egg": [
+    {
+      "id": 0,
+      "description": "Easter Egg -- Quitting Phase 2 early ",
+      "stats": [],
+      "responses": [
+        {
+          "description": "Carry on"
+        }
+      ]
+    }
+  ],
   "demo": [
     {
       "id": 0,

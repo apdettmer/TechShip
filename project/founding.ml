@@ -82,7 +82,8 @@ let string_of_product (product : product) =
 let rec employee_list name n acc = 
   match n with 
   | 0 -> acc
-  | _ ->  if n > 0 then employee_list name (n-1) (new_random_employee () :: acc)
+  | _ ->  if n > 0 
+    then employee_list name (n-1) (new_random_employee () :: acc)
     else []
 
 let rec rep_employees ( emp_list : employee list ) = 
@@ -179,6 +180,17 @@ let date company =
 
 let event company =
   company.event
+
+let set_event company category id = {
+  product = company.product;
+  funding = company.funding;
+  reputation = company.reputation;
+  morale = company.morale; 
+  employees = company.employees;
+  investors = company.investors;
+  date = company.date;
+  event = category, id
+}
 
 let save_product company =
   sprintf "\t\"product\":{

@@ -9,8 +9,8 @@ type founded = {
   investors: Founding.investor list;
   date : tm;
   marketing: int;
-  management: int
-
+  management: int;
+  (* event : string * int *)
 }
 
 (* Currently defined exactly as the one in event - but I feel like its better to
@@ -37,6 +37,7 @@ let found company =
     date = Founding.date company;
     marketing = 50;
     management = 100;
+    (* event = "easter egg", 0 *)
   }
 
 let product founded = 
@@ -65,6 +66,9 @@ let marketing founded =
 
 let management founded = 
   founded.management
+
+(* let event founded = 
+   founded.event *)
 
 
 let update_investors current_investor_list = 

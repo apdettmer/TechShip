@@ -31,22 +31,22 @@ let pretty_print_alts altlst =
       print_endline ("[" ^ (string_of_int i) ^ "] " ^ (alt_desc a))) altlst;
   print_string ">"
 
-let rec present_alts company altlst =
+let rec present_alts company altlst event =
   pretty_print_alts altlst;
   try (
     match (List.assoc (read_int ()) altlst) with
     | Response res -> print_newline (); 
-      update_company res company |> play
+      update_company res company event |> play
     | Status -> print_newline (); 
       display_status company; 
-      present_alts company altlst
+      present_alts company altlst event
     | Save -> print_newline (); 
       save company; 
-      present_alts company altlst
+      present_alts company altlst event
     | Menu -> print_newline (); 
       main_menu ()
     | FResponse _ -> print_endline "Hey, that shouldn't have happened!";
-      present_alts company altlst
+      present_alts company altlst event
     | Found -> 
       print_found_message (company |> Founding.product |> string_of_product);
       Unix.sleep 1;
@@ -59,19 +59,21 @@ let rec present_alts company altlst =
         |> (play_phase_2)
       with _ -> print_endline "here's your bug"
   )
-  with _ -> print_string "Invalid entry.\n\n"; present_alts company altlst
+  with _ -> print_string "Invalid entry.\n\n"; 
+    present_alts company altlst event
 
 and
 
-  alts company reslst =
+  alts company reslst event =
   let l = List.length reslst in
-  (l, Found) ::
-  (l + 1, Status) :: 
-  (l + 2, Save) :: 
-  (l + 3, Menu) :: 
-  (List.combine (create_intlst [] l) (List.map (fun r -> Response r) reslst)) 
-  |> List.sort (fun (i1, a1) (i2, a2) -> i1 - i2) 
-  |> present_alts company
+  let altlst = 
+    (l, Found) ::
+    (l + 1, Status) :: 
+    (l + 2, Save) :: 
+    (l + 3, Menu) :: 
+    (List.combine (create_intlst [] l) (List.map (fun r -> Response r) reslst)) 
+    |> List.sort (fun (i1, a1) (i2, a2) -> i1 - i2) 
+  in present_alts company  altlst event
 
 and
 
@@ -92,7 +94,17 @@ and
   play company =
   let event = display_event "data/events.json" in
   let responses = responses event in
-  alts company responses
+  alts company responses event
+and
+  (**[play_from_save company] starts game session with the event being viewed 
+     when [company] was last saved *)
+
+  play_from_save company = 
+  let event_info = event company in 
+  let event = event_of (fst(event_info)) (snd(event_info)) "data/events.json" in
+  print_endline (description event); 
+  let responses = responses event in 
+  alts company responses event
 
 and
 
@@ -117,7 +129,7 @@ and
   | Load -> print_newline (); 
     Yojson.Basic.from_file file_name 
     |> load 
-    |> play
+    |> play_from_save
   | Delete -> print_newline (); 
     Sys.remove file_name; 
     main_menu ()

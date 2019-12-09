@@ -49,9 +49,9 @@ val effects : response -> (string * int option) list
 
 
 
-(**  [update_company response company] gives the company with the effects
+(**  [update_company response company event] gives the company with the effects
      of [response] applied to [company]*)
-val update_company : response -> Founding.company -> Founding.company
+val update_company : response -> Founding.company -> event -> Founding.company
 
 (** [event_of category id file] gives the event with [id] in [category] from
     JSON [file]

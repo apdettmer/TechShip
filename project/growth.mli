@@ -39,6 +39,9 @@ val marketing : founded -> int
 (**[management founded] is the management field of company [founded]*)
 val management : founded -> int
 
+(** [event founded] gives the category and id of the current event *)
+(* val event : founded -> string * int *)
+
 (**[f_effects f_resp] is the effects field of given f_response [f_resp] *)
 val f_effects : f_response -> (string * int option) list
 
