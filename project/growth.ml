@@ -189,4 +189,22 @@ let print_found_message msg =
   Stdlib.print_string (" to the next level. \n");
   Stdlib.print_string "You have entered the growth phase. Some stats, such as";
   Stdlib.print_string " Morale and Reputation are the same, while you gained new ";
-  Stdlib.print_string "stats such as Marketing and Managment. Good luck. \n \n";
+  Stdlib.print_string "stats such as Marketing and Managment. Good luck. \n \n"
+
+let print_founded_change change field =
+  match change with
+  | 0 -> ()
+  | v -> Stdlib.print_string ("(" ^ field ^ "): ");
+    if v >= 0 then ANSITerminal.(print_string [green] ("+" ^ string_of_int v))
+    else ANSITerminal.(print_string [red] (string_of_int v));
+    Stdlib.print_endline "" 
+
+let print_updates prev_found new_founded = 
+  print_founded_change ((market_cap new_founded) - (market_cap prev_found)) ("market_cap");
+  print_founded_change ((reputation new_founded)- (reputation prev_found)) ("reputation");
+  print_founded_change ((morale new_founded)- (morale prev_found)) ("morale");
+  (* print_founded_change ((investor new_founded)- ( prev_found)) ("investors"); *)
+  (* print_founded_change (teams prev_found) (teams new_founded)  ("teams"); *)
+  print_founded_change ((marketing new_founded) - (marketing prev_found)) ("marketing");
+  print_founded_change ((management new_founded) - (management prev_found)) ("management");
+  Stdlib.print_string "\n"

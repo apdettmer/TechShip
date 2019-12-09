@@ -56,3 +56,5 @@ val update_founded : founded -> f_response -> founded
 val print_founded : founded -> unit
 
 val print_found_message : string -> unit
+
+val print_updates : founded -> founded -> unit

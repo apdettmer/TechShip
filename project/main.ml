@@ -224,8 +224,9 @@ and
   try 
     match List.assoc (read_int ()) altlst with 
     | FResponse res -> print_newline ();
-      update_founded founded res
-      |> play_phase_2
+      let new_founded = update_founded founded res in 
+      print_updates founded new_founded;
+      play_phase_2 new_founded
     | Menu -> print_newline ();
       main_menu ()
     | Status -> print_founded founded; 

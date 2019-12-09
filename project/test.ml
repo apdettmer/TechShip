@@ -140,7 +140,6 @@ let founding_tests = [
   "Testing reputation_employees sums the reputation of the sample employee list-with negative values" >:: 
   (fun _ -> assert_equal (-3) (rep_employees neg_sample_emp_list));
 
-
 ]
 
 (*comp1 has stats: funding 5000, reputation 50, morale 50, employees/investores = []*)
