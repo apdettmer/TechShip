@@ -228,7 +228,8 @@ and
       |> play_phase_2
     | Menu -> print_newline ();
       main_menu ()
-    | Status -> print_founded founded; present_f_alts founded altlst
+    | Status -> print_founded founded; 
+      present_f_alts founded altlst
     | _ -> print_endline "Unimplemented"
   with _ -> print_string "Invalid entry. \n\n";
     present_f_alts founded altlst
