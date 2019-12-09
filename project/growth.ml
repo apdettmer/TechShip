@@ -179,3 +179,13 @@ let rec update_founded founded f_resp =
   | (s, Some(v)) :: t -> 
     update_founded (update_cat s v founded) (new_f_response (f_description f_resp) t)
   | _ -> failwith "ERROROR1"
+
+
+let print_founded founded = 
+  Stdlib.print_endline ("Market Capitalization: " ^ string_of_int (market_cap founded));
+  Stdlib.print_endline ("Reputation: " ^ string_of_int (reputation founded));
+  Stdlib.print_endline ("Morale: " ^ string_of_int (morale founded));
+  Stdlib.print_endline ("Number of investors: " ^ string_of_int (List.length (investors founded)));
+  Stdlib.print_endline ("Number of teams: " ^ string_of_int (List.length (teams founded)));
+  Stdlib.print_endline ("Marketing : " ^ string_of_int (marketing founded));
+  Stdlib.print_endline ("Management: " ^ string_of_int (management founded))

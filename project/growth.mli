@@ -52,3 +52,5 @@ val new_f_response : string -> (string * int option) list -> f_response
 (**[update_founded founded f_resp] takes a [founded] company and applies the 
    stat changes provided in [f_resp] and returns a new, updated company *)
 val update_founded : founded -> f_response -> founded 
+
+val print_founded : founded -> unit

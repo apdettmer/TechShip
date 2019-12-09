@@ -144,6 +144,8 @@ let resp1 = new_f_response "test1" [("market_cap", Some (1000))]
 let resp2 = new_f_response "test2" [("morale", Some(5)); ("reputation", Some(6))]
 
 
+
+
 let growth_tests = [ 
 
   "Testing found successfully transfer over correct funding value to market cap" >::
@@ -160,7 +162,6 @@ let growth_tests = [
 
   "Testing update_founding successfully increases reputation - with multiple effect list" >::
   (fun _ -> assert_equal 56 (reputation (update_founded founded1 resp2))); 
-
 
 
 ]
