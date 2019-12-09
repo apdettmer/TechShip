@@ -1,0 +1,17 @@
+{
+"demo": [
+    {
+      "id": 0,
+      "description": "The markets turned bullish and many people bought your stock",
+      "stats": [
+        "market_cap"
+      ],
+      "responses": [
+        {
+          "description": "Watch your stock price rise",
+          "market_cap": 1000
+        }
+      ]
+    }
+    ]
+}

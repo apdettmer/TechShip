@@ -65,6 +65,21 @@ let rec make_responses = function
                 :: []
     } :: make_responses t
 
+let rec make_responses_founded = function
+  | [] -> []
+  | h :: t ->
+    {
+      description = h |> member "description" |> to_string;
+      effects = ("market_cap", get_effect "market_cap" h) 
+                :: ("reputation", get_effect "reputation" h) 
+                :: ("morale", get_effect "morale" h) 
+                :: ("investors", get_effect "investors" h) 
+                :: ("teams", get_effect "teams" h )
+                :: ("marketing", get_effect "marketing" h)
+                :: ("management", get_effect "management" h)
+                :: []
+    } :: make_responses_founded t
+
 (** [match_id category id lst] gives the json event that matches
     [id].
     Raises: [InvalidEvent] if [id] is unmatched
@@ -76,10 +91,28 @@ let rec match_id category id = function
   | h::t -> if h |> member "id" |> to_int = id then h 
     else match_id category id t
 
+let get_category_founded category = 
+  match member category (Yojson.Basic.from_file "data/events_founded.json") with
+  | `Null -> raise (InvalidEventCategory category)
+  | c -> to_list c
+
 let get_category category =
   match member category (Yojson.Basic.from_file "data/events.json") with
   | `Null -> raise (InvalidEventCategory category)
   | c -> to_list c
+
+let event_of_category_founded category id = 
+  match member category (Yojson.Basic.from_file "data/events_founded.json") with 
+  | `Null -> raise (InvalidEventCategory category)
+  | c -> try let event = match_id category id (c |> to_list) in
+      {
+        category = category;
+        description = event |> member "description" |> to_string;
+        stats = event |> member "stats" 
+                |> to_list |> get_str_lst [];
+        responses = event |> member "responses" |> to_list |> make_responses_founded
+      }
+    with InvalidEventId i -> raise (InvalidEventId i)
 
 let event_of category id = 
   match member category (Yojson.Basic.from_file "data/events.json") with 
