@@ -3,7 +3,8 @@
 
 type event
 
-type response
+(* the type representing responses to events*)
+type response 
 
 
 (* following types unneccesary? Can match categories just by string, and this
@@ -35,6 +36,10 @@ val affected_stats : event -> string list
 (**[responses event] is the list of possible [responses] to that event *)
 val responses : event -> response list
 
+(**[new_response desc effects] is a new response with the description [desc]
+   and effects field [effects] *)
+val new_response : string -> (string * int option) list -> response
+
 (**[response_description response] is the description of [response]*)
 val res_desc : response -> string
 
@@ -62,6 +67,10 @@ val random_event : string -> string -> event
 (** [random_category ()] selects at random a category in {"investor", "other", 
     "employee", "government"}. *)
 val random_category : unit -> string
+
+(** [f_random_category ()] selects at random a category associated with the
+    second phase of the game *)
+val f_random_category : unit -> string
 
 (** [fill_event_description event replace i] gives the description of
     [event] with all instances of 'string_val' and 'int_val' replaced with 

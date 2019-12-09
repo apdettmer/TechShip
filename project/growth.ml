@@ -29,21 +29,16 @@ let found company =
 
 (* Currently defined exactly as the one in event - but I feel like its better to
    create a new type for this file / new type of company -ew424 *)
-type f_response = { 
-  description : string;
-  effects : (string * int option) list
-}
+type f_response = Event.response
 
 let f_effects f_resp = 
-  f_resp.effects
+  Event.effects f_resp
 
 let f_description f_resp =
-  f_resp.description
+  Event.res_desc f_resp
 
-let new_f_response desc effects = {
-  description = desc;
-  effects = effects
-}
+let new_f_response desc effects = 
+  Event.new_response desc effects
 
 let found company = 
   { 
@@ -173,10 +168,48 @@ let update_cat name v company=
     }
   | _ -> failwith "ERROROR2"
 
-let rec update_founded founded f_resp = 
+let rec update_founded founded f_resp =
   match f_effects (f_resp) with 
   | [] -> founded
   | (s, Some(v)) :: t -> 
     update_founded (update_cat s v founded) 
       (new_f_response (f_description f_resp) t)
-  | _ -> failwith "ERROROR1"
+  | (s, None) :: t -> 
+    update_founded founded (new_f_response (f_description f_resp) t)
+
+
+let print_founded founded = 
+  Stdlib.print_endline 
+    ("Market Capitalization: " ^ string_of_int (market_cap founded));
+  Stdlib.print_endline 
+    ("Reputation: " ^ string_of_int (reputation founded));
+  Stdlib.print_endline 
+    ("Morale: " ^ string_of_int (morale founded));
+  Stdlib.print_endline 
+    ("Number of investors: " ^ string_of_int (List.length (investors founded)));
+  Stdlib.print_endline 
+    ("Number of teams: " ^ string_of_int (List.length (teams founded)));
+  Stdlib.print_endline 
+    ("Marketing : " ^ string_of_int (marketing founded));
+  Stdlib.print_endline 
+    ("Management: " ^ string_of_int (management founded))
+
+(* this is my attempt at making a repl loop for growth
+
+   (**[display_event company] generates a random event of type [e], prints out
+     its description and returns it. *)
+   let display_event company =
+   let event = fill_event_description 
+      ((*company |> random_category*) "demo" |> Event.random_event) 
+      (select_some_word ()) 20 in
+   print_endline (description event);
+   event
+
+
+   let rec growth_play founded = 
+   let event = display_event_founded () in
+   let responses = display_responses event in 
+   let result = handle_response display_responses in
+   let updated_f = update_founded updated_f in
+   growth_play updated_f
+*)

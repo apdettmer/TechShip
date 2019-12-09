@@ -3,7 +3,10 @@
     "OCaml",
     "Functional Programming",
     "Test Driven Development",
-    "Linux"
+    "Linux",
+    "Monads",
+    "JOCalf",
+    "Red-Black Trees"
   ],
   "first names": [
     "Adam",

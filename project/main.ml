@@ -23,15 +23,15 @@ let alt_desc alt =
   | Menu -> "Quit to main menu."
   | Found -> "Found your company for real: be done with such small affairs."
 
-(** [pretty_print_nums altlst] displays the numbers of each alternative 
-    in [altlst] in brackets*)
-let pretty_print_nums altlst = 
+(** [pretty_print_alts altlst] displays each alternative in [altlst] 
+    with a number in brackets and its description*)
+let pretty_print_alts altlst = 
   List.iter (fun (i, a) -> 
       print_endline ("[" ^ (string_of_int i) ^ "] " ^ (alt_desc a))) altlst;
   print_string ">"
 
 let rec present_alts company altlst =
-  pretty_print_nums altlst;
+  pretty_print_alts altlst;
   try (
     match (List.assoc (read_int ()) altlst) with
     | Response res -> print_newline (); 
@@ -46,8 +46,12 @@ let rec present_alts company altlst =
       main_menu ()
     | FResponse _ -> print_endline "Hey, that shouldn't have happened!";
       present_alts company altlst
-    | Found -> ANSITerminal.(print_string [green] ">herewegoround2.jpg");
-      company |> found |> play_phase_2
+    | Found -> ANSITerminal.(print_string [green] ">herewegoround2.jpg
+
+    ");
+      try 
+        company |> found |> (play_phase_2)
+      with _ -> print_endline "here's your bug"
   )
   with _ -> print_string "Invalid entry.\n\n"; present_alts company altlst
 
@@ -183,21 +187,27 @@ and
 
   (** [play_phase_2 founded]  is the repl for the second phase of the game *)
   play_phase_2 founded =
-  let g_event = display_event "data/events_founded.json" in 
+  let g_event = f_display_event "data/events_founded.json" in 
   let responses = responses g_event in 
   f_alts founded responses
 
 and
 
+  (** [f_alts founded res_lst] constructs a list of numbered choices for the
+      the player in the second phase of the game*)
   f_alts founded res_lst = 
   let len = List.length res_lst in 
   (len, Status) ::
   (len + 1, Menu) ::
-  (List.combine (create_intlst [] len) (List.map (fun r -> Response r) res_lst))
+  (List.combine (create_intlst [] len) 
+     (List.map (fun r -> FResponse r) res_lst))
   |> List.sort (fun (i1, a1) (i2, a2) -> i1 - i2) |> present_f_alts founded
 
-and present_f_alts founded altlst =
-  pretty_print_nums altlst;
+and
+  (** [present_f_alts founded altlst] displays options for the player and
+      reads input specific to the second phase of the game *)
+  present_f_alts founded altlst =
+  pretty_print_alts altlst;
   try 
     match List.assoc (read_int ()) altlst with 
     | FResponse res -> print_newline ();
@@ -205,11 +215,30 @@ and present_f_alts founded altlst =
       |> play_phase_2
     | Menu -> print_newline ();
       main_menu ()
-    | _ -> failwith "Unimplemented"
+    | _ -> print_endline "Unimplemented"
   with _ -> print_string "Invalid entry. \n\n";
     present_f_alts founded altlst
 
+and 
+  (** [f_display_event file] selects an event from [file] at random, 
+      prints its description and returns it*)
+  f_display_event file =
+  let event = fill_event_description
+      ((f_random_category ()) |> Event.random_event file)
+      (select_some_word ()) 20 in
+  print_endline (description event);
+  event
 
+
+
+(**[display_event file] generates a random event of type [e] from 
+     JSON file [file], prints out its description and returns it. *)
+(* display_event file =
+   let event = fill_event_description 
+    ((random_category ()) |> Event.random_event file) 
+    (select_some_word ()) 20 in
+   print_endline (description event);
+   event *)
 
 
 (* Execute the game. *)

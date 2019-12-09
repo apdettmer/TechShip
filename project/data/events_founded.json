@@ -1,0 +1,86 @@
+{
+  "demo": [
+    {
+      "id": 0,
+      "description": "The markets turned bullish and many people bought your stock",
+      "stats": [
+        "market_cap"
+      ],
+      "responses": [
+        {
+          "description": "Watch your stock price rise",
+          "market_cap": 1000
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "description": "You decide you need to ramp up your advertising. But where will it be most successful?",
+      "stats": [
+        "marketing",
+        "reputation"
+      ],
+      "responses": [
+        {
+          "description": "Advertise locally, in the USA.",
+          "marketing": 5
+        },
+        {
+          "description": "Launch an ad campaign in Asia.",
+          "marketing": 10
+        },
+        {
+          "description": "Air a series of TV ads mocking the soviet union, in Russia, as a prank of course.",
+          "marketing": -10,
+          "reputation": -2
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "description": "A recent scandal has rocked your company. An offensive old tweet from your CFO went viral and made headlines everywhere. What do you do?",
+      "stats": [
+        "management",
+        "reputation"
+      ],
+      "responses": [
+        {
+          "description": "Fire him and proclaim the tweet appalling.",
+          "management": -5,
+          "reputation": 8
+        },
+        {
+          "description": "Keep him around, but denounce the tweet and give the CFO a pay cut.",
+          "management": -3,
+          "reputation": 2
+        },
+        {
+          "description": "Do not even acknowledge the tweet and keep the CFO around. Maybe you'll even give him a bigger bonus this year.",
+          "management": 0,
+          "reputation": -6
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "description": "The company turned a massive profit last quarter, and you're sitting on a lot of cash. You decide to invest it. But how?",
+      "stats": [
+        "market_cap"
+      ],
+      "responses": [
+        {
+          "description": "Invest in treasury bonds. There's no need to take a big risk here.",
+          "market_cap": 300
+        },
+        {
+          "description": "Send it and invest all of it into an unheard of new startup",
+          "market_cap": 2000
+        },
+        {
+          "description": "Buy a boat load of put options the S&P 500, banking on a crash. You've always been paranoid.",
+          "market_cap": -2500
+        }
+      ]
+    }
+  ]
+}
