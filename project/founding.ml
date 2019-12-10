@@ -349,3 +349,43 @@ let update_category company cat v =
   | "employee" -> hire_employee "John" v company
 
   | _ -> failwith "Unimplemented"
+
+let fundL = "Uh-oh. You ran out of funding before your company could really " ^
+            "get off the ground. With no money, and no real success thusfar," ^
+            " you can no longer continue operations. You should've have paid" ^
+            " better attention in Finance class. Imagine what could have been."
+
+let check_lost_funding v = 
+  match v with
+  | _ when v <= 0 -> Stdlib.print_endline fundL; 
+    Stdlib.print_endline ""; true
+  | _ -> false
+
+let repL = "The repuation of your company has fallen dangerously low due to " ^
+           "your questionable decision making. No one trusts you, and invest" ^
+           "ors are pulling their money. Public perception is too low for yo" ^
+           "ur company to have any sort of success. The company must be shut" ^
+           "down. If only you had been more ethical. "
+
+let check_lost_reputation v = 
+  match v with
+  | _ when v <= 0 -> Stdlib.print_endline repL;
+    Stdlib.print_endline ""; true
+  | _ -> false
+
+let moraleL = "The morale inside your company is non existent. Nobody, not e" ^
+              "ven you, believes the product can succeed. All motivation has" ^
+              " disappeared, kinda like that time you took CS 3110 in colleg" ^
+              "e. With no morale, your company failed at an early stage."
+
+let check_lost_morale v = 
+  match v with
+  | _ when v <= 0 -> Stdlib.print_endline moraleL; 
+    Stdlib.print_endline ""; true
+  | _ -> false
+
+
+let check_lost_phase1 company = 
+  check_lost_funding (funding company) ||
+  check_lost_reputation (reputation company) ||
+  check_lost_morale (morale company)

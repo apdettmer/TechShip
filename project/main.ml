@@ -97,9 +97,11 @@ and
   (**[play] is the repl loop that takes player input and determines actions
      in the game. [player_file] is a JSON file that is a save file. *)
   play company =
-  let event = display_event "data/events.json" in
-  let responses = responses event in
-  alts company responses event
+  if (check_lost_phase1 company) then exit 0
+  else 
+    let event = display_event "data/events.json" in
+    let responses = responses event in
+    alts company responses event
 and
 
   (**[play_from_save company] starts game session with the event being viewed 

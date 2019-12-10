@@ -91,3 +91,9 @@ val load : Yojson.Basic.t -> company
 val display_status : company -> unit
 
 val update_category : company -> string -> int -> company
+
+(**[check_lost_phase1 company] returns true if the company has failed. A company
+   fails when one of its attributes (funding, morale, reputation) is <= 0. If 
+   true, it also prints out the appropriate end game message the to the player.
+   If false, prints nothing.  *)
+val check_lost_phase1 : company -> bool
