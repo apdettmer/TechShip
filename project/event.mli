@@ -7,6 +7,8 @@ type event
 type response 
 
 
+type investor_or_employee
+
 (* following types unneccesary? Can match categories just by string, and this
    is only useful for getting an event -- not sure what other information we'd
    need to carry other than potentially the name of an investor*)
@@ -94,10 +96,10 @@ val rnd_employee : unit -> Founding.employee
 
 (** [make_employee_event ()] gives a randomly generated employee based on info
     from events.json*)
-val make_employee_event : unit -> event * Founding.employee
+val make_employee_event : unit -> event * investor_or_employee
 
 (** [make_employee_event ()] gives a randomly generated employee based on info
     from events.json*)
-val make_investor_event : unit -> event * Founding.investor
+val make_investor_event : unit -> event * investor_or_employee
 
 
