@@ -200,7 +200,7 @@ let print_founded_change change field =
   | 0 -> ()
   | v -> Stdlib.print_string ("(" ^ field ^ "): ");
     if v >= 0 then ANSITerminal.(print_string [green] ("+" ^ string_of_int v))
-    else ANSITerminal.(print_string [red] ("-" ^ string_of_int v));
+    else ANSITerminal.(print_string [red] (string_of_int v));
     Stdlib.print_endline "" 
 
 let print_updates prev_found new_founded = 
