@@ -40,8 +40,11 @@ let rec present_alts company altlst event =
       display_status company; 
       present_alts company altlst event
     | Save -> print_newline (); 
-      save company; 
-      present_alts company altlst event
+      let cat = category event in 
+      let id = id event in 
+      let new_comp = set_event company cat id in 
+      save new_comp; 
+      present_alts new_comp altlst event
     | Menu -> print_newline (); 
       main_menu ()
     | FResponse _ -> print_endline "Hey, that shouldn't have happened!";
@@ -95,9 +98,9 @@ and
   let responses = responses event in
   alts company responses event
 and
+
   (**[play_from_save company] starts game session with the event being viewed 
      when [company] was last saved *)
-
   play_from_save company = 
   let event_info = event company in 
   let event = event_of (fst(event_info)) (snd(event_info)) "data/events.json" in
@@ -211,9 +214,11 @@ and
 
   (** [play_phase_2 founded]  is the repl for the second phase of the game *)
   play_phase_2 founded =
-  let g_event = f_display_event "data/events_founded.json" in 
-  let responses = responses g_event in 
-  f_alts founded responses
+  if not (check_won_lost founded) then exit 0 
+  else 
+    let g_event = f_display_event "data/events_founded.json" in 
+    let responses = responses g_event in 
+    f_alts founded responses
 
 and
 

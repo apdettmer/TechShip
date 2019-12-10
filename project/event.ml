@@ -177,11 +177,12 @@ let random_event file category =
 
 let random_category () = 
   Random.init (int_of_float (Unix.time ()));
-  match (Random.int 100) mod 4 with
+  match (Random.int 100) mod 5 with
   | 0 -> "investor"
   | 1 -> "employee"
   | 2 -> "government"
   | 3 -> "other"
+  | 4 -> "demo"
   | _ -> "other"
 
 (* TODO as events added*)
@@ -213,8 +214,8 @@ let update_company (response : response) (company : Founding.company) event =
   print_changes updates;
   Stdlib.print_endline "";
   Unix.sleep 1;
-  let new_comp = set_event company (category event) (id event) in 
-  apply_effects new_comp updates
+  (* let new_comp = set_event company (category event) (id event) in  *)
+  apply_effects company updates
 
 (** [fill_description desc replace i] gives the [desc] with [replace] and
     [i] entered according to regular expression matching*)
