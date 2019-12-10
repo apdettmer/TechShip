@@ -302,6 +302,25 @@ let rec print_changes effects =
     print_changes t
   | _ -> ()
 
+let print_category cat v = 
+  match v with
+  | a when a > 0 -> Stdlib.print_string ("(" ^ cat ^ "): "); 
+    ANSITerminal.(print_string [green] ("+" ^ string_of_int v));
+    Stdlib.print_endline ""
+  | b when b < 0 -> Stdlib.print_string ("(" ^ cat ^ "): "); 
+    ANSITerminal.(print_string [red] (string_of_int v)) ;
+    Stdlib.print_endline ""
+  | _ -> Stdlib.print_string ""
+
+let print_changes1 old_comp new_comp = 
+  print_category "funding" (funding new_comp - funding old_comp);
+  print_category "reputation" (reputation new_comp - reputation old_comp);
+  print_category "morale" (morale new_comp - morale old_comp);
+  print_category "employees" 
+    (List.length(employees new_comp) - List.length(employees old_comp));
+  Stdlib.print_endline ""
+
+
 
 let rec apply_effects company = function 
   | [] -> company
@@ -313,7 +332,7 @@ let rec apply_effects company = function
 
 let update_company (response : response) (company : Founding.company) event = 
   let updates = effects response in 
-  print_changes updates;
+  (* print_changes updates; *)
   Stdlib.print_endline "";
   Unix.sleep 1;
   (* let new_comp = set_event company (category event) (id event) in  *)

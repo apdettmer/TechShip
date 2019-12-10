@@ -200,7 +200,7 @@ let print_founded_change change field =
   | 0 -> ()
   | v -> Stdlib.print_string ("(" ^ field ^ "): ");
     if v >= 0 then ANSITerminal.(print_string [green] ("+" ^ string_of_int v))
-    else ANSITerminal.(print_string [red] (string_of_int v));
+    else ANSITerminal.(print_string [red] ("-" ^ string_of_int v));
     Stdlib.print_endline "" 
 
 let print_updates prev_found new_founded = 
@@ -216,44 +216,49 @@ let print_updates prev_found new_founded =
 let check_lost_market_cap v = 
   match v with
   | _ when v > 0 -> true
-  | _ -> Stdlib.print_string("Your company has run out money and subsequently "^
-                             "failed. The public just didn't seem to believe " ^
-                             "in you. Perhaps you could " ^ 
-                             "have made wiser financial decisions. \n \n");false
+  | _ -> Stdlib.print_endline "";
+    Stdlib.print_string("Your company has run out money and subsequently "^
+                        "failed. The public just didn't seem to believe " ^
+                        "in you. Perhaps you could " ^ 
+                        "have made wiser financial decisions. \n \n");false
 
 let check_lost_reputation v = 
   match v with
   | _ when v > 0 -> true
-  | _ -> Stdlib.print_string("The public perception of you as founder and CEO "^
-                             "have hit new lows. You're one of the most hated" ^
-                             " people in the country, and are forced to shut " ^
-                             "down the company. Try to be more likable next" ^
-                             " time. \n \n"); false
+  | _ -> Stdlib.print_endline "";
+    Stdlib.print_string("The public perception of you as founder and CEO "^
+                        "have hit new lows. You're one of the most hated" ^
+                        " people in the country, and are forced to shut " ^
+                        "down the company. Try to be more likable next" ^
+                        " time. \n \n"); false
 
 let check_lost_morale v = 
   match v with
   | _ when v > 0 -> true
-  | _ -> Stdlib.print_string("Company morale is at rock bottom. Nobody wants " ^ 
-                             "to work for you and many of your employees have" ^
-                             " quit. With no employees, the company cannot no "^ 
-                             "longer operate.\n \n"); false
+  | _ -> Stdlib.print_endline "";
+    Stdlib.print_string("Company morale is at rock bottom. Nobody wants " ^ 
+                        "to work for you and many of your employees have" ^
+                        " quit. With no employees, the company cannot no "^ 
+                        "longer operate.\n \n"); false
 
 let check_lost_marketing v = 
   match v with
   | _ when v > 0 -> true
-  | _ -> Stdlib.print_string("The marketing department has failed entirely." ^
-                             " Nobody anywhere even knows your product or " ^
-                             "who you are. No customers means no revenue and " ^
-                             "a failed company.\n \n"); false
+  | _ -> Stdlib.print_endline "";
+    Stdlib.print_string("The marketing department has failed entirely." ^
+                        " Nobody anywhere even knows your product or " ^
+                        "who you are. No customers means no revenue and " ^
+                        "a failed company.\n \n"); false
 
 let check_lost_management v = 
   match v with
   | _ when v > 0 -> true
-  | _ -> Stdlib.print_string("Your upper management has gone from bad to worse"^
-                             ". Repeated poor decisions have caused multiple " ^
-                             "locations to fail. The losses are too great to " ^
-                             "overcome. The company has failed. In the future" ^
-                             ", hire more Cornell alums. \n \n"); false
+  | _ -> Stdlib.print_endline "";
+    Stdlib.print_string("Your upper management has gone from bad to worse"^
+                        ". Repeated poor decisions have caused multiple " ^
+                        "locations to fail. The losses are too great to " ^
+                        "overcome. The company has failed. In the future" ^
+                        ", hire more Cornell alums. \n \n"); false
 
 let check_won_lost founded = 
   check_lost_market_cap (market_cap founded) && 

@@ -43,8 +43,11 @@ let rec present_alts company altlst event =
   pretty_print_alts altlst;
   try (
     match (List.assoc (read_int ()) altlst) with
-    | Response res -> print_newline (); 
-      update_company res company event |> play
+    | Response res -> print_newline ();
+      let updated_comp =  update_company res company event in 
+      print_changes1 company updated_comp;
+      play updated_comp
+    (* update_company res company event |> play *)
     | Status -> print_newline (); 
       display_status company; 
       present_alts company altlst event
@@ -105,14 +108,16 @@ and
   (**[play] is the repl loop that takes player input and determines actions
      in the game. [player_file] is a JSON file that is a save file. *)
   play company =
-  try 
-    let event = display_event "data/events.json" in
-    let responses = responses event in
-    alts company responses event
-  with Constructor -> 
-    let c_event = choose_constructor_event () in 
-    let responses_and_addition = constructor_responses c_event in 
-    print_endline "Getting there"
+  if (check_lost_phase1 company) then exit 0
+  else 
+    try 
+      let event = display_event "data/events.json" in
+      let responses = responses event in
+      alts company responses event
+    with Constructor -> 
+      let c_event = choose_constructor_event () in 
+      let responses_and_addition = constructor_responses c_event in 
+      print_endline "Getting there"
 
 and
 

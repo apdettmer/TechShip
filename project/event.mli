@@ -44,6 +44,10 @@ val effects : response -> (string * int option) list
     employee or investor to the company*)
 val add : response -> bool
 
+(** [print_changes1 old_comp new_comp] prints to the user the stat changes
+    between the [old_comp] and the [new_comp]. *)
+val print_changes1 : Founding.company -> Founding.company -> unit
+
 (**  [update_company response company event] gives the company with the effects
      of [response] applied to [company]*)
 val update_company : response -> Founding.company -> event -> Founding.company
@@ -103,4 +107,5 @@ val choose_constructor_event : unit -> event * investor_or_employee
     or [None] otherwise*)
 val constructor_responses : 
   event * investor_or_employee -> (response * investor_or_employee option) list
+
 
