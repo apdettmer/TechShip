@@ -29,6 +29,9 @@ val category : event -> string
 (** [description event] gives the description of [event]*)
 val description : event -> string
 
+(** [id event] gives the identifier of [event] within its category*)
+val id : event -> int
+
 (** [affected_stats event] gives all the company stats potentially affected
     by [event]*)
 val affected_stats : event -> string list

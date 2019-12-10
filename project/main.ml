@@ -41,8 +41,11 @@ let rec present_alts company altlst event =
       display_status company; 
       present_alts company altlst event
     | Save -> print_newline (); 
-      save company; 
-      present_alts company altlst event
+      let cat = category event in 
+      let id = id event in 
+      let new_comp = set_event company cat id in 
+      save new_comp; 
+      present_alts new_comp altlst event
     | Menu -> print_newline (); 
       main_menu ()
     | FResponse _ -> print_endline "Hey, that shouldn't have happened!";

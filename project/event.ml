@@ -214,8 +214,8 @@ let update_company (response : response) (company : Founding.company) event =
   print_changes updates;
   Stdlib.print_endline "";
   Unix.sleep 1;
-  let new_comp = set_event company (category event) (id event) in 
-  apply_effects new_comp updates
+  (* let new_comp = set_event company (category event) (id event) in  *)
+  apply_effects company updates
 
 (** [fill_description desc replace i] gives the [desc] with [replace] and
     [i] entered according to regular expression matching*)
