@@ -258,28 +258,44 @@ let rnd_employee () =
 let make_employee_event () =
   let e_name = make_name () in 
   let file = Yojson.Basic.from_file "data/events.json" in 
-  let emp_lst = file |> member "constructor" |> member "employee" |> to_list in
-  let ev = List.nth emp_lst (Random.int (List.length emp_lst)) in 
-  {
-    category = "employee";
-    id = ev |> member "id" |> to_int;
-    description = 
-      (Str.global_replace (Str.regexp "emp_name") e_name 
-         (member "description" ev |> to_string));
-    stats = [];
-    responses = make_responses (member "responses" ev |> to_list)
-  }, Founding.new_employee e_name
+  let emp_lst = file 
+                |> member "constructor" 
+                |> member "employee" 
+                |> to_list in
+  let ev = List.nth emp_lst (Random.int (List.length emp_lst)) in
+  let mor = member "morale" ev |> to_int in 
+  let rep = member "reputatin" ev |> to_int in 
+  let ev_ret =
+    {
+      category = "employee";
+      id = ev |> member "id" |> to_int;
+      description = 
+        (Str.global_replace (Str.regexp "emp_name") e_name 
+           (member "description" ev |> to_string));
+      stats = [];
+      responses = make_responses (member "responses" ev |> to_list)
+    } 
+  in (ev_ret, Founding.custom_employee e_name mor rep)
 
-(* let make_investor_event () = 
-   let i_name = make_name () in 
-   let file = Yojson.Basic.from_file "data/events.json" in 
-   let inv_lst = file |> member "constructor" |> member "investor" |> to_list in
-   let ev = List.nth inv_lst (Random.int (List.length inv_lst)) in 
-   {
-    category = "investor";
-    description = 
-      (Str.global_replace (Str.regexp "emp_name") i_name 
-         (member "description" ev |> to_string));
-    stats = [];
-    responses = make_responses (member "responses" ev |> to_list)
-   }, Founding.new_employee i_name *)
+let make_investor_event () = 
+  let file = Yojson.Basic.from_file "data/events.json" in 
+  let inv_lst = file 
+                |> member "constructor" 
+                |> member "investor" 
+                |> to_list in
+  let ev = List.nth inv_lst (Random.int (List.length inv_lst)) in 
+  let i_name = match member "name" ev with 
+    | `Null -> make_name () 
+    | s -> to_string s  in
+  let invest = member "investment" ev |> to_int in 
+  let ev_ret = 
+    {
+      category = "investor";
+      id = member "id" ev |> to_int;
+      description = 
+        (Str.global_replace (Str.regexp "inv_name") i_name 
+           (member "description" ev |> to_string));
+      stats = [];
+      responses = make_responses (member "responses" ev |> to_list)
+    }
+  in (ev_ret, Founding.custom_investor i_name invest)

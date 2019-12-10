@@ -284,6 +284,11 @@ let load_investor json_investor = {
   investment = json_investor |> member "investment" |> to_int;
 }
 
+let custom_investor name invest = {
+  name = name;
+  investment = invest;
+}
+
 let load_date json_date = {
   tm_sec = json_date |> member "second" |> to_int;
   tm_min = json_date |> member "minute" |> to_int;

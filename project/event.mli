@@ -95,3 +95,9 @@ val rnd_employee : unit -> Founding.employee
 (** [make_employee_event ()] gives a randomly generated employee based on info
     from events.json*)
 val make_employee_event : unit -> event * Founding.employee
+
+(** [make_employee_event ()] gives a randomly generated employee based on info
+    from events.json*)
+val make_investor_event : unit -> event * Founding.employee
+
+
