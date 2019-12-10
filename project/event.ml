@@ -336,5 +336,4 @@ let select_some_word () =
   List.nth lst (Random.int (List.length lst)) |> to_string
 
 let rnd_employee () = 
-  Founding.new_employee (make_name ()) 
-
+  Founding.new_employee (make_name ())
