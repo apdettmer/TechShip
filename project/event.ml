@@ -177,11 +177,12 @@ let random_event file category =
 
 let random_category () = 
   Random.init (int_of_float (Unix.time ()));
-  match (Random.int 100) mod 4 with
+  match (Random.int 100) mod 5 with
   | 0 -> "investor"
   | 1 -> "employee"
   | 2 -> "government"
   | 3 -> "other"
+  | 4 -> "demo"
   | _ -> "other"
 
 (* TODO as events added*)

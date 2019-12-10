@@ -96,9 +96,9 @@ and
   let responses = responses event in
   alts company responses event
 and
+
   (**[play_from_save company] starts game session with the event being viewed 
      when [company] was last saved *)
-
   play_from_save company = 
   let event_info = event company in 
   let event = event_of (fst(event_info)) (snd(event_info)) "data/events.json" in

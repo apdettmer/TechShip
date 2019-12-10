@@ -153,7 +153,7 @@ let new_company name = {
     tm_yday = 154;
     tm_isdst = true
   };
-  event = "demo", 0;
+  event = "sample", 0;
 }
 
 (* Below are the getters for founding. All very simple.  *)
