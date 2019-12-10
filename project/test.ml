@@ -59,10 +59,10 @@ let event_tests = [
     (Event.fill_event_description e1 fun_prog 0) (Event.description);
   make_event_test "make_name gives a nonempty string" true 
     (Event.make_name ()) check_nonempty;
-  make_event_test "updating sample company increases funding" 5010
-    (up_comp_sample) (funding);
-  make_event_test "updating sample company increases morale" 55
-    (up_comp_sample) (Founding.morale);
+  (* make_event_test "updating sample company increases funding" 5010
+     (up_comp_sample) (funding);
+     make_event_test "updating sample company increases morale" 55
+     (up_comp_sample) (Founding.morale); *)
 ]
 
 let comp1 = new_company "Creative Name"
@@ -146,7 +146,10 @@ let founding_tests = [
 let founded1 = found comp1
 
 let resp1 = new_f_response "test1" [("market_cap", Some (1000))]
-let resp2 = new_f_response "test2" [("morale", Some(5)); ("reputation", Some(6))]
+let resp2 = new_f_response "test2" [("morale", Some(4)); ("reputation", Some(6))]
+
+let event_ads = event_of "demo" 1 "data/events_founded.json"
+let event_management = event_of "demo" 2 "data/events_founded.json"
 
 
 
@@ -165,8 +168,21 @@ let growth_tests = [
   "Testing update_founding successfully increases market_cap" >::
   (fun _ -> assert_equal 6000 (market_cap (update_founded founded1 resp1))); 
 
-  "Testing update_founding successfully increases reputation - with multiple effect list" >::
-  (fun _ -> assert_equal 56 (reputation (update_founded founded1 resp2))); 
+  "Testing update_founding successfully increases reputation -" ^ 
+  "with multiple effect list" 
+  >:: (fun _ -> assert_equal 56 (reputation (update_founded founded1 resp2))); 
+
+  "Assuring pulling events from events_founded works and event_ads is correct" 
+  >:: (fun _ -> assert_equal 3 (List.length(responses event_ads)));
+
+  "Testing update_founding successfully increases morale - with a multiple" ^
+  "effect list and morale being the first element." >::
+  (fun _ -> assert_equal 54 (morale (update_founded founded1 resp2))); 
+
+  (* "Testing update_founding successfully increases management, with a real event"
+     ^ " response that updates multiple " >::
+     (fun _ -> assert_equal 54 (morale (update_founded founded1 resp2))); *)
+
 
 
 ]
