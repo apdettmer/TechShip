@@ -67,8 +67,8 @@ let rec present_alts company altlst event =
       print_found_message (company |> Founding.product |> string_of_product);
       Unix.sleepf 0.3 ;
       ANSITerminal.(print_string [green] ">herewegoround2.jpg
-
-    ");
+    ")
+    | CResponse (_, _) -> print_endline "Hey, that shouldn't have happened!"; present_alts company altlst event;
       try 
         company 
         |> found 
