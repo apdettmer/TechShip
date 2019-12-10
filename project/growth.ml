@@ -9,23 +9,9 @@ type founded = {
   investors: Founding.investor list;
   date : tm;
   marketing: int;
-  management: int
-
+  management: int;
+  (* event : string * int *)
 }
-
-let found company = 
-  { 
-    product = Founding.product company;
-    market_cap = Founding.funding company;
-    reputation = Founding.reputation company;
-    morale = Founding.morale company;
-    teams = [];
-    investors = Founding.investors company;
-    date = Founding.date company;
-    marketing = 100;
-    management = 50
-  }
-
 
 (* Currently defined exactly as the one in event - but I feel like its better to
    create a new type for this file / new type of company -ew424 *)
@@ -51,6 +37,7 @@ let found company =
     date = Founding.date company;
     marketing = 50;
     management = 100;
+    (* event = "easter egg", 0 *)
   }
 
 let product founded = 
@@ -79,6 +66,9 @@ let marketing founded =
 
 let management founded = 
   founded.management
+
+(* let event founded = 
+   founded.event *)
 
 
 let update_investors current_investor_list = 
@@ -179,6 +169,7 @@ let rec update_founded founded f_resp =
 
 
 let print_founded founded = 
+  Stdlib.print_endline "";
   Stdlib.print_endline 
     ("Market Capitalization: " ^ string_of_int (market_cap founded));
   Stdlib.print_endline 
@@ -192,24 +183,32 @@ let print_founded founded =
   Stdlib.print_endline 
     ("Marketing : " ^ string_of_int (marketing founded));
   Stdlib.print_endline 
-    ("Management: " ^ string_of_int (management founded))
+    ("Management: " ^ string_of_int (management founded));
+  Stdlib.print_endline ""
 
-(* this is my attempt at making a repl loop for growth
+let print_found_message msg = 
+  Stdlib.print_string "\n Your efforts in the founding phase have paid off. "; 
+  Stdlib.print_string ("Now it is time to take ");
+  ANSITerminal.(print_string [green] msg); 
+  Stdlib.print_string (" to the next level. \n");
+  Stdlib.print_string "You have entered the growth phase. Some stats, such as";
+  Stdlib.print_string " Morale and Reputation are the same, while you gained new ";
+  Stdlib.print_string "stats such as Marketing and Managment. Good luck. \n \n"
 
-   (**[display_event company] generates a random event of type [e], prints out
-     its description and returns it. *)
-   let display_event company =
-   let event = fill_event_description 
-      ((*company |> random_category*) "demo" |> Event.random_event) 
-      (select_some_word ()) 20 in
-   print_endline (description event);
-   event
+let print_founded_change change field =
+  match change with
+  | 0 -> ()
+  | v -> Stdlib.print_string ("(" ^ field ^ "): ");
+    if v >= 0 then ANSITerminal.(print_string [green] ("+" ^ string_of_int v))
+    else ANSITerminal.(print_string [red] (string_of_int v));
+    Stdlib.print_endline "" 
 
-
-   let rec growth_play founded = 
-   let event = display_event_founded () in
-   let responses = display_responses event in 
-   let result = handle_response display_responses in
-   let updated_f = update_founded updated_f in
-   growth_play updated_f
-*)
+let print_updates prev_found new_founded = 
+  print_founded_change ((market_cap new_founded) - (market_cap prev_found)) ("market_cap");
+  print_founded_change ((reputation new_founded)- (reputation prev_found)) ("reputation");
+  print_founded_change ((morale new_founded)- (morale prev_found)) ("morale");
+  (* print_founded_change ((investor new_founded)- ( prev_found)) ("investors"); *)
+  (* print_founded_change (teams prev_found) (teams new_founded)  ("teams"); *)
+  print_founded_change ((marketing new_founded) - (marketing prev_found)) ("marketing");
+  print_founded_change ((management new_founded) - (management prev_found)) ("management");
+  Stdlib.print_string "\n"

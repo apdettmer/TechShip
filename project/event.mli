@@ -49,9 +49,9 @@ val effects : response -> (string * int option) list
 
 
 
-(**  [update_company response company] gives the company with the effects
+(**  [update_company response company event] gives the company with the effects
      of [response] applied to [company]*)
-val update_company : response -> Founding.company -> Founding.company
+val update_company : response -> Founding.company -> event -> Founding.company
 
 (** [event_of category id file] gives the event with [id] in [category] from
     JSON [file]
@@ -64,8 +64,8 @@ val event_of : string -> int -> string -> event
     Raises: [InvalidEventCategory] if [category] is not in [file]*)
 val random_event : string -> string -> event
 
-(** [random_category ()] selects at random a category in {"investor", "other", 
-    "employee", "government"}. *)
+(** [random_category ()] selects at random a category associated with the
+    first phase of the game*)
 val random_category : unit -> string
 
 (** [f_random_category ()] selects at random a category associated with the

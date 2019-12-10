@@ -3,16 +3,16 @@ open Yojson.Basic.Util
 open Founding
 open Growth
 open Event
-open Options
 
 type load_or_delete = Load | Delete
 
-type alternative = Response of response
-                 | FResponse of f_response
-                 | Status 
-                 | Save 
-                 | Menu
-                 | Found
+type alternative = 
+  | Response of response 
+  | FResponse of f_response
+  | Status 
+  | Save 
+  | Menu 
+  | Found
 
 let alt_desc alt =
   match alt with
@@ -30,41 +30,49 @@ let pretty_print_alts altlst =
       print_endline ("[" ^ (string_of_int i) ^ "] " ^ (alt_desc a))) altlst;
   print_string ">"
 
-let rec present_alts company altlst =
+let rec present_alts company altlst event =
   pretty_print_alts altlst;
   try (
     match (List.assoc (read_int ()) altlst) with
     | Response res -> print_newline (); 
-      update_company res company |> play
+      update_company res company event |> play
     | Status -> print_newline (); 
       display_status company; 
-      present_alts company altlst
+      present_alts company altlst event
     | Save -> print_newline (); 
       save company; 
-      present_alts company altlst
+      present_alts company altlst event
     | Menu -> print_newline (); 
       main_menu ()
     | FResponse _ -> print_endline "Hey, that shouldn't have happened!";
-      present_alts company altlst
-    | Found -> ANSITerminal.(print_string [green] ">herewegoround2.jpg
+      present_alts company altlst event
+    | Found -> 
+      print_found_message (company |> Founding.product |> string_of_product);
+      Unix.sleep 1;
+      ANSITerminal.(print_string [green] ">herewegoround2.jpg
 
     ");
       try 
-        company |> found |> (play_phase_2)
+        company 
+        |> found 
+        |> (play_phase_2)
       with _ -> print_endline "here's your bug"
   )
-  with _ -> print_string "Invalid entry.\n\n"; present_alts company altlst
+  with _ -> print_string "Invalid entry.\n\n"; 
+    present_alts company altlst event
 
 and
 
-  alts company reslst =
+  alts company reslst event =
   let l = List.length reslst in
-  (l, Found) ::
-  (l + 1, Status) :: 
-  (l + 2, Save) :: 
-  (l + 3, Menu) :: 
-  (List.combine (create_intlst [] l) (List.map (fun r -> Response r) reslst)) 
-  |> List.sort (fun (i1, a1) (i2, a2) -> i1 - i2) |> present_alts company
+  let altlst = 
+    (l, Found) ::
+    (l + 1, Status) :: 
+    (l + 2, Save) :: 
+    (l + 3, Menu) :: 
+    (List.combine (create_intlst [] l) (List.map (fun r -> Response r) reslst)) 
+    |> List.sort (fun (i1, a1) (i2, a2) -> i1 - i2) 
+  in present_alts company  altlst event
 
 and
 
@@ -72,7 +80,8 @@ and
      JSON file [file], prints out its description and returns it. *)
   display_event file =
   let event = fill_event_description 
-      ((random_category ()) |> Event.random_event file) 
+      ((random_category ()) 
+       |> Event.random_event file) 
       (select_some_word ()) 20 in
   print_endline (description event);
   event
@@ -84,7 +93,17 @@ and
   play company =
   let event = display_event "data/events.json" in
   let responses = responses event in
-  alts company responses
+  alts company responses event
+and
+  (**[play_from_save company] starts game session with the event being viewed 
+     when [company] was last saved *)
+
+  play_from_save company = 
+  let event_info = event company in 
+  let event = event_of (fst(event_info)) (snd(event_info)) "data/events.json" in
+  print_endline (description event); 
+  let responses = responses event in 
+  alts company responses event
 
 and
 
@@ -106,8 +125,13 @@ and
 
   handle_save_file load_or_delete file_name =
   match load_or_delete with
-  | Load -> print_newline (); Yojson.Basic.from_file file_name |> load |> play
-  | Delete -> print_newline (); Sys.remove file_name; main_menu ()
+  | Load -> print_newline (); 
+    Yojson.Basic.from_file file_name 
+    |> load 
+    |> play_from_save
+  | Delete -> print_newline (); 
+    Sys.remove file_name; 
+    main_menu ()
 
 and
 
@@ -211,10 +235,13 @@ and
   try 
     match List.assoc (read_int ()) altlst with 
     | FResponse res -> print_newline ();
-      update_founded founded res
-      |> play_phase_2
+      let new_founded = update_founded founded res in 
+      print_updates founded new_founded;
+      play_phase_2 new_founded
     | Menu -> print_newline ();
       main_menu ()
+    | Status -> print_founded founded; 
+      present_f_alts founded altlst
     | _ -> print_endline "Unimplemented"
   with _ -> print_string "Invalid entry. \n\n";
     present_f_alts founded altlst
@@ -225,7 +252,8 @@ and
       prints its description and returns it*)
   f_display_event file =
   let event = fill_event_description
-      ((f_random_category ()) |> Event.random_event file)
+      ((f_random_category ()) 
+       |> Event.random_event file)
       (select_some_word ()) 20 in
   print_endline (description event);
   event

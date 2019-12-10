@@ -76,10 +76,14 @@ let custom_employee name morale rep = {
   reputation = rep;
 }
 
+let string_of_product (product : product) = 
+  product.name
+
 let rec employee_list name n acc = 
   match n with 
   | 0 -> acc
-  | _ ->  if n > 0 then employee_list name (n-1) (new_random_employee () :: acc)
+  | _ ->  if n > 0 
+    then employee_list name (n-1) (new_random_employee () :: acc)
     else []
 
 let rec rep_employees ( emp_list : employee list ) = 
@@ -177,6 +181,17 @@ let date company =
 let event company =
   company.event
 
+let set_event company category id = {
+  product = company.product;
+  funding = company.funding;
+  reputation = company.reputation;
+  morale = company.morale; 
+  employees = company.employees;
+  investors = company.investors;
+  date = company.date;
+  event = category, id
+}
+
 let save_product company =
   sprintf "\t\"product\":{
 \t\t\"name\": \"%s\"
@@ -239,13 +254,18 @@ let save_event company =
 
 let save company =
   let file_name = company.product.name in
-  let save_file = String.concat "" [file_name; "_phase_1.json"] in
+  let save_file = String.concat "" [file_name; ".json"] in
   let out_chn = open_out save_file in
   let data = String.concat "\n" [
-      "{"; save_product company; 
-      save_funding company; save_reputation company; 
-      save_morale company; save_employees company; 
-      save_investors company; save_date company; save_event company; "}"] in
+      "{"; "\t\"phase\": 1,";
+      save_product company; 
+      save_funding company; 
+      save_reputation company; 
+      save_morale company; 
+      save_employees company; 
+      save_investors company; 
+      save_date company; 
+      save_event company; "}"] in
   fprintf out_chn "%s" data;
   flush out_chn
 

@@ -1,0 +1,30 @@
+{
+	"phase": 1,
+	"product":{
+		"name": "Testing"
+	},
+	"funding": 5000,
+	"reputation": 41,
+	"morale": 41,
+	"employees": [
+
+	],
+	"investors": [
+
+	],
+	"date": {
+		"second": 45,
+		"minute": 23,
+		"hour": 1,
+		"month day": 2,
+		"month": 6,
+		"year": 2020,
+		"week day": 2,
+		"year day": 154,
+		"daylight saving": true
+	},
+	"event": {
+  		"category": "employee",
+  		"id": 0
+  }
+}

@@ -51,8 +51,15 @@ val product : company -> product
 (** [funding company] is the current funding the company has. *)
 val funding : company -> int
 
+(** [set_event company category id] updates the event field of [comapny]
+    to [category], [id]*)
+val set_event : company -> string -> int -> company
+
 (** [employees company] is an [employee] list of the current employees. *)
 val employees : company -> employee list
+
+(** [string_of_product product] is the name of [product]. *)
+val string_of_product : product -> string
 
 (** [reputation company] is the reputation of the company. *)
 val reputation : company -> int
@@ -62,6 +69,9 @@ val morale : company -> int
 
 (** [date company] is the current date. *)
 val date : company -> Unix.tm
+
+(** [event company] is the id and category of the event in [company]*)
+val event : company -> string * int
 
 (** [investors company] is an [investor] list of investors in the company. *)
 val investors : company -> investor list

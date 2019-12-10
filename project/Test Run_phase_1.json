@@ -1,0 +1,29 @@
+{
+	"product":{
+		"name": "Test Run"
+	},
+	"funding": 304500,
+	"reputation": 38,
+	"morale": 50,
+	"employees": [
+
+	],
+	"investors": [
+
+	],
+	"date": {
+		"second": 45,
+		"minute": 23,
+		"hour": 1,
+		"month day": 2,
+		"month": 6,
+		"year": 2020,
+		"week day": 2,
+		"year day": 154,
+		"daylight saving": true
+	},
+	"event": {
+  		"category": "demo",
+  		"id": 0
+  }
+}
