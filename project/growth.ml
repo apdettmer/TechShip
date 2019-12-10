@@ -71,11 +71,11 @@ let management founded =
    founded.event *)
 
 
-let update_investors current_investor_list = 
-  failwith "Not sure how we wanna go about implementing this"
+(* let update_investors current_investor_list = 
+   failwith "Not sure how we wanna go about implementing this"
 
-let update_teams current_team_list =
-  failwith "Again, not sure how we should do this"
+   let update_teams current_team_list =
+   failwith "Again, not sure how we should do this" *)
 
 let update_cat name v company= 
   match name with 
@@ -204,13 +204,18 @@ let print_founded_change change field =
     Stdlib.print_endline "" 
 
 let print_updates prev_found new_founded = 
-  print_founded_change ((market_cap new_founded) - (market_cap prev_found)) ("market_cap");
-  print_founded_change ((reputation new_founded)- (reputation prev_found)) ("reputation");
-  print_founded_change ((morale new_founded)- (morale prev_found)) ("morale");
+  print_founded_change 
+    ((market_cap new_founded) - (market_cap prev_found)) ("market_cap");
+  print_founded_change 
+    ((reputation new_founded)- (reputation prev_found)) ("reputation");
+  print_founded_change 
+    ((morale new_founded)- (morale prev_found)) ("morale");
   (* print_founded_change ((investor new_founded)- ( prev_found)) ("investors"); *)
   (* print_founded_change (teams prev_found) (teams new_founded)  ("teams"); *)
-  print_founded_change ((marketing new_founded) - (marketing prev_found)) ("marketing");
-  print_founded_change ((management new_founded) - (management prev_found)) ("management");
+  print_founded_change 
+    ((marketing new_founded) - (marketing prev_found)) ("marketing");
+  print_founded_change 
+    ((management new_founded) - (management prev_found)) ("management");
   Stdlib.print_string "\n"
 
 let check_lost_market_cap v = 
