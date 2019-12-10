@@ -4,7 +4,7 @@ open Growth
 open OUnit2
 open Yojson.Basic.Util
 
-let e1 = event_of "sample" 0 "data/events.json"
+let e1 = event_of "sample" 1 "data/events.json"
 
 let r1 = match responses e1 with 
   | h::t -> h 
