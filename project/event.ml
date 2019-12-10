@@ -255,14 +255,21 @@ let make_name () =
 let rnd_employee () = 
   Founding.new_employee (make_name ()) 
 
-let make_employee_event () =
-  let e_name = make_name () in 
+(** [constructor_name json] gives the string associated with field name 
+    if it is contained, or gives a random name otherwise*)
+let constructor_name json = 
+  match member "name" json with
+  | `Null -> make_name () 
+  | s -> to_string s
+
+let make_employee_event () = 
   let file = Yojson.Basic.from_file "data/events.json" in 
   let emp_lst = file 
                 |> member "constructor" 
                 |> member "employee" 
                 |> to_list in
   let ev = List.nth emp_lst (Random.int (List.length emp_lst)) in
+  let e_name = constructor_name ev in
   let mor = member "morale" ev |> to_int in 
   let rep = member "reputatin" ev |> to_int in 
   let ev_ret =
@@ -284,9 +291,7 @@ let make_investor_event () =
                 |> member "investor" 
                 |> to_list in
   let ev = List.nth inv_lst (Random.int (List.length inv_lst)) in 
-  let i_name = match member "name" ev with 
-    | `Null -> make_name () 
-    | s -> to_string s  in
+  let i_name = constructor_name ev in 
   let invest = member "investment" ev |> to_int in 
   let ev_ret = 
     {
