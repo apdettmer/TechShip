@@ -3,16 +3,16 @@ open Yojson.Basic.Util
 open Founding
 open Growth
 open Event
+open Options
 
 type load_or_delete = Load | Delete
 
-type alternative = Response of response 
-                 |FResponse of f_response
+type alternative = Response of response
+                 | FResponse of f_response
                  | Status 
                  | Save 
-                 | Menu 
+                 | Menu
                  | Found
-
 
 let alt_desc alt =
   match alt with
@@ -219,7 +219,8 @@ and
   with _ -> print_string "Invalid entry. \n\n";
     present_f_alts founded altlst
 
-and 
+and
+
   (** [f_display_event file] selects an event from [file] at random, 
       prints its description and returns it*)
   f_display_event file =
@@ -228,8 +229,6 @@ and
       (select_some_word ()) 20 in
   print_endline (description event);
   event
-
-
 
 (* Execute the game. *)
 let () = main_menu ()
