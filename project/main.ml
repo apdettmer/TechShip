@@ -39,6 +39,8 @@ let pretty_print_alts altlst =
       print_endline ("[" ^ (string_of_int i) ^ "] " ^ (alt_desc a))) altlst;
   print_string ">"
 
+(** [present_alts company altlst event] displays alternatives in 
+    [altlst] to the player and matches input against these alternatives *)
 let rec present_alts company altlst event =
   pretty_print_alts altlst;
   try (
@@ -78,6 +80,8 @@ let rec present_alts company altlst event =
 
 and
 
+  (** [alts company reslst event] gives a list of alternatives based on 
+      information from [reslst], [company], and [event]*)
   alts company reslst event =
   let l = List.length reslst in
   let altlst = 
@@ -91,8 +95,8 @@ and
 
 and
 
-  (**[display_event file] generates a random event of type [e] from 
-     JSON file [file], prints out its description and returns it. *)
+  (**[display_event file] gives a random event generated from [file].
+     Requires: [file] is a valid JSON representation of events for the game *)
   display_event file =
   let event_cat = random_category () in 
   if event_cat = "constructor" then raise Constructor
@@ -106,7 +110,7 @@ and
 and
 
   (**[play] is the repl loop that takes player input and determines actions
-     in the game. [player_file] is a JSON file that is a save file. *)
+     in the game *)
   play company =
   if (check_lost_phase1 company) then exit 0
   else 
@@ -132,6 +136,8 @@ and
 
 and
 
+  (** [create_new_save ()] begins the game and prompts the player for input
+      to create a new company and associated save file*)
   create_new_save () =
   ANSITerminal.(print_string [green] ">be you
 >recent graduate of Cornell Engineering
@@ -148,6 +154,9 @@ and
 
 and
 
+  (** [handle_save_file load_or_delete file_name] either loads the game from 
+      [file_name] if possible and if [load_or_delete] is value [Load], or 
+      removes [file_name] from the current directory otherwise*)
   handle_save_file load_or_delete file_name =
   match load_or_delete with
   | Load -> print_newline (); 
@@ -160,6 +169,8 @@ and
 
 and
 
+  (** [create_intlst acc i] appends to [acc] numbers from [0] to [i].
+      Requuires: [i] is non-negative *)
   create_intlst acc i =
   match i - 1 with
   | 0 -> 0 :: acc
@@ -167,6 +178,8 @@ and
 
 and
 
+  (** [json_extension file] gives true if [file] is has the .json file extension
+      and false otherwise*)
   json_extension file =
   let extension = Str.regexp_string ".json" in
   try 
@@ -176,6 +189,8 @@ and
 
 and
 
+  (** [list_files ()] gives a list of file names in the game directory with 
+      the .json extension*)
   list_files () =
   Sys.readdir "." |> Array.to_list 
   |> List.filter (fun x -> json_extension x) 
