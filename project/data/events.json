@@ -77,7 +77,7 @@
   "sample": [
     {
       "id": 0,
-      "description": "Easter Egg -- Quitting before starting!",
+      "description": "Easter Egg -- You never saved your game!",
       "stats": [],
       "responses": [
         {
@@ -270,10 +270,11 @@
     }
   ],
   "constructor": {
-    "employee": [
+    "con_employee": [
       {
         "id": 0,
         "description": "emp_name has submitted an application to your team. A recent computer science grad from Cornell University's College of Engineering, it seems they would make a fine addition to your company.",
+        "stats": [],
         "responses": [
           {
             "description": "Accept the application.",
@@ -288,9 +289,10 @@
         "reputation": 10
       }
     ],
-    "investor": [
+    "con_investor": [
       {
         "id": 0,
+        "investment": 300000,
         "description": "Well known and highly respected investor inv_name publicly endorses your product and wants to purchase stock in your company.",
         "stats": [
           "funding",
@@ -319,6 +321,7 @@
       },
       {
         "id": 1,
+        "investment": 100000,
         "description": "Former convicted felon turned millionaire Bane Crobber wants to invest in your company. He's a controversial figure, so support from him may hurt reputation.",
         "name": "Bane Crobber",
         "stats": [

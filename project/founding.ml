@@ -101,7 +101,8 @@ let rec morale_employees (emp_list : employee list) =
 (**[hire_employee name n company] hires [n] new employees for the company. The
    company is updated with a new employee list and new morale and reputation 
    depending on the reputation of the employees hired. *)
-let hire_employee name n company = let employees = employee_list name n [] in 
+let hire_employee name n company = 
+  let employees = employee_list name n [] in 
   {
     product = company.product;
     funding = company.funding;
@@ -112,6 +113,28 @@ let hire_employee name n company = let employees = employee_list name n [] in
     date = company.date;
     event = company.event;
   }
+
+let add_employee (emp:employee) company = {
+  product = company.product;
+  funding = company.funding;
+  reputation = company.reputation + emp.reputation;
+  morale = company.morale + emp.morale;
+  employees = emp :: company.employees;
+  investors = company.investors;
+  date = company.date;
+  event =company.event
+}
+
+let add_investor inv company = {
+  product = company.product;
+  funding = company.funding;
+  reputation = company.reputation;
+  morale = company.morale;
+  employees = company.employees;
+  investors = inv :: company.investors;
+  date = company.date;
+  event =company.event
+}
 
 let employee_name emp = 
   emp.name
@@ -351,7 +374,7 @@ let update_category company cat v =
   | _ -> failwith "Unimplemented"
 
 let fundL = "Uh-oh. You ran out of funding before your company could really " ^
-            "get off the ground. With no money, and no real success thusfar," ^
+            "get off the ground. With no money, and no real success thus far," ^
             " you can no longer continue operations. You should've have paid" ^
             " better attention in Finance class. Imagine what could have been."
 

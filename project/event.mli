@@ -108,4 +108,20 @@ val choose_constructor_event : unit -> event * investor_or_employee
 val constructor_responses : 
   event * investor_or_employee -> (response * investor_or_employee option) list
 
+(** [update_company_constructor c_response company event] gives a company
+    with the stats of [company] altered according to [c_response], potentially 
+    adding an investor or employee to [company]*)
+val update_company_constructor : 
+  (response * investor_or_employee option) -> Founding.company -> event 
+  -> Founding.company
+
+(** [constructor_event_of category id] gives the event and investor or employee
+    associated with [category] and [id] in events.json
+    Raises: [InvalidEventCategory category] if [category] is not a subcategory 
+    of constructor,
+    [InvalidEventId id] if [id] is not the identifier of an event in 
+    [category]*)
+val constructor_event_of : string -> int -> 
+  (event * investor_or_employee)
+
 

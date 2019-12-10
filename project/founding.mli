@@ -97,3 +97,11 @@ val update_category : company -> string -> int -> company
    true, it also prints out the appropriate end game message the to the player.
    If false, prints nothing.  *)
 val check_lost_phase1 : company -> bool
+
+(** [add_employee emp company] gives [company] with [emp] appended to the list
+    of employees*)
+val add_employee : employee -> company -> company
+
+(** [add_investor inv company] gives [company] with [inv] appended to the list
+    of investors*)
+val add_investor : investor -> company -> company

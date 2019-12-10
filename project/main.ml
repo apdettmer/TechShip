@@ -49,7 +49,11 @@ let rec present_alts company altlst event =
       let updated_comp =  update_company res company event in 
       print_changes1 company updated_comp;
       play updated_comp
-    (* update_company res company event |> play *)
+    | CResponse (res, inv_or_emp) -> print_newline ();
+      let updated_comp = 
+        update_company_constructor (res, inv_or_emp) company event in 
+      print_changes1 company updated_comp;
+      play updated_comp
     | Status -> print_newline (); 
       display_status company; 
       present_alts company altlst event
@@ -80,18 +84,41 @@ let rec present_alts company altlst event =
 
 and
 
+  (** [default_alts len] gives recurring alternatives such as [Menu], [Save], 
+      etc. used in the first phase, numbered according to [len]*)
+  default_alts len = 
+  (len, Found) :: 
+  (len + 1, Status) ::
+  (len + 2, Save) ::
+  (len + 3, Menu) :: []
+
+and
   (** [alts company reslst event] gives a list of alternatives based on 
       information from [reslst], [company], and [event]*)
   alts company reslst event =
   let l = List.length reslst in
   let altlst = 
-    (l, Found) ::
-    (l + 1, Status) :: 
-    (l + 2, Save) :: 
-    (l + 3, Menu) :: 
+    default_alts l @
     (List.combine (create_intlst [] l) (List.map (fun r -> Response r) reslst)) 
-    |> List.sort (fun (i1, a1) (i2, a2) -> i1 - i2) 
+    |> List.sort (fun (i1, _) (i2, _) -> i1 - i2) 
   in present_alts company altlst event
+
+and 
+
+  (** [alts_constructor company res_cons_lst c_event] gives a list of 
+      alternatives, specifically for responses handling employee or investor 
+      addition*)
+  alts_constructor company res_cons_lst c_event = 
+  let len = List.length res_cons_lst in 
+  let altlst = 
+    default_alts len @
+    (List.combine (create_intlst [] len) 
+       (List.map (fun (r, emp_or_inv) -> 
+            CResponse(r, emp_or_inv)) res_cons_lst))
+    |> List.sort (fun (i1, _) (i2, _) -> i1 - i2) in
+  let event = fst(c_event) in 
+  print_endline (description event);
+  present_alts company altlst event
 
 and
 
@@ -121,7 +148,7 @@ and
     with Constructor -> 
       let c_event = choose_constructor_event () in 
       let responses_and_addition = constructor_responses c_event in 
-      print_endline "Getting there"
+      alts_constructor company responses_and_addition c_event
 
 and
 
@@ -129,10 +156,16 @@ and
      when [company] was last saved *)
   play_from_save company = 
   let event_info = event company in 
-  let event = event_of (fst(event_info)) (snd(event_info)) "data/events.json" in
-  print_endline (description event); 
-  let responses = responses event in 
-  alts company responses event
+  if (fst event_info = "con_investor" || fst event_info = "con_employee")
+  then let c_event = constructor_event_of (fst event_info) (snd event_info) in 
+    let responses_and_addition = constructor_responses c_event in 
+    alts_constructor company responses_and_addition c_event 
+  else
+    let event = event_of (fst(event_info)) (snd(event_info)) 
+        "data/events.json" in
+    print_endline (description event); 
+    let responses = responses event in 
+    alts company responses event
 
 and
 

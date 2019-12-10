@@ -209,45 +209,76 @@ let make_employee_event () =
   let emp_lst = 
     event_file
     |> member "constructor" 
-    |> member "employee" 
+    |> member "con_employee" 
     |> to_list in
   let ev = List.nth emp_lst (Random.int (List.length emp_lst)) in
   let e_name = constructor_name ev in
   let mor = member "morale" ev |> to_int in 
-  let rep = member "reputatin" ev |> to_int in 
+  let rep = member "reputation" ev |> to_int in 
   let ev_ret =
-    {
-      category = "employee";
-      id = ev |> member "id" |> to_int;
-      description = 
-        (Str.global_replace (Str.regexp "emp_name") e_name 
-           (member "description" ev |> to_string));
-      stats = [];
-      responses = make_responses (member "responses" ev |> to_list)
-    } 
+    {category = "con_employee";
+     id = ev |> member "id" |> to_int;
+     description = 
+       (Str.global_replace (Str.regexp "emp_name") e_name 
+          (member "description" ev |> to_string));
+     stats = [];
+     responses = make_responses (member "responses" ev |> to_list) } 
   in (ev_ret, Employee (Founding.custom_employee e_name mor rep))
 
 let make_investor_event () =  
   let inv_lst = 
     event_file 
     |> member "constructor" 
-    |> member "investor" 
+    |> member "con_investor" 
     |> to_list in
   let ev = List.nth inv_lst (Random.int (List.length inv_lst)) in 
   let i_name = constructor_name ev in 
   let invest = member "investment" ev |> to_int in 
   let ev_ret = 
-    {
-      category = "investor";
-      id = member "id" ev |> to_int;
-      description = 
-        (Str.global_replace (Str.regexp "inv_name") i_name 
-           (member "description" ev |> to_string));
-      stats = [];
-      responses = make_responses (member "responses" ev |> to_list)
-    }
+    {category = "con_investor";
+     id = member "id" ev |> to_int;
+     description = 
+       (Str.global_replace (Str.regexp "inv_name") i_name 
+          (member "description" ev |> to_string));
+     stats = ev 
+             |> member "stats" 
+             |> to_list 
+             |> get_str_lst [];
+     responses = make_responses (member "responses" ev |> to_list)}
   in (ev_ret, Investor (Founding.custom_investor i_name invest))
 
+(** [constructor_event_filled event subcategory] gives an event with 
+    values filled in from*)
+let constructor_event_filled event subcategory name = 
+  {
+    category = subcategory;
+    id = id event;
+    description = if subcategory = "con_employee" 
+      then Str.global_replace (Str.regexp "emp_name") name (description event)
+      else Str.global_replace (Str.regexp "inv_name") name (description event);
+    stats = affected_stats event;
+    responses = responses event
+  }
+
+let constructor_event_of category id = 
+  let cons_json = member "constructor" event_file in 
+  match member category cons_json with
+  | `Null ->  raise (InvalidEventCategory category)
+  | cons_events -> 
+    try
+      let event_json = to_list cons_events |> match_id category id in 
+      let event = make_event event_json category in 
+      let name = constructor_name event_json in 
+      if category = "con_employee" then
+        let mor = event_json |> member "morale" |> to_int in 
+        let rep = event_json |> member "reputation" |> to_int in 
+        constructor_event_filled event category name, 
+        Employee (custom_employee name mor rep)
+      else 
+        let invest = event_json |> member "investment" |> to_int in 
+        constructor_event_filled event category name, 
+        Investor (custom_investor name invest)
+    with InvalidEventId id -> raise (InvalidEventId id)
 
 let choose_constructor_event () = 
   Random.init (int_of_float (Unix.time ()));
@@ -258,7 +289,7 @@ let choose_constructor_event () =
 
 let constructor_responses (c_event : event * investor_or_employee) = 
   let resp_lst = (fst(c_event)).responses in 
-  List.map (fun resp -> if resp.add then resp, (Some (snd c_event))
+  List.map (fun resp -> if resp.add then resp, Some (snd c_event)
              else resp, None) resp_lst
 
 let random_event file category = 
@@ -338,6 +369,22 @@ let update_company (response : response) (company : Founding.company) event =
   (* let new_comp = set_event company (category event) (id event) in  *)
   apply_effects company updates
 
+let update_company_constructor c_response company event =
+  print_newline ();
+  Unix.sleep 1;
+  let response = fst c_response in 
+  let updates = effects response in 
+  let cons_opt = snd c_response in 
+  match cons_opt with 
+  | None ->  apply_effects company updates
+  | Some inv_or_emp -> begin 
+      let company' = match inv_or_emp with 
+        | Investor inv -> add_investor inv company
+        | Employee emp -> add_employee emp company 
+      in apply_effects company' updates
+    end
+
+
 (** [fill_description desc replace i] gives the [desc] with [replace] and
     [i] entered according to regular expression matching*)
 let fill_description desc replace i = 
@@ -363,15 +410,3 @@ let select_some_word () =
 let rnd_employee () = 
   Founding.new_employee (make_name ())
 
-(* (** [constructor_event id] gives an event from events.json from the
-   constructor category under [subcategory] identifier [id]*)
-   let constructor_event subcategory =
-   let event_lst = 
-   event_file 
-   |> member "constructor"
-   |> member subcategory
-   |> to_list in 
-   let lst_size = List.length event_lst in
-   let event_num = Random.int lst_size in 
-   let json_repn = List.nth event_lst event_num in 
-   make_event json_repn subcategory  *)
