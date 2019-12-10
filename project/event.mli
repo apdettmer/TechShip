@@ -53,6 +53,9 @@ val res_desc : response -> string
 val effects : response -> (string * int option) list
 
 
+(** [print_changes1 old_comp new_comp] prints to the user the stat changes
+    between the [old_comp] and the [new_comp]. *)
+val print_changes1 : Founding.company -> Founding.company -> unit
 
 (**  [update_company response company event] gives the company with the effects
      of [response] applied to [company]*)

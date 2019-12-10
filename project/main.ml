@@ -34,8 +34,11 @@ let rec present_alts company altlst event =
   pretty_print_alts altlst;
   try (
     match (List.assoc (read_int ()) altlst) with
-    | Response res -> print_newline (); 
-      update_company res company event |> play
+    | Response res -> print_newline ();
+      let updated_comp =  update_company res company event in 
+      print_changes1 company updated_comp;
+      play updated_comp
+    (* update_company res company event |> play *)
     | Status -> print_newline (); 
       display_status company; 
       present_alts company altlst event

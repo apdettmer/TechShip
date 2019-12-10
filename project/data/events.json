@@ -63,7 +63,7 @@
       ],
       "responses": [
         {
-          "description": "Hire those brainy criminals",
+          "description": "White collar crimes are barely crimes. Hire those criminals",
           "morale": 1,
           "employee": 5
         },
@@ -226,23 +226,23 @@
       "description": "Following the escape at the local zoo, the cougars, lions and tigers have roamed into the office. And they look hungry.",
       "stats": [
         "reputation",
-        "employees"
+        "employee"
       ],
       "responses": [
         {
           "description": "Take them out. Doing so may spark another Harambe-esque internet outrage and hurt your reputation, but employee safety is important",
           "reputation": -5,
-          "employees": 0
+          "employee": 0
         },
         {
           "description": "Run for your life. Let your employees figure it out. They're supposed to be quick on their feet, aren't they?",
           "reputation": 0,
-          "employees": -3
+          "employee": -3
         },
         {
           "description": "Calmly try to pet them. Cats are supposed to be friendly after all, right?",
           "reputation": 5,
-          "employees": 0
+          "employee": 0
         }
       ]
     }

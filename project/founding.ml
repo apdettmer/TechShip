@@ -127,13 +127,6 @@ let rec view_employees emp_list =
   | [] -> ()
   | h :: t -> print_employee_info h; view_employees t
 
-(** [starting_fund start_amount] returns [start_amount] multiplied by a random
-    number <10. This creates a different starting funding for every game, making
-    the playthrough experience variable. 
-    Requires: [start_amount] is > 0, and preferably a large number. *) 
-(* let starting_fund start_amount = 
-   Random.init (int_of_float (Unix.time ()));
-   start_amount * Random.int 10 *)
 
 let new_company name = {
   product = new_product name;
