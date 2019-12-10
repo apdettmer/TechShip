@@ -145,8 +145,13 @@ let founding_tests = [
 (*comp1 has stats: funding 5000, reputation 50, morale 50, employees/investores = []*)
 let founded1 = found comp1
 
+
+
 let resp1 = new_f_response "test1" [("market_cap", Some (1000))]
 let resp2 = new_f_response "test2" [("morale", Some(4)); ("reputation", Some(6))]
+let resp3 = new_f_response "test3" [("market_cap", Some (-6000))] 
+let resp4 = new_f_response "test4" [("management", Some (13))]
+let resp5 = new_f_response "test5" [("marketing", Some (-4))]
 
 let event_ads = event_of "demo" 1 "data/events_founded.json"
 let event_management = event_of "demo" 2 "data/events_founded.json"
@@ -160,10 +165,10 @@ let growth_tests = [
   (fun _ -> assert_equal 5000 (market_cap founded1)); 
 
   "Testing found successfully transfer over correct reputation value" >::
-  (fun _ -> assert_equal 5000 (market_cap founded1)); 
+  (fun _ -> assert_equal 50 (reputation founded1)); 
 
   "Testing found successfully transfer over correct morale value" >::
-  (fun _ -> assert_equal 5000 (market_cap founded1)); 
+  (fun _ -> assert_equal 50 (morale founded1)); 
 
   "Testing update_founding successfully increases market_cap" >::
   (fun _ -> assert_equal 6000 (market_cap (update_founded founded1 resp1))); 
@@ -179,10 +184,15 @@ let growth_tests = [
   "effect list and morale being the first element." >::
   (fun _ -> assert_equal 54 (morale (update_founded founded1 resp2))); 
 
-  (* "Testing update_founding successfully increases management, with a real event"
-     ^ " response that updates multiple " >::
-     (fun _ -> assert_equal 54 (morale (update_founded founded1 resp2))); *)
+  "Testing update_founding successfully increases management, with a real event"
+  ^ " response that updates multiple fields" >::
+  (fun _ -> assert_equal 113 (management (update_founded founded1 resp4)));
 
+  "Testing update_founding successfully increases marketing, with a real event"
+  >:: (fun _ -> assert_equal 46 (marketing (update_founded founded1 resp5)));
+
+  "Testing check_won returns true on starting company" >:: 
+  (fun _ -> assert_equal true (check_won_lost founded1));
 
 
 ]
