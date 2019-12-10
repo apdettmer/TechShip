@@ -6,19 +6,9 @@ type event
 (* the type representing responses to events*)
 type response 
 
-
-(* following types unneccesary? Can match categories just by string, and this
-   is only useful for getting an event -- not sure what other information we'd
-   need to carry other than potentially the name of an investor*)
-(* type investor
-
-   type government
-
-   type employee
-
-   type event_type = Investor of investor 
-                | Government of government 
-                | Employee of employee *)
+(* type to used handle events that also construct investors or employees,
+   as defined in founding.ml *)
+type investor_or_employee 
 
 exception InvalidEventId of int
 exception InvalidEventCategory of string
@@ -39,9 +29,9 @@ val affected_stats : event -> string list
 (**[responses event] is the list of possible [responses] to that event *)
 val responses : event -> response list
 
-(**[new_response desc effects] is a new response with the description [desc]
-   and effects field [effects] *)
-val new_response : string -> (string * int option) list -> response
+(**[new_response desc effects add] is a new response with the 
+   description [desc], effects field [effects], and add field [add] *)
+val new_response : string -> (string * int option) list -> bool -> response
 
 (**[response_description response] is the description of [response]*)
 val res_desc : response -> string
@@ -50,7 +40,9 @@ val res_desc : response -> string
     [event]*)
 val effects : response -> (string * int option) list
 
-
+(** [add response] indicates whether [response] is used to add an 
+    employee or investor to the company*)
+val add : response -> bool
 
 (**  [update_company response company event] gives the company with the effects
      of [response] applied to [company]*)
@@ -94,10 +86,21 @@ val rnd_employee : unit -> Founding.employee
 
 (** [make_employee_event ()] gives a randomly generated employee based on info
     from events.json*)
-val make_employee_event : unit -> event * Founding.employee
+val make_employee_event : unit -> event * investor_or_employee
 
 (** [make_employee_event ()] gives a randomly generated employee based on info
     from events.json*)
-val make_investor_event : unit -> event * Founding.investor
+val make_investor_event : unit -> event * investor_or_employee
 
+(** [choose_constructor_event ()] gives a randomly selected event from the 
+    constructor category, along with the investor or employee created from the
+    event *)
+val choose_constructor_event : unit -> event * investor_or_employee
+
+(** [constructor_responses c_event] gives the responses to the event
+    associated with [c_event] coupled with [Some v], where [v] is an 
+    investor or employee, if the response adds an investor or employee, 
+    or [None] otherwise*)
+val constructor_responses : 
+  event * investor_or_employee -> (response * investor_or_employee option) list
 

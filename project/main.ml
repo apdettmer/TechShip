@@ -6,17 +6,26 @@ open Event
 
 type load_or_delete = Load | Delete
 
+(* indicates that a constructor event was selected and that event must be 
+   handled differently to account for an employee or investor*)
+exception Constructor 
+
 type alternative = 
-  | Response of response 
+  | Response of response
+  (* CResponse represents a response potentially containing an invesotr or
+     an employee to be added to the company's stats*)
+  | CResponse of response * (investor_or_employee option) 
   | FResponse of f_response
   | Status 
   | Save 
   | Menu 
   | Found
 
+(** [alt_desc alt] gives a description of [alt] according to its type*)
 let alt_desc alt =
   match alt with
   | Response res -> res_desc res
+  | CResponse (res,_) -> res_desc res
   | FResponse f_res -> f_description f_res
   | Status -> "Display status."
   | Save -> "Save game."
@@ -75,28 +84,36 @@ and
     (l + 3, Menu) :: 
     (List.combine (create_intlst [] l) (List.map (fun r -> Response r) reslst)) 
     |> List.sort (fun (i1, a1) (i2, a2) -> i1 - i2) 
-  in present_alts company  altlst event
+  in present_alts company altlst event
 
 and
 
   (**[display_event file] generates a random event of type [e] from 
      JSON file [file], prints out its description and returns it. *)
   display_event file =
-  let event = fill_event_description 
-      ((random_category ()) 
-       |> Event.random_event file) 
-      (select_some_word ()) 20 in
-  print_endline (description event);
-  event
+  let event_cat = random_category () in 
+  if event_cat = "constructor" then raise Constructor
+  else 
+    let event = fill_event_description 
+        ( Event.random_event file event_cat) 
+        (select_some_word ()) 20 in
+    print_endline (description event);
+    event
 
 and
 
   (**[play] is the repl loop that takes player input and determines actions
      in the game. [player_file] is a JSON file that is a save file. *)
   play company =
-  let event = display_event "data/events.json" in
-  let responses = responses event in
-  alts company responses event
+  try 
+    let event = display_event "data/events.json" in
+    let responses = responses event in
+    alts company responses event
+  with Constructor -> 
+    let c_event = choose_constructor_event () in 
+    let responses_and_addition = constructor_responses c_event in 
+    print_endline "Getting there"
+
 and
 
   (**[play_from_save company] starts game session with the event being viewed 

@@ -11,9 +11,10 @@ exception InvalidEventCategory of string
 type response = {
   description : string; 
   effects : (string * int option) list;
+  add: bool
 }
 
-(* type to handle constructor events *)
+
 type investor_or_employee = 
     Employee of Founding.employee 
   | Investor of Founding.investor
@@ -26,6 +27,9 @@ let res_desc response =
 
 let effects response = 
   response.effects
+
+let add response = 
+  response.add
 
 type event = {
   category : string;
@@ -50,9 +54,10 @@ let affected_stats event =
 let responses event = 
   event.responses
 
-let new_response desc effects = {
+let new_response desc effects add = {
   description = desc;
-  effects = effects
+  effects = effects;
+  add = add;
 }
 
 (** [get_str_lst acc lst] converts [lst] of type Yojson.Basic.t list to
@@ -81,7 +86,10 @@ let rec make_responses = function
                 :: ("reputation", get_effect "reputation" h) 
                 :: ("morale", get_effect "morale" h) 
                 :: ("employee", get_effect "employee" h) 
-                :: []
+                :: [];
+      add =  match member "add" h with 
+        | `Null -> false 
+        | b -> to_bool b
     } :: make_responses t
 
 let rec make_responses_founded = function
@@ -96,7 +104,8 @@ let rec make_responses_founded = function
                 :: ("teams", get_effect "teams" h )
                 :: ("marketing", get_effect "marketing" h)
                 :: ("management", get_effect "management" h)
-                :: []
+                :: [];
+      add = false
     } :: make_responses_founded t
 
 (** [match_id category id lst] gives the json event that matches
@@ -246,6 +255,11 @@ let choose_constructor_event () =
   if choice = 0 
   then make_investor_event ()
   else make_employee_event ()
+
+let constructor_responses (c_event : event * investor_or_employee) = 
+  let resp_lst = (fst(c_event)).responses in 
+  List.map (fun resp -> if resp.add then resp, (Some (snd c_event))
+             else resp, None) resp_lst
 
 let random_event file category = 
   Random.init (int_of_float (Unix.time ()));

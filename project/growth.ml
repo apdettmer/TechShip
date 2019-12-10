@@ -24,7 +24,7 @@ let f_description f_resp =
   Event.res_desc f_resp
 
 let new_f_response desc effects = 
-  Event.new_response desc effects
+  Event.new_response desc effects false
 
 let found company = 
   { 
