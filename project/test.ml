@@ -122,7 +122,8 @@ let founding_tests = [
   (fun _ -> assert_equal 7
       (List.length (employees (update_category comp1 "employee" 7))));
 
-  "Testing update_category handles negative employee hiring and returns an empty list" >:: 
+  "Testing update_category handles negative employee hiring and returns an" ^ 
+  "empty list" >:: 
   (fun _ -> assert_equal [] (employees (update_category comp1 "employee" (-5))));
 
   "Testing employee_list generates a list of 3 employees with name John" >:: 
@@ -131,21 +132,25 @@ let founding_tests = [
   "Testing morale_employees properly sums the sample list." >:: 
   (fun _ -> assert_equal 17 (morale_employees sample_emp_list));
 
-  "Testing reputation_employees properly sums the reputation of the sample employee list." >:: 
+  "Testing reputation_employees properly sums the reputation of the sample" ^
+  "employee list." >:: 
   (fun _ -> assert_equal 24 (rep_employees sample_emp_list));
 
-  "Testing morale_employees properly sums the sample employee list and works with negative integers" >:: 
+  "Testing morale_employees properly sums the sample employee list and works" ^
+  "with negative integers" >:: 
   (fun _ -> assert_equal (-6) (morale_employees neg_sample_emp_list));
 
-  "Testing reputation_employees sums the reputation of the sample employee list-with negative values" >:: 
+  "Testing reputation_employees sums the reputation of the sample employee" ^
+  "list-with negative values" >:: 
   (fun _ -> assert_equal (-3) (rep_employees neg_sample_emp_list));
+
+  "Testing check_lost_phase1 returns false on the standard, fresh made company" 
+  >:: (fun _ -> assert_equal false (check_lost_phase1 comp1));
 
 ]
 
 (*comp1 has stats: funding 5000, reputation 50, morale 50, employees/investores = []*)
 let founded1 = found comp1
-
-
 
 let resp1 = new_f_response "test1" [("market_cap", Some (1000))]
 let resp2 = new_f_response "test2" [("morale", Some(4)); ("reputation", Some(6))]

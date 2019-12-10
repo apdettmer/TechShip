@@ -63,7 +63,7 @@ let rec present_alts company altlst event =
       present_alts company altlst event
     | Found -> 
       print_found_message (company |> Founding.product |> string_of_product);
-      Unix.sleep 1;
+      Unix.sleepf 0.3 ;
       ANSITerminal.(print_string [green] ">herewegoround2.jpg
 
     ");
