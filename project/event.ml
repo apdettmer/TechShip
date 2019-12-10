@@ -13,6 +13,11 @@ type response = {
   effects : (string * int option) list;
 }
 
+(* type to handle constructor events *)
+type investor_or_employee = 
+    Employee of Founding.employee 
+  | Investor of Founding.investor
+
 (* the JSON file for events in the first phase*)
 let event_file = Yojson.Basic.from_file "data/events.json"
 
@@ -211,7 +216,7 @@ let make_employee_event () =
       stats = [];
       responses = make_responses (member "responses" ev |> to_list)
     } 
-  in (ev_ret, Founding.custom_employee e_name mor rep)
+  in (ev_ret, Employee (Founding.custom_employee e_name mor rep))
 
 let make_investor_event () =  
   let inv_lst = 
@@ -232,28 +237,15 @@ let make_investor_event () =
       stats = [];
       responses = make_responses (member "responses" ev |> to_list)
     }
-  in (ev_ret, Founding.custom_investor i_name invest)
+  in (ev_ret, Investor (Founding.custom_investor i_name invest))
 
-(** [constructor_event id] gives an event from events.json from the
-    constructor category under [subcategory] identifier [id]*)
-let constructor_event subcategory =
-  let event_lst = 
-    event_file 
-    |> member "constructor"
-    |> member subcategory
-    |> to_list in 
-  let lst_size = List.length event_lst in
-  let event_num = Random.int lst_size in 
-  let json_repn = List.nth event_lst event_num in 
-  make_event json_repn subcategory 
 
 let choose_constructor_event () = 
   Random.init (int_of_float (Unix.time ()));
   let choice = Random.int 2 in 
   if choice = 0 
   then make_investor_event ()
-  else failwith "TODO -- rework these to take both investor and employee"
-(* make_employee_event () *)
+  else make_employee_event ()
 
 let random_event file category = 
   Random.init (int_of_float (Unix.time ()));
@@ -337,3 +329,16 @@ let select_some_word () =
 
 let rnd_employee () = 
   Founding.new_employee (make_name ())
+
+(* (** [constructor_event id] gives an event from events.json from the
+   constructor category under [subcategory] identifier [id]*)
+   let constructor_event subcategory =
+   let event_lst = 
+   event_file 
+   |> member "constructor"
+   |> member subcategory
+   |> to_list in 
+   let lst_size = List.length event_lst in
+   let event_num = Random.int lst_size in 
+   let json_repn = List.nth event_lst event_num in 
+   make_event json_repn subcategory  *)
