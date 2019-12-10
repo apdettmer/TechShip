@@ -61,3 +61,5 @@ val print_founded : founded -> unit
 val print_found_message : string -> unit
 
 val print_updates : founded -> founded -> unit
+
+val check_won_lost : founded -> bool

@@ -215,9 +215,11 @@ and
 
   (** [play_phase_2 founded]  is the repl for the second phase of the game *)
   play_phase_2 founded =
-  let g_event = f_display_event "data/events_founded.json" in 
-  let responses = responses g_event in 
-  f_alts founded responses
+  if not (check_won_lost founded) then exit 0 
+  else 
+    let g_event = f_display_event "data/events_founded.json" in 
+    let responses = responses g_event in 
+    f_alts founded responses
 
 and
 
