@@ -70,14 +70,10 @@ let rec present_alts company altlst event =
     | Found -> 
       print_found_message (company |> Founding.product |> string_of_product);
       Unix.sleepf 0.3 ;
-      ANSITerminal.(print_string [green] ">herewegoround2.jpg
-    ")
-    | CResponse (_, _) -> print_endline "Hey, that shouldn't have happened!"; present_alts company altlst event;
-      try 
-        company 
-        |> found 
-        |> (play_phase_2)
-      with _ -> print_endline "here's your bug"
+      ANSITerminal.(print_string [green] ">herewegoround2.jpg\n");
+      company 
+      |> found 
+      |> (play_phase_2)
   )
   with _ -> print_string "Invalid entry.\n\n"; 
     present_alts company altlst event
@@ -139,7 +135,7 @@ and
   (**[play] is the repl loop that takes player input and determines actions
      in the game *)
   play company =
-  if (check_lost_phase1 company) then exit 0
+  if (check_lost_phase1 company) then main_menu ()
   else 
     try 
       let event = display_event "data/events.json" in
