@@ -13,9 +13,14 @@ type response = {
   effects : (string * int option) list;
 }
 
-let res_desc response = response.description
+(* the JSON file for events in the first phase*)
+let event_file = Yojson.Basic.from_file "data/events.json"
 
-let effects response = response.effects
+let res_desc response = 
+  response.description
+
+let effects response = 
+  response.effects
 
 type event = {
   category : string;
@@ -136,34 +141,125 @@ let event_of_category_founded category id =
       }
     with InvalidEventId i -> raise (InvalidEventId i)
 
+(** [make_event json category] gives an event directly from a JSON object
+    Requires: [json] is a valid JSON represenation of an event*)
+let make_event json category = {
+  category = category;
+  id = 
+    json 
+    |> member "id" 
+    |> to_int;
+  description = 
+    json 
+    |> member "description" 
+    |> to_string;
+  stats = 
+    json
+    |> member "stats"
+    |> to_list
+    |> get_str_lst [];
+  responses = 
+    json
+    |> member "responses"
+    |> to_list
+    |> make_responses
+}
+
 let event_of category id file = 
   match member category (Yojson.Basic.from_file file) with 
   | `Null -> raise (InvalidEventCategory category)
-  | c -> try let event = match_id category id (c |> to_list) in
-      {
-        category = category;
-        id = id;
-        description = 
-          event 
-          |> member "description" 
-          |> to_string;
-        stats = 
-          event 
-          |> member "stats" 
-          |> to_list 
-          |> get_str_lst [];
-        responses = 
-          event 
-          |> member "responses" 
-          |> to_list 
-          |> make_responses
-      }
+  | c -> try let event = match_id category id (to_list c) in
+      make_event event category
     with InvalidEventId i -> raise (InvalidEventId i)
+
+let make_name () =
+  Random.init (int_of_float (Unix.time ()));
+  let file = Yojson.Basic.from_file "data/wordbank.json" in
+  let fst_name_lst = member "first names" file |> to_list in
+  let fst_name = 
+    List.nth fst_name_lst (Random.int (List.length fst_name_lst))
+    |> to_string in 
+  let last_name_lst = member "last names" file |> to_list in
+  let last_name =
+    List.nth last_name_lst (Random.int (List.length last_name_lst))
+    |> to_string in fst_name ^ " " ^ last_name
+
+(** [constructor_name json] gives the string associated with field name 
+    if it is contained, or gives a random name otherwise*)
+let constructor_name json = 
+  match member "name" json with
+  | `Null -> make_name () 
+  | s -> to_string s
+
+let make_employee_event () = 
+  let emp_lst = 
+    event_file
+    |> member "constructor" 
+    |> member "employee" 
+    |> to_list in
+  let ev = List.nth emp_lst (Random.int (List.length emp_lst)) in
+  let e_name = constructor_name ev in
+  let mor = member "morale" ev |> to_int in 
+  let rep = member "reputatin" ev |> to_int in 
+  let ev_ret =
+    {
+      category = "employee";
+      id = ev |> member "id" |> to_int;
+      description = 
+        (Str.global_replace (Str.regexp "emp_name") e_name 
+           (member "description" ev |> to_string));
+      stats = [];
+      responses = make_responses (member "responses" ev |> to_list)
+    } 
+  in (ev_ret, Founding.custom_employee e_name mor rep)
+
+let make_investor_event () =  
+  let inv_lst = 
+    event_file 
+    |> member "constructor" 
+    |> member "investor" 
+    |> to_list in
+  let ev = List.nth inv_lst (Random.int (List.length inv_lst)) in 
+  let i_name = constructor_name ev in 
+  let invest = member "investment" ev |> to_int in 
+  let ev_ret = 
+    {
+      category = "investor";
+      id = member "id" ev |> to_int;
+      description = 
+        (Str.global_replace (Str.regexp "inv_name") i_name 
+           (member "description" ev |> to_string));
+      stats = [];
+      responses = make_responses (member "responses" ev |> to_list)
+    }
+  in (ev_ret, Founding.custom_investor i_name invest)
+
+(** [constructor_event id] gives an event from events.json from the
+    constructor category under [subcategory] identifier [id]*)
+let constructor_event subcategory =
+  let event_lst = 
+    event_file 
+    |> member "constructor"
+    |> member subcategory
+    |> to_list in 
+  let lst_size = List.length event_lst in
+  let event_num = Random.int lst_size in 
+  let json_repn = List.nth event_lst event_num in 
+  make_event json_repn subcategory 
+
+let choose_constructor_event () = 
+  Random.init (int_of_float (Unix.time ()));
+  let choice = Random.int 2 in 
+  if choice = 0 
+  then make_investor_event ()
+  else failwith "TODO -- rework these to take both investor and employee"
+(* make_employee_event () *)
 
 let random_event file category = 
   Random.init (int_of_float (Unix.time ()));
   try 
     if file = "data/events.json" then
+      (* if category = "constructor" then  *)
       let cat_actual = get_category category in
       let id = Random.int (List.length cat_actual) in 
       event_of category id file
@@ -178,7 +274,7 @@ let random_event file category =
 let random_category () = 
   Random.init (int_of_float (Unix.time ()));
   match (Random.int 100) mod 5 with
-  | 0 -> "investor"
+  | 0 -> "constructor"
   | 1 -> "employee"
   | 2 -> "government"
   | 3 -> "other"
@@ -239,47 +335,6 @@ let select_some_word () =
   let lst = member "words" file |> to_list in 
   List.nth lst (Random.int (List.length lst)) |> to_string
 
-
-let make_name () =
-  Random.init (int_of_float (Unix.time ()));
-  let file = Yojson.Basic.from_file "data/wordbank.json" in
-  let fst_name_lst = member "first names" file |> to_list in
-  let fst_name = 
-    List.nth fst_name_lst (Random.int (List.length fst_name_lst))
-    |> to_string in 
-  let last_name_lst = member "last names" file |> to_list in
-  let last_name =
-    List.nth last_name_lst (Random.int (List.length last_name_lst))
-    |> to_string in fst_name ^ " " ^ last_name
-
 let rnd_employee () = 
   Founding.new_employee (make_name ()) 
 
-let make_employee_event () =
-  let e_name = make_name () in 
-  let file = Yojson.Basic.from_file "data/events.json" in 
-  let emp_lst = file |> member "constructor" |> member "employee" |> to_list in
-  let ev = List.nth emp_lst (Random.int (List.length emp_lst)) in 
-  {
-    category = "employee";
-    id = ev |> member "id" |> to_int;
-    description = 
-      (Str.global_replace (Str.regexp "emp_name") e_name 
-         (member "description" ev |> to_string));
-    stats = [];
-    responses = make_responses (member "responses" ev |> to_list)
-  }, Founding.new_employee e_name
-
-(* let make_investor_event () = 
-   let i_name = make_name () in 
-   let file = Yojson.Basic.from_file "data/events.json" in 
-   let inv_lst = file |> member "constructor" |> member "investor" |> to_list in
-   let ev = List.nth inv_lst (Random.int (List.length inv_lst)) in 
-   {
-    category = "investor";
-    description = 
-      (Str.global_replace (Str.regexp "emp_name") i_name 
-         (member "description" ev |> to_string));
-    stats = [];
-    responses = make_responses (member "responses" ev |> to_list)
-   }, Founding.new_employee i_name *)

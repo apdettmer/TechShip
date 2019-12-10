@@ -37,6 +37,10 @@ val new_random_employee : unit -> employee
    attributes as the arguments provided *)
 val custom_employee : string -> int -> int -> employee
 
+(**[custom_investor name invest] creates an [investor] with the same 
+   attributes as the arguments provided *)
+val custom_investor : string -> int -> investor
+
 (**[morale_employees empy_list] is the total change in morale caused by the 
    hiring of employee list [emp_list] *)
 val morale_employees : employee list -> int

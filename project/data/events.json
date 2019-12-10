@@ -276,16 +276,70 @@
         "description": "emp_name has submitted an application to your team. A recent computer science grad from Cornell University's College of Engineering, it seems they would make a fine addition to your company.",
         "responses": [
           {
-            "description": "Accept the application."
+            "description": "Accept the application.",
+            "add": true
           },
           {
-            "description": "Reject the application."
+            "description": "Reject the application.",
+            "add": false
           }
         ],
         "morale": 10,
         "reputation": 10
       }
     ],
-    "investor": []
+    "investor": [
+      {
+        "id": 0,
+        "description": "Well known and highly respected investor inv_name publicly endorses your product and wants to purchase stock in your company.",
+        "stats": [
+          "funding",
+          "reputation"
+        ],
+        "responses": [
+          {
+            "description": "Accept his offer and allow him to invest.",
+            "add": true,
+            "funding": 300000,
+            "reputation": 10
+          },
+          {
+            "description": "Politely decline his offer. While generous, you already have enough funding",
+            "add": false,
+            "funding": 0,
+            "reputation": 0
+          },
+          {
+            "description": "Aggressively reject his offer. Release a public statement denouncing John Smith, claiming that his success was only due to luck and that his morals are corrupt.",
+            "add": false,
+            "funding": 0,
+            "reputation": -8
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "description": "Former convicted felon turned millionaire Bane Crobber wants to invest in your company. He's a controversial figure, so support from him may hurt reputation.",
+        "name": "Bane Crobber",
+        "stats": [
+          "funding",
+          "reputation"
+        ],
+        "responses": [
+          {
+            "description": "Money is money. Who cares what people think? Allow him to invest.",
+            "add": true,
+            "funding": 100000,
+            "reputation": -10
+          },
+          {
+            "description": "Moral integrity and public perception are important. Reject his offer.",
+            "add": false,
+            "funding": 0,
+            "reputation": 5
+          }
+        ]
+      }
+    ]
   }
 }
