@@ -63,7 +63,7 @@ let rec present_alts company altlst event =
       let cat = category event in 
       let id = id event in 
       let new_comp = set_event company cat id in 
-      Founding.save new_comp; 
+      Founding.save new_comp;
       present_alts new_comp altlst event
     | Menu -> print_newline (); 
       main_menu ()
@@ -72,7 +72,9 @@ let rec present_alts company altlst event =
     | Found -> 
       print_found_message (Founding.product company);
       Unix.sleepf 0.3;
-      ANSITerminal.(print_string [green] ">herewegoagain.jpg\n");
+      ANSITerminal.(print_string [green] ">herewegoagain.jpg
+
+");
       company 
       |> found 
       |> (play_phase_2)
