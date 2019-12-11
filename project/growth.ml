@@ -2,16 +2,18 @@ open Printf
 open Unix
 open Yojson.Basic.Util
 
+open Founding
+
 type company = {
   name : string;
   market_cap : int;
   reputation : int;
   morale : int;
+  marketing: int;
+  management: int;
   teams : Founding.employee list list;
   investors: Founding.investor list;
   date : tm;
-  marketing: int;
-  management: int;
   event : string * int
 }
 
@@ -297,6 +299,12 @@ let save_reputation company =
 let save_morale company =
   sprintf "\t\"morale\": %i," company.morale
 
+let save_marketing company =
+  sprintf "\t\"marketing\": %i," company.marketing
+
+let save_management company =
+  sprintf "\t\"management\": %i," company.management
+
 let save_employee employee =
   sprintf "\t\t{
 \t\t\t\"name\": \"%s\",
@@ -304,7 +312,7 @@ let save_employee employee =
 \t\t\t\"reputation\": %i
 \t\t}" (Founding.emp_name employee) (Founding.emp_morale employee) (Founding.emp_reputation employee)
 
-let save_teams_helper employees =
+let save_employees employees =
   sprintf "[
 %s
 \t]," (List.rev_map save_employee employees |> String.concat ",\n")
@@ -312,7 +320,7 @@ let save_teams_helper employees =
 let save_teams company =
   sprintf "\t\"teams\": [
 %s
-\t]," (List.rev_map save_teams_helper company.teams 
+\t]," (List.rev_map save_employees company.teams 
        |> String.concat ",\n")
 
 let save_investors_helper (investor : Founding.investor) =
@@ -357,10 +365,53 @@ let save company =
       save_name company; 
       save_market_cap company; 
       save_reputation company; 
-      save_morale company; 
+      save_morale company;
+      save_marketing company;
+      save_management company;
       save_teams company; 
       save_investors company; 
       save_date company; 
       save_event company; "}"] in
   fprintf out_chn "%s" data;
   flush out_chn
+
+let load_employee json_employee : Founding.employee = {
+  name = json_employee |> member "name" |> to_string;
+  morale = json_employee |> member "morale" |> to_int;
+  reputation = json_employee |> member "reputation" |> to_int;
+}
+
+let load_employees json_employees = List.map load_employee json_employees
+
+let load_investor json_investor : Founding.investor = {
+  name = json_investor |> member "name" |> to_string;
+  investment = json_investor |> member "investment" |> to_int;
+}
+
+let load_date json_date = {
+  tm_sec = json_date |> member "second" |> to_int;
+  tm_min = json_date |> member "minute" |> to_int;
+  tm_hour = json_date |> member "hour" |> to_int;
+  tm_mday = json_date |> member "month day" |> to_int;
+  tm_mon = json_date |> member "month" |> to_int;
+  tm_year = json_date |> member "year" |> to_int;
+  tm_wday = json_date |> member "week day" |> to_int;
+  tm_yday = json_date |> member "year day" |> to_int;
+  tm_isdst = json_date |> member "daylight saving" |> to_bool;
+}
+
+let load json = {
+  name = json |> member "name" |> to_string;
+  market_cap = json |> member "market cap" |> to_int;
+  reputation = json |> member "reputation" |> to_int;
+  morale = json |> member "morale" |> to_int;
+  marketing = json |> member "marketing" |> to_int;
+  management = json |> member "management" |> to_int;
+  teams = json |> member "teams" |> to_list |> List.map load_employees;
+  investors = json |> member "investors" |> to_list |> List.map load_investor;
+  date = json |> member "date" |> load_date;
+  event = 
+    let cat = json |> member "event" |> member "category" |> to_string in
+    let id = json |> member "event" |> member "id" |> to_int in 
+    cat, id;
+}
