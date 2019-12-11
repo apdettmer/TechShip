@@ -56,10 +56,22 @@ val new_f_response : string -> (string * int option) list -> f_response
    stat changes provided in [f_resp] and returns a new, updated company *)
 val update_founded : company -> f_response -> company 
 
+(** [print_founded founded] displays the stats of [founded] to the player *)
 val print_founded : company -> unit
 
+(**[print_found_message msg] prints the instructions for starting the 2nd 
+   phase of the game to the player. *)
 val print_found_message : string -> unit
 
+
+(**[print_updates prev_found new_founded] displays the stat changes in the
+   change from [prev_found] to [new_founded] to the user. If no attributes
+   are changed, nothing is printed. *) 
 val print_updates : company -> company -> unit
 
+
+(**[check_won_lost founded] checks the individual attributes of [founded] and
+   returns a bool based on them. If any of {market_cap, morale, reputation, 
+   management, marketing} are <= 0, then the game is ended and appropriate
+   ending message is printed. *)
 val check_won_lost : company -> bool
