@@ -137,7 +137,7 @@
       "responses": [
         {
           "description": "Accept his offer and allow him to invest.",
-          "funding": 300000,
+          "funding": 10000,
           "reputation": 10
         },
         {
@@ -162,7 +162,7 @@
       "responses": [
         {
           "description": "Money is money. Who cares what people think? Allow him to invest.",
-          "funding": 100000,
+          "funding": 12000,
           "reputation": -10
         },
         {
@@ -196,7 +196,7 @@
     },
     {
       "id": 1,
-      "description": "It's everyone's favorite: Tax Day! Looks like you'll be paying a sum of $5000, unfortunately",
+      "description": "It's everyone's favorite: Tax Day! Looks like you'll be paying a sum of $4000, unfortunately",
       "stats": [
         "funding",
         "reputation"
@@ -204,7 +204,7 @@
       "responses": [
         {
           "description": "Pay them what you owe",
-          "funding": -5000,
+          "funding": -4000,
           "reputation": 0
         },
         {
@@ -213,8 +213,8 @@
           "reputation": -5
         },
         {
-          "description": "Fudge the numbers a bit. They won't notice you kept $2500, right? Just say it went to charity",
-          "funding": -2500,
+          "description": "Fudge the numbers a bit. They won't notice you kept $2000, right? Just say it went to charity",
+          "funding": -2000,
           "reputation": -20
         }
       ]
@@ -258,7 +258,7 @@
       "responses": [
         {
           "description": "Call in a contractor to drain the water and fix the damages. It will be expensive, but a functional workspace is essential.",
-          "funding": -20000,
+          "funding": -1500,
           "morale": 0
         },
         {
@@ -292,7 +292,7 @@
     "con_investor": [
       {
         "id": 0,
-        "investment": 300000,
+        "investment": 30000,
         "description": "Well known and highly respected investor inv_name publicly endorses your product and wants to purchase stock in your company.",
         "stats": [
           "funding",
@@ -302,7 +302,7 @@
           {
             "description": "Accept his offer and allow him to invest.",
             "add": true,
-            "funding": 300000,
+            "funding": 30000,
             "reputation": 10
           },
           {
@@ -321,7 +321,7 @@
       },
       {
         "id": 1,
-        "investment": 100000,
+        "investment": 12000,
         "description": "Former convicted felon turned millionaire Bane Crobber wants to invest in your company. He's a controversial figure, so support from him may hurt reputation.",
         "name": "Bane Crobber",
         "stats": [
@@ -332,7 +332,7 @@
           {
             "description": "Money is money. Who cares what people think? Allow him to invest.",
             "add": true,
-            "funding": 100000,
+            "funding": 12000,
             "reputation": -10
           },
           {
