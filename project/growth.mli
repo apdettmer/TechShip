@@ -75,9 +75,19 @@ val print_updates : company -> company -> unit
     ending message is printed. *)
 val check_won_lost : company -> bool
 
+
+(**[check_won founded] checks the company's stats and sees if the winning 
+   condition is met. If they are, prints the winning msg and returns true. 
+   If not, prints nothing and returns false. *)
+val check_won : company -> bool
+
+(**[print_win_msg bool] prints the winning message if [bool] is true and
+   returns it, otherwise prints nothing and returns [bool] *)
+val print_win_msg : bool -> bool
+
 (** [save] writes to or creates a JSON file with the save data of the 
     company. *)
 val save : company -> unit
 
-(** [load json] is the company represented in json. *)
-val load : Yojson.Basic.t -> company
+(* (** [load json] is the company represented in json. *)
+   val load : Yojson.Basic.t -> company *)
