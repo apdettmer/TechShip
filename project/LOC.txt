@@ -1,8 +1,7 @@
-We believe that the json files in the "data" folder for the project
-(events.json, events_founded.json, and wordbank.json) should contribute, at
-least partially, to our total LOC count. Obviously, putting data in a json file 
-is not the same kind of work as writing and reasoning about code, but storing 
-information in this manner was a conscious design goal, and these files are 
-integral to the game experience. Designing functions that interacted with these
-files as we wanted them to also proved to be a challenging task in and of 
-itself.
+We believe that the JSON files in the "data" folder of the source code should 
+contribute, at least partially, to our total LOC count. Certainly, storing data 
+in JSON form is not the same kind of work as writing and reasoning about code. 
+However, storing information in this manner was a conscious design goal, and 
+these files are integral to the game experience. Organizing the information in 
+an effective and consistent manner and designing functions that interacted with 
+these JSON files also proved to be a challenging task in and of itself.
