@@ -128,7 +128,7 @@ let event_tests = [
     (Event.fill_event_description e1 fun_prog 0) (Event.description);
   make_event_test "make_name gives a nonempty string" true 
     (Event.make_name ()) check_nonempty;
-  make_event_test "investor event 1 has correct investment value" 100000
+  make_event_test "investor event 1 has correct investment value" 12000
     (inv_from_var inv_of_event) investment;
   make_event_test "investor event 1 has correct name" "Bane Crobber"
     (inv_from_var inv_of_event) name;
