@@ -89,5 +89,5 @@ val print_win_msg : bool -> bool
     company. *)
 val save : company -> unit
 
-(* (** [load json] is the company represented in json. *)
-   val load : Yojson.Basic.t -> company *)
+(** [load json] is the company represented in json. *)
+val load : Yojson.Basic.t -> company

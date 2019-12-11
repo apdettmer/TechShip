@@ -195,9 +195,11 @@ and
   handle_save_file load_or_delete file_name =
   match load_or_delete with
   | Load -> print_newline (); 
-    Yojson.Basic.from_file file_name
-    |> Founding.load
-    |> play_from_save
+    let json = Yojson.Basic.from_file file_name in
+    if json |> member "phase" |> to_int = 1 then
+      json |> Founding.load |> play_from_save
+    else
+      json |> Growth.load |> play_from_save
   | Delete -> print_newline (); 
     Sys.remove file_name; 
     main_menu ()
