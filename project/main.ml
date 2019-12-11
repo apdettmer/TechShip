@@ -192,8 +192,8 @@ and
   handle_save_file load_or_delete file_name =
   match load_or_delete with
   | Load -> print_newline (); 
-    Yojson.Basic.from_file file_name 
-    |> load 
+    Yojson.Basic.from_file file_name
+    |> Founding.load
     |> play_from_save
   | Delete -> print_newline (); 
     Sys.remove file_name; 
