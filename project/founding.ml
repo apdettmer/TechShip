@@ -2,12 +2,6 @@ open Printf
 open Unix
 open Yojson.Basic.Util
 
-type self = {
-  name : string;
-  age : tm;
-  health : int;
-}
-
 type investor = { 
   name : string;
   investment : int
@@ -45,8 +39,6 @@ type company = {
   event: string * int;
 }
 
-(** [new_employee] takes a name and returns an employee with that name and with 
-    random morale values ranging from -5 to 5. *)
 let new_employee name = 
   Random.init (int_of_float (Unix.time ()));
   {
@@ -106,9 +98,6 @@ let rec morale_employees (emp_list : employee list) =
   | [] -> 0
   | h :: t -> mor_e h + morale_employees t
 
-(**[hire_employee name n company] hires [n] new employees for the company. The
-   company is updated with a new employee list and new morale and reputation 
-   depending on the reputation of the employees hired. *)
 let hire_employee name n company = 
   let employees = employee_list name n [] in 
   {
@@ -147,17 +136,19 @@ let add_investor inv company = {
 let employee_name emp = 
   emp.name
 
+(** [print_employee_info emp] prints the stats of [emp]. *)
 let print_employee_info emp = 
   Stdlib.print_string 
     (" { Name: " ^ emp.name ^ " | Morale: " ^ string_of_int emp.morale 
      ^ " | Reputation: " ^ string_of_int emp.reputation ^ " } ");
   Stdlib.print_endline ""; ()  
 
+(** [view_employees emp_list] prints the stats of all the employees in 
+    [emp_list]. *)
 let rec view_employees emp_list =
   match emp_list with 
   | [] -> ()
   | h :: t -> print_employee_info h; view_employees t
-
 
 let new_company name = {
   product = name;
