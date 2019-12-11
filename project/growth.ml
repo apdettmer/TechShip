@@ -376,15 +376,16 @@ let save company =
   fprintf out_chn "%s" data;
   flush out_chn
 
-let load_employee json_employee : Founding.employee = 
+let load_employee json_employee = 
   let name = json_employee |> member "name" |> to_string in 
   let morale = json_employee |> member "morale" |> to_int in 
   let rep = json_employee |> member "reputation" |> to_int in 
   custom_employee name morale rep
 
-let load_employees json_employees = List.map load_employee json_employees
+let load_employees json_employees = 
+  json_employees |> to_list|> List.map load_employee
 
-let load_investor json_investor : Founding.investor = 
+let load_investor json_investor = 
   let name = json_investor |> member "name" |> to_string in 
   let investment = json_investor |> member "investment" |> to_int in 
   custom_investor name investment
