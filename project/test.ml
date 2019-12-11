@@ -4,6 +4,53 @@ open Growth
 open OUnit2
 open Yojson.Basic.Util
 
+(**[TEST PLAN]: Overall, we used OUnit to test certain features where we could
+     and manually tested the features OUnit couldn't test.
+
+     For the functions from the different modules that produced values, we used
+     OUnit tests (written below) to ensure they are correct. We created multiple
+     test suites to reflect the certain module they test. We had one for 
+     event.ml, founding.ml and growth.ml, the three main modules that comprise
+     the game. For testing events, we pulled a sample event for our JSON and 
+     then used assert_equal to make sure the individual fields, such as name, 
+     response list and attributes, were correct. For testing founding, the type
+     of the company in the first phase, we created a sample company and tested
+     the getters to confirm all the default values were correct. Then, we created
+     custom responses identical to the responses the player would produce in game,
+     and then tested the updated company, using getters on the individual fields, 
+     to confirm the updated values were correct. We did this for responses that 
+     covered every field, thus proving that the company is always properly 
+     updated. We followed this same format to test the hiring of employees. For 
+     growth.ml, we had the same pattern. We first created a founded object, the 
+     type used for phase 2, and then tested the individual fields with the getters
+     to ensure the conversion from phase 1 to phase 2 was correct. Then, we again
+     created custom responses to events and tested the update_company feature,
+     again testing all the individual fields with unique tests, so that every 
+     type of response was properly handled. We also tested the win/lose functions
+     on cases that returned a bool and printed nothing. On top of all this,
+     as written below, we did significant manual testing by playing the game where
+     we could have caught other bugs not covered by the OUnit test. Thus, we know
+     the game plays as intended.
+
+     For many of the functions used in main.ml as part of the two repl loops, 
+     and the other functions that printed messages to the player, we were unable 
+     to use OUnit and instead tested manually through gameplay. Those functions
+     returned unit, and did not produce new values for which we could use OUnit
+     to test. So, we simply played the game and observed the messages printed. 
+     To test the function that displays the company's change in stats, we ensured
+     that it worked with all events for all categories. We tested the functions
+     that display the company's status by simply selecting that option in game. 
+     For the functions that print unique messages at for winning or losing the 
+     game, we played the game, with limited events, and ensured that each 
+     scenario occurred and the correct message printed. Essentially, for the 
+     printing functions, we manually played the game and ensured every possible
+     branch would be triggered when it was supposed to and subsequently printed 
+     the correct message. Therefore, we are confident all the printed functions
+     perform as they are intended to.
+
+*)
+
+
 let e1 = event_of "sample" 1 "data/events.json"
 
 let r1 = match responses e1 with 
