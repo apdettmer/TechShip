@@ -220,11 +220,13 @@ let founded1 = found comp1
 let resp1 = new_f_response "test1" [("market_cap", Some (1000))]
 let resp2 = new_f_response "test2" 
     [("morale", Some(4)); ("reputation", Some(6))]
-let resp3 = new_f_response "test3" [("market_cap", Some (-6000))] 
+let resp3 = new_f_response "test3" [("market_cap", Some (-5500))] 
 let resp4 = new_f_response "test4" [("management", Some (13))]
 let resp5 = new_f_response "test5" [("marketing", Some (-4))]
 (* edge case *)
 let resp6 = new_f_response "test6" []
+let resp7 = new_f_response "test7" [("market_cap", Some(4)); 
+                                    ("reputation", Some(-70))]
 
 let event_ads = event_of "demo" 1 "data/events_founded.json"
 let event_management = event_of "demo" 2 "data/events_founded.json"
@@ -246,9 +248,16 @@ let growth_tests = [
   "Testing update_founding successfully increases market_cap" >::
   (fun _ -> assert_equal 6000 (market_cap (update_founded founded1 resp1))); 
 
+  "Testing update_founding successfully increases market_cap - with a negative" 
+  >:: (fun _ -> assert_equal (-500) (market_cap (update_founded founded1 resp3))); 
+
   "Testing update_founding successfully increases reputation -" ^ 
   "with multiple effect list" 
-  >:: (fun _ -> assert_equal 56 (reputation (update_founded founded1 resp2))); 
+  >:: (fun _ -> assert_equal 56 (reputation (update_founded founded1 resp2)));
+
+  "Testing update_founding decreases reputation with a large negative num and" ^ 
+  " a multiple effect list" >::
+  (fun _ -> assert_equal (-20) (reputation (update_founded founded1 resp7))); 
 
   "Assuring pulling events from events_founded works and event_ads is correct" 
   >:: (fun _ -> assert_equal 3 (List.length(responses event_ads)));
@@ -271,9 +280,6 @@ let growth_tests = [
   effects - this is an edge case"
   >:: (fun _ -> assert_equal founded1 (update_founded founded1 resp6));
 
-  "Testing update_founded does not change when the response has an empty list of
-  effects - this is an edge case"
-  >:: (fun _ -> assert_equal founded1 (update_founded founded1 resp6));
 
 ]
 
