@@ -12,6 +12,17 @@ type investor_or_employee
 
 exception InvalidEventId of int
 exception InvalidEventCategory of string
+exception WrongPersonType of string
+
+(** [inv_from_var inv_wrapped] gives the investor contained in [inv_wrapped].
+    Raises: [WrongPersonType("employee")] if [inv_wrapped] represents an 
+    employee*)
+val inv_from_var : investor_or_employee -> Founding.investor
+
+(** [emp_from_var emp_wrapped] gives the investor contained in [inv_wrapped].
+    Raises: [WrongPersonType("investor")] if [emp_wrapped] represents an 
+    investor*)
+val emp_from_var : investor_or_employee -> Founding.employee
 
 (** [category event] gives the category of [event]*)
 val category : event -> string

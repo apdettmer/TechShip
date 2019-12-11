@@ -17,6 +17,12 @@ type investor = {
   investment : int
 }
 
+let investment investor = 
+  investor.investment
+
+let name investor = 
+  investor.name
+
 type employee = {
   name : string;
   morale : int;

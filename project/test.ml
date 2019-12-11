@@ -12,6 +12,10 @@ let r1 = match responses e1 with
 
 let e2 = event_of "investor" 0 "data/events.json"
 
+let inv_event = constructor_event_of "con_investor" 1
+let e_env_event = fst inv_event
+let inv_of_event = snd inv_event |> inv_from_var
+
 let comp_sample = new_company "sample comp"
 let up_comp_sample = update_company r1 comp_sample
 
@@ -36,6 +40,7 @@ let random_event_tester category =
 let check_nonempty str =
   str <> ""
 
+
 let event_tests = [
   make_event_test "category of sample" "sample" e1 Event.category;
   make_event_test "description of sample" "sample string_val int_val" 
@@ -59,10 +64,10 @@ let event_tests = [
     (Event.fill_event_description e1 fun_prog 0) (Event.description);
   make_event_test "make_name gives a nonempty string" true 
     (Event.make_name ()) check_nonempty;
-  (* make_event_test "updating sample company increases funding" 5010
-     (up_comp_sample) (funding);
-     make_event_test "updating sample company increases morale" 55
-     (up_comp_sample) (Founding.morale); *)
+  make_event_test "investor event 1 has correct investment value" 100000
+    (inv_of_event) investment;
+  make_event_test "investor event 1 has correct name" "Bane Crobber"
+    (inv_of_event) name;
 ]
 
 let comp1 = new_company "Creative Name"
@@ -100,19 +105,24 @@ let founding_tests = [
   (fun _ -> assert_equal 5010 (funding (update_category comp1 "funding" 10)));
 
   "Testing increasing funding works with a negative value" >:: 
-  (fun _ -> assert_equal 4990 (funding (update_category comp1 "funding" (-10))));
+  (fun _ -> assert_equal 4990 
+      (funding (update_category comp1 "funding" (-10))));
 
   "Testing increasing reputation produces correct reputation" >:: 
-  (fun _ -> assert_equal 55 (Founding.reputation (update_category comp1 "reputation" 5)));
+  (fun _ -> assert_equal 55 
+      (Founding.reputation (update_category comp1 "reputation" 5)));
 
   "Testing increasing morale produces correct morale value" >:: 
-  (fun _ -> assert_equal 60 (Founding.morale (update_category comp1 "morale" 10)));
+  (fun _ -> assert_equal 60 
+      (Founding.morale (update_category comp1 "morale" 10)));
 
   "Testing if reputation can be negative" >:: 
-  (fun _ -> assert_equal (-50) (Founding.reputation (update_category comp1 "reputation" (-100))));
+  (fun _ -> assert_equal (-50) 
+      (Founding.reputation (update_category comp1 "reputation" (-100))));
 
   "Testing if morale can be negative" >:: 
-  (fun _ -> assert_equal (-1) (Founding.morale (update_category comp1 "morale" (-51))));
+  (fun _ -> assert_equal (-1) 
+      (Founding.morale (update_category comp1 "morale" (-51))));
 
   "Testing update_category handles employee hiring" >:: 
   (fun _ -> assert_equal 1 
@@ -124,7 +134,8 @@ let founding_tests = [
 
   "Testing update_category handles negative employee hiring and returns an" ^ 
   "empty list" >:: 
-  (fun _ -> assert_equal [] (employees (update_category comp1 "employee" (-5))));
+  (fun _ -> assert_equal [] 
+      (employees (update_category comp1 "employee" (-5))));
 
   "Testing employee_list generates a list of 3 employees with name John" >:: 
   (fun _ -> assert_equal 4 (List.length (employee_list "John" 3 [john]))); 
@@ -153,7 +164,8 @@ let founding_tests = [
 let founded1 = found comp1
 
 let resp1 = new_f_response "test1" [("market_cap", Some (1000))]
-let resp2 = new_f_response "test2" [("morale", Some(4)); ("reputation", Some(6))]
+let resp2 = new_f_response "test2" 
+    [("morale", Some(4)); ("reputation", Some(6))]
 let resp3 = new_f_response "test3" [("market_cap", Some (-6000))] 
 let resp4 = new_f_response "test4" [("management", Some (13))]
 let resp5 = new_f_response "test5" [("marketing", Some (-4))]
@@ -166,8 +178,8 @@ let event_management = event_of "demo" 2 "data/events_founded.json"
 
 let growth_tests = [ 
 
-  "Testing found successfully transfer over correct funding value to market cap" >::
-  (fun _ -> assert_equal 5000 (market_cap founded1)); 
+  "Testing found successfully transfer over correct funding value to market cap" 
+  >:: (fun _ -> assert_equal 5000 (market_cap founded1)); 
 
   "Testing found successfully transfer over correct reputation value" >::
   (fun _ -> assert_equal 50 (reputation founded1)); 
