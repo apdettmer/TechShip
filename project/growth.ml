@@ -220,6 +220,9 @@ let print_updates prev_found new_founded =
     ((management new_founded) - (management prev_found)) ("management");
   Stdlib.print_string "\n"
 
+
+(**[check_lost_market_cap v] returns true and prints nothing if v > 0. Else,
+     returns false and prints a custom ending message related to market cap.*)
 let check_lost_market_cap v = 
   match v with
   | _ when v > 0 -> true
@@ -229,6 +232,8 @@ let check_lost_market_cap v =
                         "in you. Perhaps you could " ^ 
                         "have made wiser financial decisions. \n \n");false
 
+(**[check_lost_reputation v] returns true and prints nothing if v > 0. Else,
+     returns false and prints a custom ending message related to reputation.*)
 let check_lost_reputation v = 
   match v with
   | _ when v > 0 -> true
@@ -239,6 +244,8 @@ let check_lost_reputation v =
                         "down the company. Try to be more likable next" ^
                         " time. \n \n"); false
 
+(**[check_lost_morale v] returns true and prints nothing if v > 0. Else,
+     returns false and prints a custom ending message related to morale.*)
 let check_lost_morale v = 
   match v with
   | _ when v > 0 -> true
@@ -248,6 +255,8 @@ let check_lost_morale v =
                         " quit. With no employees, the company cannot no "^ 
                         "longer operate.\n \n"); false
 
+(**[check_lost_marketing v] returns true and prints nothing if v > 0. Else,
+     returns false and prints a custom ending message related to marketing.*)
 let check_lost_marketing v = 
   match v with
   | _ when v > 0 -> true
@@ -257,6 +266,8 @@ let check_lost_marketing v =
                         "who you are. No customers means no revenue and " ^
                         "a failed company.\n \n"); false
 
+(**[check_lost_management v] returns true and prints nothing if v > 0. Else,
+     returns false and prints a custom ending message related to management.*)
 let check_lost_management v = 
   match v with
   | _ when v > 0 -> true
