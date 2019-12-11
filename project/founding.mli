@@ -1,7 +1,4 @@
-(* design the company in the growth phase *)
 type employee
-
-type product
 
 type investor
 
@@ -67,7 +64,7 @@ val morale_employees : employee list -> int
 val rep_employees : employee list -> int
 
 (** [product company] is the product of the company. *)
-val product : company -> product
+val product : company -> string
 
 (** [funding company] is the current funding the company has. *)
 val funding : company -> int
@@ -78,9 +75,6 @@ val set_event : company -> string -> int -> company
 
 (** [employees company] is an [employee] list of the current employees. *)
 val employees : company -> employee list
-
-(** [string_of_product product] is the name of [product]. *)
-val string_of_product : product -> string
 
 (** [reputation company] is the reputation of the company. *)
 val reputation : company -> int

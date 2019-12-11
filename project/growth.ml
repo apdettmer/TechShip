@@ -1,7 +1,9 @@
+open Printf
 open Unix
+open Yojson.Basic.Util
 
 type company = {
-  product : Founding.product;
+  name : string;
   market_cap : int;
   reputation : int;
   morale : int;
@@ -10,7 +12,7 @@ type company = {
   date : tm;
   marketing: int;
   management: int;
-  (* event : string * int *)
+  event : string * int
 }
 
 (* Currently defined exactly as the one in event - but I feel like its better to
@@ -28,7 +30,7 @@ let new_f_response desc effects =
 
 let found company = 
   { 
-    product = Founding.product company;
+    name = Founding.product company;
     market_cap = Founding.funding company;
     reputation = Founding.reputation company;
     morale = Founding.morale company;
@@ -37,11 +39,11 @@ let found company =
     date = Founding.date company;
     marketing = 50;
     management = 100;
-    (* event = "easter egg", 0 *)
+    event = Founding.event company
   }
 
 let product founded = 
-  founded.product
+  founded.name
 
 let market_cap founded = 
   founded.market_cap
@@ -67,13 +69,13 @@ let marketing founded =
 let management founded = 
   founded.management
 
-(* let event founded = 
-   founded.event *)
+let event founded = 
+  founded.event
 
 let update_cat name v company= 
   match name with 
   | "market_cap" -> { 
-      product = product company;
+      name = product company;
       market_cap = market_cap company + v;
       reputation = reputation company;
       morale = morale company;
@@ -82,9 +84,10 @@ let update_cat name v company=
       date = date company;
       marketing = marketing company;
       management = management company;
+      event = event company
     }
   | "reputation" -> { 
-      product = product company;
+      name = product company;
       market_cap = market_cap company;
       reputation = reputation company + v;
       morale = morale company;
@@ -93,9 +96,10 @@ let update_cat name v company=
       date = date company;
       marketing = marketing company;
       management = management company;
+      event = event company
     }
   | "morale" -> { 
-      product = product company;
+      name = product company;
       market_cap = market_cap company;
       reputation = reputation company;
       morale = morale company + v;
@@ -104,9 +108,10 @@ let update_cat name v company=
       date = date company;
       marketing = marketing company;
       management = management company;
+      event = event company
     }
   | "investors" -> { 
-      product = product company;
+      name = product company;
       market_cap = market_cap company;
       reputation = reputation company;
       morale = morale company;
@@ -116,9 +121,10 @@ let update_cat name v company=
       date = date company;
       marketing = marketing company;
       management = management company;
+      event = event company
     }
   | "marketing" -> { 
-      product = product company;
+      name = product company;
       market_cap = market_cap company;
       reputation = reputation company;
       morale = morale company;
@@ -127,9 +133,10 @@ let update_cat name v company=
       date = date company;
       marketing = marketing company + v;
       management = management company;
+      event = event company
     }
   | "management" -> { 
-      product = product company;
+      name = product company;
       market_cap = market_cap company;
       reputation = reputation company;
       morale = morale company;
@@ -138,9 +145,10 @@ let update_cat name v company=
       date = date company;
       marketing = marketing company;
       management = management company + v;
+      event = event company
     }
   | "teams" -> { 
-      product = product company;
+      name = product company;
       market_cap = market_cap company;
       reputation = reputation company;
       morale = morale company;
@@ -150,6 +158,7 @@ let update_cat name v company=
       date = date company;
       marketing = marketing company;
       management = management company;
+      event = event company
     }
   | _ -> failwith "ERROROR2"
 
@@ -265,4 +274,79 @@ let check_won_lost founded =
   check_lost_reputation (reputation founded) && 
   check_lost_morale (morale founded) &&
   check_lost_marketing (marketing founded) &&
-  check_lost_management (management founded) 
+  check_lost_management (management founded)
+
+let save_name company =
+  sprintf "\t\"product\": \"%s\"," company.name
+
+let save_market_cap company =
+  sprintf "\t\"market cap\": %i," company.market_cap
+
+let save_reputation company =
+  sprintf "\t\"reputation\": %i," company.reputation
+
+let save_morale company =
+  sprintf "\t\"morale\": %i," company.morale
+
+let save_teams_helper (employee : Founding.employee) =
+  sprintf "\t\t{
+\t\t\t\"name\": \"%s\",
+\t\t\t\"morale\": %i,
+\t\t\t\"reputation\": %i
+\t\t}" employee.name employee.morale employee.reputation
+
+let save_teams company =
+  sprintf "\t\"teams\": [
+%s
+\t]," (List.rev_map save_teams_helper company.employees 
+       |> String.concat ",\n")
+
+let save_investors_helper (investor : Founding.investor) =
+  sprintf "\t\t{
+\t\t\t\"name\": \"%s\",
+\t\t\t\"investment\": %i
+\t\t}" investor.name investor.investment
+
+let save_investors company =
+  sprintf "\t\"investors\": [
+%s
+\t]," (List.rev_map save_investors_helper company.investors 
+       |> String.concat ",\n")
+
+let save_date company =
+  sprintf "\t\"date\": {
+\t\t\"second\": %i,
+\t\t\"minute\": %i,
+\t\t\"hour\": %i,
+\t\t\"month day\": %i,
+\t\t\"month\": %i,
+\t\t\"year\": %i,
+\t\t\"week day\": %i,
+\t\t\"year day\": %i,
+\t\t\"daylight saving\": %b
+\t}," company.date.tm_sec company.date.tm_min company.date.tm_hour 
+    company.date.tm_mday company.date.tm_mon company.date.tm_year 
+    company.date.tm_wday company.date.tm_yday company.date.tm_isdst
+
+let save_event company =
+  sprintf "\t\"event\": {
+  \t\t\"category\": \"%s\",
+  \t\t\"id\": %i
+  }" (fst(company.event)) (snd(company.event))
+
+let save company =
+  let file_name = company.name in
+  let save_file = String.concat "" [file_name; ".json"] in
+  let out_chn = open_out save_file in
+  let data = String.concat "\n" [
+      "{"; "\t\"phase\": 2,";
+      save_name company; 
+      save_market_cap company; 
+      save_reputation company; 
+      save_morale company; 
+      save_teams company; 
+      save_investors company; 
+      save_date company; 
+      save_event company; "}"] in
+  fprintf out_chn "%s" data;
+  flush out_chn

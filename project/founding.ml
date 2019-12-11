@@ -8,10 +8,6 @@ type self = {
   health : int;
 }
 
-type product = {
-  name : string
-}
-
 type investor = { 
   name : string;
   investment : int
@@ -39,7 +35,7 @@ let emp_reputation employee =
   employee.reputation
 
 type company = {
-  product : product;
+  product : string;
   funding : int;
   reputation : int;
   morale : int;
@@ -49,13 +45,8 @@ type company = {
   event: string * int;
 }
 
-let new_product name = {
-  name = name
-}
-
-(** [new_employee] takes a name, perhaps given by the player?, and returns an
-    employee with that name and with random morale values ranging from -5 to 5 
-*)
+(** [new_employee] takes a name and returns an employee with that name and with 
+    random morale values ranging from -5 to 5. *)
 let new_employee name = 
   Random.init (int_of_float (Unix.time ()));
   {
@@ -90,9 +81,6 @@ let custom_employee name morale rep = {
   morale = morale;
   reputation = rep;
 }
-
-let string_of_product (product : product) = 
-  product.name
 
 let rec employee_list name n acc = 
   match n with 
@@ -167,7 +155,7 @@ let rec view_employees emp_list =
 
 
 let new_company name = {
-  product = new_product name;
+  product = name;
   funding = 5000;
   reputation = 50;
   morale = 50;
@@ -187,7 +175,7 @@ let new_company name = {
   event = "sample", 0;
 }
 
-(* Below are the getters for founding. All very simple.  *)
+(** Below are the getters for founding. All very simple. *)
 let product company = 
   company.product
 
@@ -224,9 +212,7 @@ let set_event company category id = {
 }
 
 let save_product company =
-  sprintf "\t\"product\":{
-\t\t\"name\": \"%s\"
-\t}," company.product.name
+  sprintf "\t\"product\": \"%s\"," company.product
 
 let save_funding company =
   sprintf "\t\"funding\": %i," company.funding
@@ -284,12 +270,12 @@ let save_event company =
   }" (fst(company.event)) (snd(company.event))
 
 let save company =
-  let file_name = company.product.name in
+  let file_name = company.product in
   let save_file = String.concat "" [file_name; ".json"] in
   let out_chn = open_out save_file in
   let data = String.concat "\n" [
       "{"; "\t\"phase\": 1,";
-      save_product company; 
+      save_product company;
       save_funding company; 
       save_reputation company; 
       save_morale company; 
@@ -299,10 +285,6 @@ let save company =
       save_event company; "}"] in
   fprintf out_chn "%s" data;
   flush out_chn
-
-let load_product json_product = {
-  name = json_product |> member "name" |> to_string
-}
 
 let load_employee json_employee = {
   name = json_employee |> member "name" |> to_string;
@@ -333,7 +315,7 @@ let load_date json_date = {
 }
 
 let load json = {
-  product = json |> member "product" |> load_product;
+  product = json |> member "product" |> to_string;
   funding = json |> member "funding" |> to_int;
   reputation = json |> member "reputation" |> to_int;
   morale = json |> member "morale" |> to_int;

@@ -13,7 +13,7 @@ val found : Founding.company -> company
 val found : Founding.company -> company
 
 (**[product founded] is the product field of company [founded]*)
-val product : company -> Founding.product
+val product : company -> string
 
 (**[market_cap founded] is the market_cap field of company [founded]*)
 val market_cap :  company -> int 
@@ -63,3 +63,10 @@ val print_found_message : string -> unit
 val print_updates : company -> company -> unit
 
 val check_won_lost : company -> bool
+
+(** [save] writes to or creates a JSON file with the save data of the 
+    company. *)
+val save : company -> unit
+
+(** [load json] is the company represented in json. *)
+val load : Yojson.Basic.t -> company
