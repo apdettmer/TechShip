@@ -29,6 +29,15 @@ type employee = {
   reputation : int;
 }
 
+let emp_name employee = 
+  employee.name
+
+let emp_morale employee = 
+  employee.morale
+
+let emp_reputation employee = 
+  employee.reputation
+
 type company = {
   product : product;
   funding : int;
