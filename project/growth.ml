@@ -189,13 +189,13 @@ let print_founded founded =
   Stdlib.print_endline ""
 
 let print_found_message msg = 
-  Stdlib.print_string "\nYour efforts in the founding phase have paid off. "; 
-  Stdlib.print_string ("Now it is time to take ");
+  print_string "\nYour efforts in the founding phase have paid off. "; 
+  print_string ("Now it is time to take ");
   ANSITerminal.(print_string [green] msg); 
-  Stdlib.print_string (" to the next level. \n");
-  Stdlib.print_string "You have entered the growth phase. Some stats, such as";
-  Stdlib.print_string " Morale and Reputation are the same, while you gained new ";
-  Stdlib.print_string "stats such as Marketing and Managment. Good luck. \n \n"
+  print_string (" to the next level. \n");
+  print_string "You have entered the growth phase. Some stats, such as ";
+  print_string "Morale and Reputation are the same, while you gained new";
+  print_string " stats such as Marketing and Managment. Good luck. \n \n"
 
 let print_founded_change change field =
   match change with
@@ -302,7 +302,8 @@ let save_employee employee =
 \t\t\t\"name\": \"%s\",
 \t\t\t\"morale\": %i,
 \t\t\t\"reputation\": %i
-\t\t}" (Founding.emp_name employee) (Founding.emp_morale employee) (Founding.emp_reputation employee)
+\t\t}" (Founding.emp_name employee) (Founding.emp_morale employee) 
+    (Founding.emp_reputation employee)
 
 let save_teams_helper employees =
   sprintf "[
