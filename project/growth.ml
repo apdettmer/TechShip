@@ -37,7 +37,6 @@ let found company =
     date = Founding.date company;
     marketing = 50;
     management = 100;
-    (* event = "easter egg", 0 *)
   }
 
 let product founded = 
@@ -66,9 +65,6 @@ let marketing founded =
 
 let management founded = 
   founded.management
-
-(* let event founded = 
-   founded.event *)
 
 let update_cat name v company= 
   match name with 
@@ -112,7 +108,6 @@ let update_cat name v company=
       morale = morale company;
       teams = teams company;
       investors = investors company;
-      (* update_investors (investors company); *)
       date = date company;
       marketing = marketing company;
       management = management company;
@@ -145,7 +140,6 @@ let update_cat name v company=
       reputation = reputation company;
       morale = morale company;
       teams = teams company;
-      (* update_teams (teams company); -- unimplemented*)
       investors = investors company;
       date = date company;
       marketing = marketing company;
