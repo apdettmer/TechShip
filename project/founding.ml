@@ -399,7 +399,7 @@ let check_lost_funding v =
     Stdlib.print_endline ""; true
   | _ -> false
 
-let repL = "The repuation of your company has fallen dangerously low due to " ^
+let repL = "The reputation of your company has fallen dangerously low due to " ^
            "your questionable decision making. No one trusts you, and invest" ^
            "ors are pulling their money. Public perception is too low for yo" ^
            "ur company to have any sort of success. The company must be shut" ^

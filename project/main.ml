@@ -4,16 +4,20 @@ open Founding
 open Growth
 open Event
 
+(** [load_or_delete] indicates whether the player intends to load the data from 
+    a save file or delete the save file when viewing all save files. *)
 type load_or_delete = Load | Delete
 
-(* indicates that a constructor event was selected and that event must be 
-   handled differently to account for an employee or investor*)
-exception Constructor 
+(** [Constructor] indicates that a constructor event was selected and that event 
+    must be handled differently to account for employee or investor. *)
+exception Constructor
 
+(** [alternative] indicates the type of option that is being presented to the 
+    player. *)
 type alternative = 
   | Response of response
-  (* CResponse represents a response potentially containing an invesotr or
-     an employee to be added to the company's stats*)
+  (** [CResponse] represents a response containing either an investor or an 
+      employee to be added to the company's stats. *)
   | CResponse of response * (investor_or_employee option) 
   | FResponse of f_response
   | Status 
@@ -21,7 +25,7 @@ type alternative =
   | Menu 
   | Found
 
-(** [alt_desc alt] gives a description of [alt] according to its type*)
+(** [alt_desc alt] gives a description of [alt] according to its type. *)
 let alt_desc alt =
   match alt with
   | Response res -> res_desc res
@@ -33,23 +37,23 @@ let alt_desc alt =
   | Found -> "Found your company for real: be done with such small affairs."
 
 (** [pretty_print_alts altlst] displays each alternative in [altlst] 
-    with a number in brackets and its description*)
+    with a number in brackets and its description. *)
 let pretty_print_alts altlst = 
   List.iter (fun (i, a) -> 
       print_endline ("[" ^ (string_of_int i) ^ "] " ^ (alt_desc a))) altlst;
   print_string ">"
 
 (** [present_alts company altlst event] displays alternatives in 
-    [altlst] to the player and matches input against these alternatives *)
+    [altlst] to the player and matches input against these alternatives. *)
 let rec present_alts company altlst event =
   pretty_print_alts altlst;
   try (
     match (List.assoc (read_int ()) altlst) with
-    | Response res -> print_newline ();
+    | Response res ->
       let updated_comp =  update_company res company event in 
       print_changes1 company updated_comp;
       play updated_comp
-    | CResponse (res, inv_or_emp) -> print_newline ();
+    | CResponse (res, inv_or_emp) ->
       let updated_comp = update_company_constructor (res, inv_or_emp) company event in 
       print_changes1 company updated_comp;
       play updated_comp
@@ -68,7 +72,7 @@ let rec present_alts company altlst event =
     | Found -> 
       print_found_message (company |> Founding.product |> string_of_product);
       Unix.sleepf 0.3 ;
-      ANSITerminal.(print_string [green] ">herewegoround2.jpg\n");
+      ANSITerminal.(print_string [green] ">herewegoagain.jpg\n");
       company 
       |> found 
       |> (play_phase_2)
@@ -79,7 +83,7 @@ let rec present_alts company altlst event =
 and
 
   (** [default_alts len] gives recurring alternatives such as [Menu], [Save], 
-      etc. used in the first phase, numbered according to [len]*)
+      etc. used in the first phase, numbered according to [len]. *)
   default_alts len = 
   (len, Found) :: 
   (len + 1, Status) ::
@@ -101,7 +105,7 @@ and
 
   (** [alts_constructor company res_cons_lst c_event] gives a list of 
       alternatives, specifically for responses handling employee or investor 
-      addition*)
+      addition. *)
   alts_constructor company res_cons_lst c_event = 
   let len = List.length res_cons_lst in 
   let altlst = 
@@ -116,8 +120,8 @@ and
 
 and
 
-  (**[display_event file] gives a random event generated from [file].
-     Requires: [file] is a valid JSON representation of events for the game *)
+  (** [display_event file] gives a random event generated from [file].
+      Requires: [file] is a valid JSON representation of events for the game. *)
   display_event file =
   let event_cat = random_category () in 
   if event_cat = "constructor" then raise Constructor
@@ -130,8 +134,8 @@ and
 
 and
 
-  (**[play] is the repl loop that takes player input and determines actions
-     in the game *)
+  (** [play] is the REPL loop that takes player input and determines actions in 
+      the first phase of the game. *)
   play company =
   if (check_lost_phase1 company) then main_menu ()
   else 
@@ -146,8 +150,8 @@ and
 
 and
 
-  (**[play_from_save company] starts game session with the event being viewed 
-     when [company] was last saved *)
+  (** [play_from_save company] starts game session with the event being viewed 
+      when [company] was last saved. *)
   play_from_save company = 
   let event_info = event company in 
   if (fst event_info = "con_investor" || fst event_info = "con_employee")
@@ -163,8 +167,8 @@ and
 
 and
 
-  (** [create_new_save ()] begins the game and prompts the player for input
-      to create a new company and associated save file*)
+  (** [create_new_save ()] begins the game and prompts the player for input to 
+      create a new startup and associated save file. *)
   create_new_save () =
   ANSITerminal.(print_string [green] ">be you
 >recent graduate of Cornell Engineering
@@ -183,12 +187,13 @@ and
 
   (** [handle_save_file load_or_delete file_name] either loads the game from 
       [file_name] if possible and if [load_or_delete] is value [Load], or 
-      removes [file_name] from the current directory otherwise*)
+      removes [file_name] from the current directory if possible and if 
+      [load_or_delete] is value [Delete]. *)
   handle_save_file load_or_delete file_name =
   match load_or_delete with
   | Load -> print_newline (); 
-    Yojson.Basic.from_file file_name 
-    |> load 
+    Yojson.Basic.from_file file_name
+    |> Founding.load
     |> play_from_save
   | Delete -> print_newline (); 
     Sys.remove file_name; 
@@ -197,7 +202,7 @@ and
 and
 
   (** [create_intlst acc i] appends to [acc] numbers from [0] to [i].
-      Requuires: [i] is non-negative *)
+      Requuires: [i] is non-negative. *)
   create_intlst acc i =
   match i - 1 with
   | 0 -> 0 :: acc
@@ -217,7 +222,7 @@ and
 and
 
   (** [list_files ()] gives a list of file names in the game directory with 
-      the .json extension*)
+      the .json extension. *)
   list_files () =
   Sys.readdir "." |> Array.to_list 
   |> List.filter (fun x -> json_extension x) 
@@ -276,7 +281,8 @@ T E C H S H I P
 
 and 
 
-  (** [play_phase_2 founded]  is the repl for the second phase of the game *)
+  (** [play_phase_2 founded] play] is the REPL loop that takes player input and 
+      determines actions in the second phase of the game. *)
   play_phase_2 founded =
   Unix.sleep 1;
   if not (check_won_lost founded) then exit 0 
@@ -289,7 +295,7 @@ and
 and
 
   (** [f_alts founded res_lst] constructs a list of numbered choices for the
-      the player in the second phase of the game*)
+      the player in the second phase of the game. *)
   f_alts founded res_lst = 
   let len = List.length res_lst in 
   (len, Status) ::
@@ -299,6 +305,7 @@ and
   |> List.sort (fun (i1, a1) (i2, a2) -> i1 - i2) |> present_f_alts founded
 
 and
+
   (** [present_f_alts founded altlst] displays options for the player and
       reads input specific to the second phase of the game *)
   present_f_alts founded altlst =

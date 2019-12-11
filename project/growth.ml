@@ -70,7 +70,6 @@ let management founded =
 (* let event founded = 
    founded.event *)
 
-
 let update_cat name v company= 
   match name with 
   | "market_cap" -> { 
@@ -183,7 +182,7 @@ let print_founded founded =
   Stdlib.print_endline ""
 
 let print_found_message msg = 
-  Stdlib.print_string "\n Your efforts in the founding phase have paid off. "; 
+  Stdlib.print_string "\nYour efforts in the founding phase have paid off. "; 
   Stdlib.print_string ("Now it is time to take ");
   ANSITerminal.(print_string [green] msg); 
   Stdlib.print_string (" to the next level. \n");
