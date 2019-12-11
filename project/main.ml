@@ -8,7 +8,7 @@ type load_or_delete = Load | Delete
 
 (* indicates that a constructor event was selected and that event must be 
    handled differently to account for an employee or investor*)
-exception Constructor 
+exception Constructor
 
 type alternative = 
   | Response of response
@@ -299,6 +299,7 @@ and
   |> List.sort (fun (i1, a1) (i2, a2) -> i1 - i2) |> present_f_alts founded
 
 and
+
   (** [present_f_alts founded altlst] displays options for the player and
       reads input specific to the second phase of the game *)
   present_f_alts founded altlst =
