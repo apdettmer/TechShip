@@ -375,6 +375,9 @@ let fundL = "Uh-oh. You ran out of funding before your company could really " ^
             " you can no longer continue operations. You should've have paid" ^
             " better attention in Finance class. Imagine what could have been."
 
+(**[check_lost_funding v] returns true and prints out the error message for 
+    funding to the user if v <=0. Otherwise, returns false and prints nothing. 
+*)
 let check_lost_funding v = 
   match v with
   | _ when v <= 0 -> Stdlib.print_endline fundL; 
@@ -387,6 +390,9 @@ let repL = "The reputation of your company has fallen dangerously low due to " ^
            "ur company to have any sort of success. The company must be shut" ^
            "down. If only you had been more ethical. "
 
+(**[check_lost_reputation v] returns true and prints out the error message for 
+    reputation to the user if v <=0. Otherwise, returns false and prints nothing. 
+*)
 let check_lost_reputation v = 
   match v with
   | _ when v <= 0 -> Stdlib.print_endline repL;
@@ -398,6 +404,9 @@ let moraleL = "The morale inside your company is non existent. Nobody, not e" ^
               " disappeared, kinda like that time you took CS 3110 in colleg" ^
               "e. With no morale, your company failed at an early stage."
 
+(**[check_lost_morale v] returns true and prints out the error message for 
+    morale to the user if v <=0. Otherwise, returns false and prints nothing. 
+*)
 let check_lost_morale v = 
   match v with
   | _ when v <= 0 -> Stdlib.print_endline moraleL; 
