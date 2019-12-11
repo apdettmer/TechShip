@@ -4,16 +4,20 @@ open Founding
 open Growth
 open Event
 
+(** [load_or_delete] indicates whether the player intends to load the data from 
+    a save file or delete the save file when viewing all save files. *)
 type load_or_delete = Load | Delete
 
-(* indicates that a constructor event was selected and that event must be 
-   handled differently to account for an employee or investor*)
+(** [Constructor] indicates that a constructor event was selected and that event 
+    must be handled differently to account for employee or investor. *)
 exception Constructor
 
+(** [alternative] indicates the type of option that is being presented to the 
+    player. *)
 type alternative = 
   | Response of response
-  (* CResponse represents a response potentially containing an invesotr or
-     an employee to be added to the company's stats*)
+  (** [CResponse] represents a response containing either an investor or an 
+      employee to be added to the company's stats. *)
   | CResponse of response * (investor_or_employee option) 
   | FResponse of f_response
   | Status 
@@ -21,7 +25,7 @@ type alternative =
   | Menu 
   | Found
 
-(** [alt_desc alt] gives a description of [alt] according to its type*)
+(** [alt_desc alt] gives a description of [alt] according to its type. *)
 let alt_desc alt =
   match alt with
   | Response res -> res_desc res
@@ -33,7 +37,7 @@ let alt_desc alt =
   | Found -> "Found your company for real: be done with such small affairs."
 
 (** [pretty_print_alts altlst] displays each alternative in [altlst] 
-    with a number in brackets and its description*)
+    with a number in brackets and its description. *)
 let pretty_print_alts altlst = 
   List.iter (fun (i, a) -> 
       print_endline ("[" ^ (string_of_int i) ^ "] " ^ (alt_desc a))) altlst;
