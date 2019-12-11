@@ -398,7 +398,6 @@ let update_company_constructor c_response company event =
       in apply_effects company' updates
     end
 
-
 (** [fill_description desc replace i] gives the [desc] with [replace] and
     [i] entered according to regular expression matching*)
 let fill_description desc replace i = 

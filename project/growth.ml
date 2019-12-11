@@ -70,7 +70,6 @@ let management founded =
 (* let event founded = 
    founded.event *)
 
-
 let update_cat name v company= 
   match name with 
   | "market_cap" -> { 
