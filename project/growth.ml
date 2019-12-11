@@ -1,6 +1,6 @@
 open Unix
 
-type founded = {
+type company = {
   product : Founding.product;
   market_cap : int;
   reputation : int;
