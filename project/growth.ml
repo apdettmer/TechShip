@@ -286,24 +286,29 @@ let save_reputation company =
 let save_morale company =
   sprintf "\t\"morale\": %i," company.morale
 
-let save_teams_helper (employee : Founding.employee) =
+let save_employee employee =
   sprintf "\t\t{
 \t\t\t\"name\": \"%s\",
 \t\t\t\"morale\": %i,
 \t\t\t\"reputation\": %i
-\t\t}" employee.name employee.morale employee.reputation
+\t\t}" (Founding.emp_name employee) (Founding.emp_morale employee) (Founding.emp_reputation employee)
+
+let save_teams_helper employees =
+  sprintf "[
+%s
+\t]," (List.rev_map save_employee employees |> String.concat ",\n")
 
 let save_teams company =
   sprintf "\t\"teams\": [
 %s
-\t]," (List.rev_map save_teams_helper company.employees 
+\t]," (List.rev_map save_teams_helper company.teams 
        |> String.concat ",\n")
 
 let save_investors_helper (investor : Founding.investor) =
   sprintf "\t\t{
 \t\t\t\"name\": \"%s\",
 \t\t\t\"investment\": %i
-\t\t}" investor.name investor.investment
+\t\t}" (Founding.name investor) (Founding.investment investor)
 
 let save_investors company =
   sprintf "\t\"investors\": [
