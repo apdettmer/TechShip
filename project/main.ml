@@ -294,7 +294,7 @@ and
   else 
     let g_event = f_display_event "data/events_founded.json" in 
     let responses = responses g_event in 
-    f_alts founded responses
+    f_alts founded responses g_event
 
 (** [play_from_save_phase_2 founded] starts game session with the event 
     being viewed when [founded] was last saved. *)
@@ -304,7 +304,7 @@ and play_from_save_phase_2 founded =
       "data/events_founded.json" in 
   print_endline (description event);
   let f_responses = responses event in 
-  f_alts founded f_responses
+  f_alts founded f_responses event
 
 
 
@@ -312,21 +312,23 @@ and
 
   (** [f_alts founded res_lst] constructs a list of numbered choices for the
       the player in the second phase of the game. *)
-  f_alts founded res_lst = 
+  f_alts founded res_lst event = 
   let len = List.length res_lst in 
-  (len, Status) ::
-  (len + 1, Save) ::
-  (len + 2, Menu) ::
-  (List.combine (create_intlst [] len) 
-     (List.map (fun r -> FResponse r) res_lst))
-  |> List.sort (fun (i1, a1) (i2, a2) -> i1 - i2) |> present_f_alts founded
+  let alt_lst = 
+    ((len, Status) ::
+     (len + 1, Save) ::
+     (len + 2, Menu) ::
+     (List.combine (create_intlst [] len) 
+        (List.map (fun r -> FResponse r) res_lst))
+     |> List.sort (fun (i1, a1) (i2, a2) -> i1 - i2)) in 
+  present_f_alts founded alt_lst event
 
 and
 
 
-  (** [present_f_alts founded altlst] displays options for the player and
+  (** [present_f_alts founded altlst event] displays options for the player and
       reads input specific to the second phase of the game *)
-  present_f_alts founded altlst =
+  present_f_alts founded altlst event =
   pretty_print_alts altlst;
   try 
     match List.assoc (read_int ()) altlst with 
@@ -337,12 +339,13 @@ and
     | Menu -> print_newline ();
       main_menu ()
     | Status -> print_founded founded; 
-      present_f_alts founded altlst
+      present_f_alts founded altlst event
     | Save -> save founded;
-      present_f_alts founded altlst
+      let comp' = set_f_event founded (category event) (id event) in 
+      present_f_alts comp' altlst event
     | _ -> print_endline "Unimplemented"
   with _ -> print_string "Invalid entry. \n\n";
-    present_f_alts founded altlst
+    present_f_alts founded altlst event
 
 and
 

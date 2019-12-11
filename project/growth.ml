@@ -74,6 +74,19 @@ let management founded =
 let f_event founded = 
   founded.event
 
+let set_f_event company category id = 
+  { name = product company;
+    market_cap = market_cap company;
+    reputation = reputation company;
+    morale = morale company;
+    teams = teams company;
+    investors = investors company;
+    date = date company;
+    marketing = marketing company;
+    management = management company;
+    event = (category, id)
+  }
+
 let update_cat name v company= 
   match name with 
   | "market_cap" -> { 
