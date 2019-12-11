@@ -82,6 +82,11 @@ let custom_employee name morale rep = {
   reputation = rep;
 }
 
+let custom_investor name invest = {
+  name = name;
+  investment = invest;
+}
+
 let rec employee_list name n acc = 
   match n with 
   | 0 -> acc
@@ -297,11 +302,6 @@ let load_investor json_investor = {
   investment = json_investor |> member "investment" |> to_int;
 }
 
-let custom_investor name invest = {
-  name = name;
-  investment = invest;
-}
-
 let load_date json_date = {
   tm_sec = json_date |> member "second" |> to_int;
   tm_min = json_date |> member "minute" |> to_int;
@@ -403,7 +403,6 @@ let check_lost_morale v =
   | _ when v <= 0 -> Stdlib.print_endline moraleL; 
     Stdlib.print_endline ""; true
   | _ -> false
-
 
 let check_lost_phase1 company = 
   check_lost_funding (funding company) ||
