@@ -297,9 +297,9 @@ let print_win_msg bool =
   | false -> false
 
 let check_won founded = 
-  if (market_cap founded) < 20000 && (morale founded) < 100 &&
-     (reputation founded) < 100 && (marketing founded) < 50 &&
-     (management founded) < 150 
+  if (market_cap founded) > 20000 && (morale founded) > 100 &&
+     (reputation founded) > 100 && (marketing founded) > 100 &&
+     (management founded) > 150 
   then print_win_msg true
   else print_win_msg false
 

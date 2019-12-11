@@ -295,7 +295,7 @@ let growth_tests = [
   >:: (fun _ -> assert_equal founded1 (update_founded founded1 resp6));
 
   "Testing check_won_lost returns false on starting company - meaning that it 
-  has not won yet" >::  (fun _ -> assert_equal false (check_won founded1));
+  has not won yet" >::  (fun _ -> assert_equal false (check_won founded1))
 
 
 ]
