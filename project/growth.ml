@@ -117,7 +117,6 @@ let update_cat name v company=
       morale = morale company;
       teams = teams company;
       investors = investors company;
-      (* update_investors (investors company); *)
       date = date company;
       marketing = marketing company;
       management = management company;
@@ -153,7 +152,6 @@ let update_cat name v company=
       reputation = reputation company;
       morale = morale company;
       teams = teams company;
-      (* update_teams (teams company); -- unimplemented*)
       investors = investors company;
       date = date company;
       marketing = marketing company;

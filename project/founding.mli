@@ -101,6 +101,9 @@ val load : Yojson.Basic.t -> company
 (** [print_stats] prints out the current stats of the company to the player. *)
 val display_status : company -> unit
 
+
+(**[update_category company cat v] produces a new company with the field 
+   provided by [cat] incremented by [v]. *)
 val update_category : company -> string -> int -> company
 
 (**[check_lost_phase1 company] returns true if the company has failed. A company

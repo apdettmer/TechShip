@@ -137,6 +137,7 @@ and
   (** [play] is the REPL loop that takes player input and determines actions in 
       the first phase of the game. *)
   play company =
+  Unix.sleep 1;
   if (check_lost_phase1 company) then main_menu ()
   else 
     try 
