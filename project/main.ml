@@ -199,7 +199,7 @@ and
     if json |> member "phase" |> to_int = 1 then
       json |> Founding.load |> play_from_save
     else
-      json |> Growth.load |> play_from_save
+      json |> Growth.load |> play_from_save_phase_2
   | Delete -> print_newline (); 
     Sys.remove file_name; 
     main_menu ()
