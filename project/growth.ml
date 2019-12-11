@@ -17,8 +17,6 @@ type company = {
   event : string * int
 }
 
-(* Currently defined exactly as the one in event - but I feel like its better to
-   create a new type for this file / new type of company -ew424 *)
 type f_response = Event.response
 
 let f_effects f_resp = 
@@ -316,7 +314,8 @@ let check_won founded =
   then print_win_msg true
   else print_win_msg false
 
-
+(** Below are the helper saving functions. They convert the game data to 
+    strings to be conglomerated into a printable JSON format. *)
 let save_name company =
   sprintf "\t\"product\": \"%s\"," company.name
 
@@ -406,6 +405,9 @@ let save company =
   fprintf out_chn "%s" data;
   flush out_chn
 
+(** Below are the helper loading functions. They convert the more complex JSON 
+    data into OCaml data. They are aggregated into the company for the player 
+    to play. *)
 let load_employee json_employee = 
   let name = json_employee |> member "name" |> to_string in 
   let morale = json_employee |> member "morale" |> to_int in 

@@ -171,7 +171,7 @@ let new_company name = {
   event = "sample", 0;
 }
 
-(** Below are the getters for founding. All very simple. *)
+(** Below are the getters for [company]. All are trivial. *)
 let product company = 
   company.product
 
@@ -207,6 +207,8 @@ let set_event company category id = {
   event = category, id
 }
 
+(** Below are the helper saving functions. They convert the game data to 
+    strings to be conglomerated into a printable JSON format. *)
 let save_product company =
   sprintf "\t\"product\": \"%s\"," company.product
 
@@ -282,6 +284,9 @@ let save company =
   fprintf out_chn "%s" data;
   flush out_chn
 
+(** Below are the helper loading functions. They convert the more complex JSON 
+    data into OCaml data. They are aggregated into the company for the player 
+    to play. *)
 let load_employee json_employee = {
   name = json_employee |> member "name" |> to_string;
   morale = json_employee |> member "morale" |> to_int;
