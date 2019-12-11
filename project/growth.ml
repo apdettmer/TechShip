@@ -71,12 +71,6 @@ let management founded =
    founded.event *)
 
 
-(* let update_investors current_investor_list = 
-   failwith "Not sure how we wanna go about implementing this"
-
-   let update_teams current_team_list =
-   failwith "Again, not sure how we should do this" *)
-
 let update_cat name v company= 
   match name with 
   | "market_cap" -> { 

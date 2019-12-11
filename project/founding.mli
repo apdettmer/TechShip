@@ -18,6 +18,14 @@ val new_company : string -> company
     list, and produces a new company with updated stats. *)
 val hire_employee : string -> int -> company -> company
 
+
+(** [name investor] gives the name of [investor]*)
+val name : investor -> string
+
+(** [investment investor] gives the amount [investor] contributes to a company
+    if allowed*)
+val investment : investor -> int
+
 (** [employee_name emp] is the name of given employee [emp] *)
 val employee_name : employee -> string
 

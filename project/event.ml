@@ -3,9 +3,16 @@ open Yojson.Basic.Util
 
 open Founding
 
+(* represents an identifier not contained in the json files for a 
+   specific category*)
 exception InvalidEventId of int
 
+(* represents a category which is not contained in the json files*)
 exception InvalidEventCategory of string
+
+(* raised if attempting to pull an investor value from type 
+   investor_or_employee when it is actually an employee, or vice versa*)
+exception WrongPersonType of string
 
 
 type response = {
@@ -15,9 +22,16 @@ type response = {
 }
 
 
-type investor_or_employee = 
-    Employee of Founding.employee 
-  | Investor of Founding.investor
+type investor_or_employee = Employee of Founding.employee 
+                          | Investor of Founding.investor
+
+let inv_from_var = function 
+  | Investor i -> i 
+  | Employee _ -> raise (WrongPersonType "employee")
+
+let emp_from_var = function 
+  | Employee e -> e
+  | Investor _ -> raise (WrongPersonType "investor")
 
 (* the JSON file for events in the first phase*)
 let event_file = Yojson.Basic.from_file "data/events.json"
