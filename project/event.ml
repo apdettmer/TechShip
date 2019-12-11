@@ -343,7 +343,7 @@ let print_category cat v =
     Stdlib.print_endline ""
   | _ -> Stdlib.print_string ""
 
-let print_changes1 old_comp new_comp = 
+let print_changes1 old_comp new_comp =
   print_category "funding" (funding new_comp - funding old_comp);
   print_category "reputation" (reputation new_comp - reputation old_comp);
   print_category "morale" (morale new_comp - morale old_comp);

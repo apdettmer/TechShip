@@ -45,11 +45,11 @@ let rec present_alts company altlst event =
   pretty_print_alts altlst;
   try (
     match (List.assoc (read_int ()) altlst) with
-    | Response res -> print_newline ();
+    | Response res ->
       let updated_comp =  update_company res company event in 
       print_changes1 company updated_comp;
       play updated_comp
-    | CResponse (res, inv_or_emp) -> print_newline ();
+    | CResponse (res, inv_or_emp) ->
       let updated_comp = update_company_constructor (res, inv_or_emp) company event in 
       print_changes1 company updated_comp;
       play updated_comp
