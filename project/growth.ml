@@ -287,16 +287,19 @@ let check_won_lost founded =
 
 let win_msg = "You have won."
 
-let print_win_msg () = 
-  Stdlib.print_endline ""; Stdlib.print_string win_msg; 
-  Stdlib.print_endline ""
+let print_win_msg bool = 
+  match bool with 
+  | true -> Stdlib.print_endline "";
+    Stdlib.print_string win_msg;
+    Stdlib.print_endline ""; true
+  | false -> false
 
 let check_won founded = 
-  if (market_cap founded) < 20000 || (morale founded) < 100 ||
-     (reputation founded) < 100 || (marketing founded) < 50 ||
+  if (market_cap founded) < 20000 && (morale founded) < 100 &&
+     (reputation founded) < 100 && (marketing founded) < 50 &&
      (management founded) < 150 
-  then false
-  else true
+  then print_win_msg true
+  else print_win_msg false
 
 
 let save_name company =
