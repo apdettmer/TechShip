@@ -49,6 +49,14 @@ open Yojson.Basic.Util
    the correct message. Therefore, we are confident all the printed functions
    perform as they are intended to.
 
+   Since some functions produce, in some sense, non-deterministic values and
+   are reliant on randomness, they could not be tested as thoroughly as others.
+    However, these functions were used as input to deterministic 
+   functions that were possible to use in testing. For example, we select
+   a random event with each iteration in our repl, but we could test to ensure 
+   that each json category was selected correctly and that events could be 
+   selected from each as intended.
+
 *)
 
 let e1 = event_of "sample" 1 "data/events.json"
