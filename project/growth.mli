@@ -42,6 +42,10 @@ val management : company -> int
 (** [f_event founded] gives the category and id of the current event *)
 val f_event : company -> string * int
 
+(** [set_f_event company category id] gives the [company] with the 
+    event field set to [category] and [id]*)
+val set_f_event : company -> string -> int -> company
+
 (**[f_effects f_resp] is the effects field of given f_response [f_resp] *)
 val f_effects : f_response -> (string * int option) list
 
