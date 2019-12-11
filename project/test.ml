@@ -287,12 +287,15 @@ let growth_tests = [
   "Testing update_founding successfully increases marketing, with a real event"
   >:: (fun _ -> assert_equal 46 (marketing (update_founded founded1 resp5)));
 
-  "Testing check_won returns true on starting company" >:: 
-  (fun _ -> assert_equal true (check_won_lost founded1));
+  "Testing check_won_lost returns true on starting company - meaning that it 
+  has not lost " >::  (fun _ -> assert_equal true (check_won_lost founded1));
 
   "Testing update_founded does not change when the response has an empty list of
   effects - this is an edge case"
   >:: (fun _ -> assert_equal founded1 (update_founded founded1 resp6));
+
+  "Testing check_won_lost returns false on starting company - meaning that it 
+  has not won yet" >::  (fun _ -> assert_equal false (check_won founded1));
 
 
 ]
