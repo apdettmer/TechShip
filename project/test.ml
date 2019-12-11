@@ -115,6 +115,12 @@ let event_tests = [
     ("hello") random_event_tester;
   make_event_test "Random event government does not raise exception" true
     ("government") random_event_tester;
+  make_event_test "Random event demo does not raise exception" true 
+    ("demo") random_event_tester;
+  make_event_test "Random event employee does not raise exception" true 
+    ("employee") random_event_tester;
+  make_event_test "Random event other does not raise exception" true 
+    ("other") random_event_tester;
   make_event_test "Inserting into sample description" "sample hello 0"
     (Event.fill_event_description e1 "hello" 0) (Event.description);
   make_event_test 
