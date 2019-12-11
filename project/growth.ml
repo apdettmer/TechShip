@@ -71,7 +71,7 @@ let marketing founded =
 let management founded = 
   founded.management
 
-let event founded = 
+let f_event founded = 
   founded.event
 
 let update_cat name v company= 

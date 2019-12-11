@@ -294,6 +294,17 @@ and
     let responses = responses g_event in 
     f_alts founded responses
 
+(** [play_from_save_phase_2 founded] starts game session with the event 
+    being viewed when [founded] was last saved. *)
+and play_from_save_phase_2 founded = 
+  let event_info = Growth.f_event founded in 
+  let event = event_of (fst event_info) (snd event_info) 
+      "data/events_founded.json" in 
+  print_endline (description event);
+  let f_responses = responses event in 
+  f_alts founded f_responses
+
+
 
 and
 
@@ -309,6 +320,7 @@ and
   |> List.sort (fun (i1, a1) (i2, a2) -> i1 - i2) |> present_f_alts founded
 
 and
+
 
   (** [present_f_alts founded altlst] displays options for the player and
       reads input specific to the second phase of the game *)
