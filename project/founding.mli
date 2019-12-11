@@ -22,6 +22,15 @@ val hire_employee : string -> int -> company -> company
 (** [name investor] gives the name of [investor]*)
 val name : investor -> string
 
+(**[emp_name employee] gives the name of [employee] *)
+val emp_name : employee -> string
+
+(** [emp_morale employee] gives the morale of [employee]*)
+val emp_morale : employee -> int 
+
+(** [emp_reputation employee] gives the reputation of [employee]*)
+val emp_reputation : employee -> int 
+
 (** [investment investor] gives the amount [investor] contributes to a company
     if allowed*)
 val investment : investor -> int

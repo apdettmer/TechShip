@@ -14,7 +14,10 @@ let e2 = event_of "investor" 0 "data/events.json"
 
 let inv_event = constructor_event_of "con_investor" 1
 let e_env_event = fst inv_event
-let inv_of_event = snd inv_event |> inv_from_var
+let inv_of_event = snd inv_event
+
+let emp_event = constructor_event_of "con_employee" 0
+let emp_of_event = snd emp_event
 
 let comp_sample = new_company "sample comp"
 let up_comp_sample = update_company r1 comp_sample
@@ -52,7 +55,7 @@ let event_tests = [
   make_event_test "Response list is 3 elements long" 3 
     (responses e2) List.length;
   make_event_test "Random event sample does not raise exception" true
-    ("sample") (random_event_tester); (* exceptions are not caught by ignore*)
+    ("sample") (random_event_tester); 
   make_event_test "Random event raises exception" false
     ("hello") random_event_tester;
   make_event_test "Random event government does not raise exception" true
@@ -65,9 +68,19 @@ let event_tests = [
   make_event_test "make_name gives a nonempty string" true 
     (Event.make_name ()) check_nonempty;
   make_event_test "investor event 1 has correct investment value" 100000
-    (inv_of_event) investment;
+    (inv_from_var inv_of_event) investment;
   make_event_test "investor event 1 has correct name" "Bane Crobber"
-    (inv_of_event) name;
+    (inv_from_var inv_of_event) name;
+  "Retrieving employee from an investor raises an exception" >::
+  (fun _ -> assert_raises (WrongPersonType("investor")) 
+      (fun () -> emp_from_var (snd inv_event)));
+  "Retrieving investor from an employee raises an exception" >:: 
+  (fun _ -> assert_raises (WrongPersonType("employee")) 
+      (fun () -> inv_from_var (snd emp_event)));
+  make_event_test "Retrieved employee has correct morale amount" 10 
+    (emp_from_var emp_of_event) Founding.emp_morale;
+  make_event_test "Retrieved employee has correct reputation" 10
+    (emp_from_var emp_of_event) Founding.emp_reputation;
 ]
 
 let comp1 = new_company "Creative Name"
