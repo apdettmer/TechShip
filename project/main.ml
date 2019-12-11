@@ -304,7 +304,8 @@ and
   f_alts founded res_lst = 
   let len = List.length res_lst in 
   (len, Status) ::
-  (len + 1, Menu) ::
+  (len + 1, Save) ::
+  (len + 2, Menu) ::
   (List.combine (create_intlst [] len) 
      (List.map (fun r -> FResponse r) res_lst))
   |> List.sort (fun (i1, a1) (i2, a2) -> i1 - i2) |> present_f_alts founded
@@ -324,6 +325,8 @@ and
     | Menu -> print_newline ();
       main_menu ()
     | Status -> print_founded founded; 
+      present_f_alts founded altlst
+    | Save -> save founded;
       present_f_alts founded altlst
     | _ -> print_endline "Unimplemented"
   with _ -> print_string "Invalid entry. \n\n";
