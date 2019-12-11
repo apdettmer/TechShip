@@ -86,7 +86,7 @@ let update_cat name v company=
       date = date company;
       marketing = marketing company;
       management = management company;
-      event = event company
+      event = f_event company
     }
   | "reputation" -> { 
       name = product company;
@@ -98,7 +98,7 @@ let update_cat name v company=
       date = date company;
       marketing = marketing company;
       management = management company;
-      event = event company
+      event = f_event company
     }
   | "morale" -> { 
       name = product company;
@@ -110,7 +110,7 @@ let update_cat name v company=
       date = date company;
       marketing = marketing company;
       management = management company;
-      event = event company
+      event = f_event company
     }
   | "investors" -> { 
       name = product company;
@@ -122,7 +122,7 @@ let update_cat name v company=
       date = date company;
       marketing = marketing company;
       management = management company;
-      event = event company
+      event = f_event company
     }
   | "marketing" -> { 
       name = product company;
@@ -134,7 +134,7 @@ let update_cat name v company=
       date = date company;
       marketing = marketing company + v;
       management = management company;
-      event = event company
+      event = f_event company
     }
   | "management" -> { 
       name = product company;
@@ -146,7 +146,7 @@ let update_cat name v company=
       date = date company;
       marketing = marketing company;
       management = management company + v;
-      event = event company
+      event = f_event company
     }
   | "teams" -> { 
       name = product company;
@@ -158,7 +158,7 @@ let update_cat name v company=
       date = date company;
       marketing = marketing company;
       management = management company;
-      event = event company
+      event = f_event company
     }
   | _ -> failwith "ERROROR2"
 
